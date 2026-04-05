@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria Social | Residencial Village Damha III</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .gallery-nav {
+            padding: 8rem 0 2rem;
+            text-align: center;
+        }
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+        .filter-btn.active, .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .gallery-grid {
+            columns: 3;
+            column-gap: 2rem;
+            padding-bottom: 10rem;
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: var(--bg-secondary);
+            transition: var(--transition);
+        }
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: var(--transition);
+            filter: grayscale(0.2);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0);
+        }
+        .gallery-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(10, 31, 26, 0.9), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .gallery-item:hover .gallery-info {
+            opacity: 1;
+        }
+        .gallery-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .gallery-info p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 900px) {
+            .gallery-grid { columns: 2; }
+        }
+        @media (max-width: 600px) {
+            .gallery-grid { columns: 1; }
+        }
+
+        /* Lightbox Styles */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 31, 26, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-img {
+            max-width: 85%;
+            max-height: 85vh;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+        .lightbox-overlay.active .lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4rem;
+            pointer-events: none;
+        }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: var(--transition);
+            font-size: 1.5rem;
+        }
+        .nav-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        .close-lightbox {
+            position: absolute;
+            top: 3rem;
+            right: 4rem;
+            color: #fff;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 3010;
+        }
+        .close-lightbox:hover {
+            color: var(--accent);
+        }
+        /* Floating Action Button for Admin */
+        .admin-fab {
+            position: fixed;
+            bottom: 3rem;
+            right: 3rem;
+            width: 70px;
+            height: 70px;
+            background: var(--accent);
+            color: #000;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 10px rgba(212, 175, 55, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .admin-fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: #fff;
+        }
+        .admin-fab::after {
+            content: 'GERENCIAR GALERIA';
+            position: absolute;
+            right: 100%;
+            margin-right: 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--accent);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            white-space: nowrap;
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .admin-fab:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">VD|III</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="agenda.html">Confraria</a></li>
+                <li><a href="gallery.html" class="active">Galeria</a></li>
+            </ul>
+            <div id="userNav">
+                <a href="login.html" class="btn btn-outline" style="padding: 0.8rem 1.5rem; font-size: 0.7rem;">Área do Morador</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="gallery-nav">
+            <span class="subtitle" style="color: var(--accent); letter-spacing: 0.3em; margin-bottom: 1rem; display: block;">NOSSA COMUNIDADE</span>
+            <h1 style="font-size: 3.5rem; margin-bottom: 2rem;">GALERIA SOCIAL</h1>
+            <div class="filter-buttons" id="gallery-filters" style="display: none;">
+                <!-- Ocultando os filtros temporariamente pois as fotos agora são carregadas de forma simples do admin -->
+            </div>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Galeria renderizada dinamicamente pelo JS -->
+        </div>
+        
+        <!-- Botão para gerenciar a galeria -->
+        <a href="admin.html" class="admin-fab" id="adminFab">&#9881;</a>
+    </main>
+
+    <!-- Lightbox Structure -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <img src="" alt="" class="lightbox-img" id="lightbox-img">
+        <div class="lightbox-nav">
+            <div class="nav-btn" id="prev-img">&#8249;</div>
+            <div class="nav-btn" id="next-img">&#8250;</div>
+        </div>
+    </div>
+
+    <footer class="contact-footer" style="text-align: center; padding: 4rem 0;">
+        <span>© 2026 RESIDENCIAL VILLAGE DAMHA III. TODOS OS DIREITOS RESERVADOS.</span>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Carregamento dinâmico da galeria
+        function loadPublicGallery() {
+            const galleryGrid = document.getElementById('gallery-grid');
+            const photos = JSON.parse(localStorage.getItem('damha_gallery')) || [];
+            
+            // Default photos assim como no admin para não ficar vazio
+            const defaultPhotos = [
+                'https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&q=80&w=800',
+                'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
+                'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
+            ];
+            const allPhotos = photos.length > 0 ? photos : defaultPhotos;
+            
+            galleryGrid.innerHTML = allPhotos.map((photo, index) => `
+                <div class="gallery-item reveal" style="opacity: 1; transform: translateY(0);">
+                    <img src="${photo}" alt="Foto da Galeria">
+                    <div class="gallery-info">
+                        <h3>Comemoração</h3>
+                        <p>#VillageDamhaIII</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            setupLightbox();
+        }
+
+        // Filtering Logic (desativado temporariamente pela simplificação, mas mantido pra evitar erros)
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let galleryItems = [];
+
+
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const prevBtn = document.getElementById('prev-img');
+        const nextBtn = document.getElementById('next-img');
+        const closeBtn = document.querySelector('.close-lightbox');
+        
+        let currentImgIndex = 0;
+
+        function updateLightbox() {
+            const items = document.querySelectorAll('.gallery-item');
+            if (items[currentImgIndex]) {
+                const imgSrc = items[currentImgIndex].querySelector('img').src;
+                lightboxImg.src = imgSrc;
+            }
+        }
+
+        function setupLightbox() {
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentImgIndex = index;
+                    updateLightbox();
+                    lightbox.classList.add('active');
+                });
+            });
+        }
+
+        closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) lightbox.classList.remove('active');
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const items = document.querySelectorAll('.gallery-item');
+            currentImgIndex = (currentImgIndex - 1 + items.length) % items.length;
+            updateLightbox();
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const items = document.querySelectorAll('.gallery-item');
+            currentImgIndex = (currentImgIndex + 1) % items.length;
+            updateLightbox();
+        });
+
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
+            if (e.key === 'Escape') closeBtn.click();
+        });
+    </script>
+    <script>
+        // Session Management Global
+        const currentUser = JSON.parse(localStorage.getItem('damha_currentUser'));
+        const userNav = document.getElementById('userNav');
+        if (currentUser) {
+            let adminBtnHtml = currentUser.role === 'admin' ? `<a href="admin.html" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.65rem; color: #000;">Painel Admin</a>` : '';
+            userNav.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="color: var(--accent); font-size: 0.8rem; font-weight: 600;">Olá, ${currentUser.name.split(' ')[0]}</span>
+                    ${adminBtnHtml}
+                    <button onclick="logout()" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.65rem;">Sair</button>
+                </div>
+            `;
+            
+            // Mostrar Botão flutuante de Configuração se estiver logado
+            if (currentUser.role === 'admin') {
+                document.getElementById('adminFab').style.display = 'flex';
+            }
+        }
+        function logout() { localStorage.removeItem('damha_currentUser'); window.location.reload(); }
+        
+        // Inicializa a Galeria
+        loadPublicGallery();
+    </script>
+</body>
+</html>

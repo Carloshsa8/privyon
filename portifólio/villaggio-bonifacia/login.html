@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Village Damha III</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-page {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #05100c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-page::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+        }
+        .login-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            padding: 5rem 4rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        .login-card .logo {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            display: inline-block;
+        }
+        .login-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .login-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 3rem;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .login-btn {
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .login-footer {
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .login-footer a {
+            color: var(--accent);
+            margin: 0 1rem;
+            cursor: pointer;
+        }
+        .back-home {
+            position: absolute;
+            top: 3rem;
+            left: 3rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-home:hover {
+            color: var(--accent);
+        }
+        .register-form, .login-form {
+            text-align: left;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .hidden {
+            display: none;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .loading-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,31,26,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="loading-overlay" id="loading">
+            <span style="color: var(--accent);">Conectando...</span>
+        </div>
+        <a href="index.html" class="back-home">&#8592; Voltar ao Início</a>
+        
+        <div class="login-card reveal active">
+            <div class="logo">VD|III</div>
+            
+            <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">ÁREA DO MORADOR</h1>
+            <p style="margin-bottom: 2rem;">Acesse o portal exclusivo para gestão e eventos.</p>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="login">Entrar</div>
+                <div class="tab" data-tab="register">Cadastrar</div>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                <p class="error-msg" id="loginError"></p>
+                <button type="submit" class="btn btn-primary login-btn">Entrar</button>
+            </form>
+            
+            <form class="register-form hidden" id="registerForm">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="name" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                </div>
+                <p class="error-msg" id="registerError"></p>
+                <button type="submit" class="btn btn-primary login-btn">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Compat SDK (Works without modules) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Local Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // Ensure admin exists (create if not exists)
+        let users = JSON.parse(localStorage.getItem('damha_users')) || [];
+        if (!users.some(u => u.role === 'admin')) {
+            users.unshift({ id: '1', name: 'Administrador', email: 'admin@damha.com', password: 'admin123', role: 'admin' });
+            localStorage.setItem('damha_users', JSON.stringify(users));
+        }
+        if (!localStorage.getItem('damha_foodtrucks')) {
+            localStorage.setItem('damha_foodtrucks', JSON.stringify([]));
+        }
+
+        // Check if config is loaded
+        const isConfigured = firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "SUA_API_KEY" && firebaseConfig.apiKey.length > 20;
+        
+        if (isConfigured) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const tabs = document.querySelectorAll('.tab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loader = document.getElementById('loading');
+
+        // Tab Switching Logic
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                if (tab.dataset.tab === 'login') {
+                    loginForm.classList.remove('hidden');
+                    registerForm.classList.add('hidden');
+                } else {
+                    loginForm.classList.add('hidden');
+                    registerForm.classList.remove('hidden');
+                }
+            });
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('[name="email"]').value;
+            const password = loginForm.querySelector('[name="password"]').value;
+            const errorEl = document.getElementById('loginError');
+
+            if (!isConfigured) {
+                loader.style.display = 'flex';
+                const users = JSON.parse(localStorage.getItem('damha_users')) || [];
+                const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+                if (user) {
+                    localStorage.setItem('damha_currentUser', JSON.stringify(user));
+                    console.log('User logged in:', user);
+                    setTimeout(() => {
+                        if (user.role === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'agenda.html';
+                        }
+                    }, 500);
+                } else {
+                    loader.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    errorEl.textContent = 'E-mail ou senha incorretos';
+                }
+                return;
+            }
+
+            loader.style.display = 'flex';
+            errorEl.style.display = 'none';
+
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                window.location.href = 'admin.html';
+            } catch (error) {
+                loader.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Erro: ' + error.message;
+            }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('[name="name"]').value;
+            const email = registerForm.querySelector('[name="email"]').value;
+            const password = registerForm.querySelector('[name="password"]').value;
+            const errorEl = document.getElementById('registerError');
+
+            if (!isConfigured) {
+                loader.style.display = 'flex';
+                const users = JSON.parse(localStorage.getItem('damha_users')) || [];
+                if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+                    loader.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    errorEl.textContent = 'Este e-mail já está cadastrado';
+                    return;
+                }
+                const newUser = {
+                    id: Date.now().toString(),
+                    name: name,
+                    email: email.toLowerCase(),
+                    password: password,
+                    role: 'resident'
+                };
+                users.push(newUser);
+                localStorage.setItem('damha_users', JSON.stringify(users));
+                localStorage.setItem('damha_currentUser', JSON.stringify(newUser));
+                setTimeout(() => {
+                    window.location.href = 'agenda.html';
+                }, 500);
+                return;
+            }
+
+            loader.style.display = 'flex';
+            errorEl.style.display = 'none';
+
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                await user.updateProfile({ displayName: name });
+                await firebase.firestore().collection("users").doc(user.uid).set({
+                    name: name,
+                    email: email,
+                    role: 'resident',
+                    createdAt: new Date().toISOString()
+                });
+                alert('Conta criada com sucesso!');
+                window.location.href = 'admin.html';
+            } catch (error) {
+                loader.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Erro: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

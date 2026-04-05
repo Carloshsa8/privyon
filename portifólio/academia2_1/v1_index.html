@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Fit Academia</title>
+    
+    <!-- Configurações de Segurança Avançadas -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://images.unsplash.com;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <img src="logo.png" alt="Set Fit Academia" class="logo" onerror="this.onerror=null; this.src=''; this.alt='SET FIT'; this.style.fontSize='2rem'; this.style.fontWeight='900'; this.style.fontFamily='Oswald'; this.style.color='#f3ca20';">
+            </div>
+            <nav class="nav">
+                <a href="#diferenciais">Nossa Estrutura</a>
+                <a href="#planos">Planos</a>
+                <a href="#horarios">Horários</a>
+            </nav>
+            <a href="#planos" class="btn btn-primary">Matricule-se</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1>A SUA MELHOR VERSÃO <br><span class="text-highlight">COMEÇA AQUI</span></h1>
+            <p>Treine na melhor estrutura de Presidente Prudente em um ambiente climatizado e aparelhos modernos.</p>
+            <a href="#planos" class="btn btn-primary btn-large">Ver Planos</a>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section id="diferenciais" class="differentials">
+        <div class="container">
+            <h2 class="section-title">Por que escolher a Set Fit?</h2>
+            <div class="diff-grid">
+                <div class="diff-card">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <h3>Musculação</h3>
+                    <p>Equipamentos de alta performance para todos os grupos musculares.</p>
+                </div>
+                <div class="diff-card">
+                    <i class="fa-solid fa-person-running"></i>
+                    <h3>Treinamento Funcional</h3>
+                    <p>Melhore seu condicionamento físico com circuitos dinâmicos.</p>
+                </div>
+                <div class="diff-card">
+                    <i class="fa-solid fa-snowflake"></i>
+                    <h3>Climatização</h3>
+                    <p>Ambiente totalmente climatizado para o seu conforto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANOS -->
+    <section id="planos" class="plans">
+        <div class="container">
+            <h2 class="section-title">Escolha seu Plano</h2>
+            <div class="plans-grid">
+                <!-- Plano Individual -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3>Plano Individual</h3>
+                        <div class="price"><span>R$</span>99<span>,00</span><span class="period">/mês</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Acesso livre à musculação</li>
+                        <li><i class="fa-solid fa-check"></i> Avaliação física (1x)</li>
+                        <li class="disabled"><i class="fa-solid fa-xmark"></i> Aulas de grupo</li>
+                        <li class="disabled"><i class="fa-solid fa-xmark"></i> Acesso a acompanhante</li>
+                    </ul>
+                    <a href="https://wa.me/5517997878350" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Assinar Plano</a>
+                </div>
+
+                <!-- Plano Casal -->
+                <div class="plan-card premium">
+                    <div class="badge">Mais Popular</div>
+                    <div class="plan-header">
+                        <h3>Plano Casal</h3>
+                        <div class="price"><span>R$</span>180<span>,00</span><span class="period">/mês</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Acesso para 2 pessoas</li>
+                        <li><i class="fa-solid fa-check"></i> Acesso livre à musculação</li>
+                        <li><i class="fa-solid fa-check"></i> Aulas coletivas</li>
+                        <li><i class="fa-solid fa-check"></i> Treinamento Funcional</li>
+                        <li><i class="fa-solid fa-check"></i> Avaliação a cada 3 meses</li>
+                    </ul>
+                    <a href="https://wa.me/5517997878350" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Assinar Plano</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTATO -->
+    <footer id="horarios" class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <img src="logo.png" alt="Set Fit" class="footer-logo" onerror="this.style.display='none';">
+                <p>A sua escolha certa em Presidente Prudente.</p>
+                <p style="margin: 15px 0; font-size: 0.9rem; color: #ccc;">
+                    <i class="fa-solid fa-phone" style="color: var(--highlight);"></i> Telefone(s):. (17) 99787-8350 &middot; (17) 99787-8350.
+                </p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/setfitacademia/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/5517997878350" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Horários de Funcionamento</h3>
+                <ul class="hours-list">
+                    <li>Segunda a Sexta:<br> <span>06h30 – 12h00 | 14h00 – 21h00</span></li>
+                    <li>Sábado:<br> <span>09h00 – 12h00</span></li>
+                    <li>Domingo e Feriados:<br> <span>Fechado</span></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Localização</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Rua João Gonçalves Foz, 474/482<br> Vila Haruo Uoya<br> Presidente Prudente, SP</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Set Fit Academia. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

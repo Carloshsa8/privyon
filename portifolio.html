@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privyon — Portfólio Privado</title>
+  <meta name="description"
+    content="Portfólio de projetos desenvolvidos por Carlos." />
+  <link rel="icon" type="image/svg+xml" href="logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilos específicos para o Portfólio */
+    .portfolio-grid {
+      display: grid;
+      gap: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      margin-top: 3rem;
+    }
+
+    .portfolio-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: var(--card);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px hsla(var(--p-h), var(--p-s), var(--p-l), 0.15);
+      border-color: hsla(var(--p-h), var(--p-s), var(--p-l), 0.4);
+    }
+
+    .portfolio-view {
+      width: 100%;
+      height: 240px;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Iframe scaled for preview */
+    .portfolio-iframe {
+      width: 1280px;
+      height: 960px;
+      border: none;
+      transform: scale(0.25);
+      transform-origin: 0 0;
+      pointer-events: none; /* Não permitir interação no card */
+      transition: opacity 0.3s;
+      opacity: 0.8;
+    }
+
+    .portfolio-card:hover .portfolio-iframe {
+      opacity: 1;
+    }
+
+    /* Responsividade do Iframe para manter o scale consistente no card */
+    @media (max-width: 400px) {
+      .portfolio-iframe {
+        width: 1000px;
+        transform: scale(0.32);
+      }
+    }
+
+    .portfolio-content {
+      padding: 1.5rem;
+    }
+
+    .portfolio-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 0.5rem;
+    }
+
+    .portfolio-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .portfolio-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-visit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: hsla(var(--p-h), var(--p-s), var(--p-l), 0.1);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-visit:hover {
+      background: var(--primary);
+      color: var(--primary-fg);
+      box-shadow: 0 0 15px hsla(var(--p-h), var(--p-s), var(--p-l), 0.4);
+    }
+
+    .btn-visit svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+
+    .btn-visit:hover svg {
+      transform: translateX(3px);
+    }
+    
+    .tech-stack {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .tech-tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      background: hsl(220 20% 12%);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar">
+    <div class="inner">
+      <a href="index.html#inicio" class="nav-logo">
+        <svg class="logo-icon" viewBox="0 0 83.03 126.33" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="m 41.512,0.261 a 41.253,41.629 0 0 0 -41.252,41.628 41.253,41.629 0 0 0 32.323,40.643 41.253,41.629 0 0 0 1.355,0.279 l 3.605,-15.214 a 25.783,26.018 0 0 1 -21.813,-25.707 25.783,26.018 0 0 1 25.782,-26.017 25.783,26.018 0 0 1 25.785,26.017 25.783,26.018 0 0 1 -22.433,25.798 l -8.7,15.48 -1.096,1.946 -1.634,2.91 -0.538,1.198 -0.254,0.56 0.25,31.085 a 5.157,5.204 0 0 0 5.158,5.203 5.157,5.204 0 0 0 5.154,-5.203 l 0.094,-9.977 10.985,-0.232 a 5.157,5.204 0 0 0 5.158,-5.203 5.157,5.204 0 0 0 -5.158,-5.206 5.157,5.204 0 0 0 -0.438,0.031 5.157,5.204 0 0 1 0.232,-0.026 l -10.682,0.213 0.157,-16.997 a 41.253,41.629 0 0 0 39.214,-41.578 41.253,41.629 0 0 0 -41.255,-41.628 z" />
+        </svg>
+        <span class="logo-text">Priv<span>yon</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#inicio">Início</a></li>
+        <li><a href="index.html#solucoes" class="nav-link">Soluções</a></li>
+        <li><a href="produtos.html" class="nav-link">Produtos</a></li>
+        <li><a href="index.html#sobre" class="nav-link">Sobre</a></li>
+        <li><a href="index.html#contato" class="nav-link">Contato</a></li>
+        <li><a href="javascript:void(0)" class="nav-link" id="manifesto-btn" onclick="window.openManifesto()">Manifesto</a></li>
+        <li><a href="javascript:void(0)" class="btn-cta" id="header-cta" onclick="window.openContactHub()">Comece Agora</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== PORTFOLIO CONTENT ==================== -->
+  <section id="portfolio-page" style="padding-top: 10rem; padding-bottom: 8rem; min-height: 100vh;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// Galeria Oculta</span>
+        <h2 class="section-title">
+          Portfólio de <span class="text-gradient">Projetos</span>
+        </h2>
+        <p class="section-desc">
+          Uma seleção exclusiva de projetos e sites criados. Cada projeto está contido em sua própria estrutura isolada.
+        </p>
+      </div>
+
+      <div class="portfolio-grid">
+
+        <!-- Projeto Auto-gerado: VILLAGGIO DI BONIFÁCIA -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/VILLAGGIO%20DI%20BONIF%C3%81CIA/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">VILLAGGIO DI BONIFÁCIA</h3>
+            <p class="portfolio-desc">Projeto adicionado à pasta VILLAGGIO DI BONIFÁCIA.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/VILLAGGIO%20DI%20BONIF%C3%81CIA/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto Auto-gerado: academia2_1 -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/academia2_1/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Academia2_1</h3>
+            <p class="portfolio-desc">Projeto adicionado à pasta academia2_1.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/academia2_1/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto Auto-gerado: academia_1 -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/academia_1/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Academia_1</h3>
+            <p class="portfolio-desc">Projeto adicionado à pasta academia_1.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/academia_1/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto Auto-gerado: village 3 -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/village%203/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Village 3</h3>
+            <p class="portfolio-desc">Projeto adicionado à pasta village 3.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/village%203/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto Auto-gerado: villaggio-bonifacia -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/villaggio-bonifacia/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Villaggio Bonifacia</h3>
+            <p class="portfolio-desc">Projeto adicionado à pasta villaggio-bonifacia.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/villaggio-bonifacia/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html#inicio" class="footer-logo">
+          <svg viewBox="0 0 83.03 126.33" xmlns="http://www.w3.org/2000/svg">
+            <path d="m 41.512,0.261 a 41.253,41.629 0 0 0 -41.252,41.628 41.253,41.629 0 0 0 32.323,40.643 41.253,41.629 0 0 0 1.355,0.279 l 3.605,-15.214 a 25.783,26.018 0 0 1 -21.813,-25.707 25.783,26.018 0 0 1 25.782,-26.017 25.783,26.018 0 0 1 25.785,26.017 25.783,26.018 0 0 1 -22.433,25.798 l -8.7,15.48 -1.096,1.946 -1.634,2.91 -0.538,1.198 -0.254,0.56 0.25,31.085 a 5.157,5.204 0 0 0 5.158,5.203 5.157,5.204 0 0 0 5.154,-5.203 l 0.094,-9.977 10.985,-0.232 a 5.157,5.204 0 0 0 5.158,-5.203 5.157,5.204 0 0 0 -5.158,-5.206 5.157,5.204 0 0 0 -0.438,0.031 5.157,5.204 0 0 1 0.232,-0.026 l -10.682,0.213 0.157,-16.997 a 41.253,41.629 0 0 0 39.214,-41.578 41.253,41.629 0 0 0 -41.255,-41.628 z" />
+          </svg>
+          <span class="footer-logo-text">Priv<span>yon</span></span>
+        </a>
+        <div class="footer-copy" style="text-align: center;">
+          <p>© <span id="year"></span> Privyon. Todos os direitos reservados. Feito por Carlos.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modais (Injetados via main.js) -->
+  <script src="main.js"></script>
+  
+  <!-- Mobile menu move to body end for better isolation -->
+  <div id="mobile-menu">
+    <a href="index.html#inicio" onclick="window.closeMobile()">Início</a>
+    <a href="index.html#solucoes" onclick="window.closeMobile()">Soluções</a>
+    <a href="produtos.html" onclick="window.closeMobile()">Produtos</a>
+    <a href="index.html#sobre" onclick="window.closeMobile()">Sobre</a>
+    <a href="index.html#contato" onclick="window.closeMobile()">Contato</a>
+    <a href="javascript:void(0)" id="mobile-manifesto-btn" onclick="window.openManifesto()">Manifesto</a>
+    <a href="javascript:void(0)" id="mobile-header-cta" onclick="window.openContactHub()" class="btn-cta">Comece Agora</a>
+  </div>
+</body>
+</html>

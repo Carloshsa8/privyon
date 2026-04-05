@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Village Damha III</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-hero {
+            padding: 10rem 4rem 6rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(10,31,26,0.85), var(--bg-primary)), url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover;
+            background-position: center;
+        }
+        .admin-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+        }
+        .admin-hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .admin-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 1.2rem 3rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        .tab-btn.restricted {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .tab-btn.restricted:hover {
+            border-color: var(--glass-border);
+            color: var(--text-secondary);
+        }
+        .admin-section {
+            display: none;
+            padding: 6rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .admin-section.active {
+            display: block;
+        }
+        .restricted-message {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+        }
+        .restricted-message h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .restricted-message p {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .restricted-message .btn {
+            margin-top: 2rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        .section-header h2 {
+            font-size: 2.5rem;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 4rem;
+        }
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .list-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .list-item:hover {
+            border-color: var(--accent);
+            transform: translateX(10px);
+        }
+        .item-thumb {
+            width: 120px;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .item-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .item-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .item-meta {
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .status-badge {
+            font-size: 0.65rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+        .status-active { background: #059669; color: #fff; }
+        .status-inactive { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); }
+        .status-paused { background: #f59e0b; color: #000; }
+        .item-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-shrink: 0;
+        }
+        .btn-action {
+            padding: 0.7rem 1.2rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+        .btn-action:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .btn-edit { background: var(--accent); color: #000; }
+        .btn-pause { background: #f59e0b; color: #000; }
+        .btn-delete { background: #ef4444; color: #fff; }
+        .btn-action:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .form-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            position: sticky;
+            top: 2rem;
+        }
+        .form-card.restricted {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .form-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .form-group input[type="date"] {
+            color-scheme: dark;
+        }
+        .menu-items { margin-top: 1rem; }
+        .menu-item-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .menu-item-row input { flex: 1; }
+        .add-menu-btn {
+            background: transparent;
+            border: 1px dashed var(--accent);
+            color: var(--accent);
+            padding: 0.8rem;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+            transition: var(--transition);
+        }
+        .add-menu-btn:hover { background: rgba(212,175,55,0.1); }
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-primary);
+            padding: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .status-toggle input[type="checkbox"] { width: auto; cursor: pointer; accent-color: var(--accent); }
+        .empty-state {
+            text-align: center;
+            padding: 6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+        }
+        .empty-state h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .empty-state p { color: var(--text-secondary); }
+        .user-card {
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+        }
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        .user-info-details { flex: 1; }
+        .user-info-details h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .user-info-details span { font-size: 0.85rem; color: var(--text-secondary); }
+        .user-badge {
+            font-size: 0.65rem;
+            padding: 0.4rem 1rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+        .badge-admin { background: var(--accent); color: #000; }
+        .badge-resident { background: rgba(255,255,255,0.1); color: var(--text-secondary); }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 16/10;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .gallery-overlay button {
+            padding: 0.6rem 1rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .btn-set-main { background: var(--accent); color: #000; }
+        .btn-remove-gallery { background: #ef4444; color: #fff; }
+        .add-gallery-card {
+            aspect-ratio: 16/10;
+            border: 2px dashed var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+        .add-gallery-card:hover { border-color: var(--accent); color: var(--accent); }
+        .add-gallery-card span { font-size: 2rem; margin-bottom: 0.5rem; }
+        .add-gallery-card small { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        @media (max-width: 1100px) {
+            .admin-grid { grid-template-columns: 1fr; }
+            .form-card { position: static; }
+            .admin-section { padding: 4rem 2rem; }
+            .admin-tabs { padding: 2rem; flex-wrap: wrap; }
+            .tab-btn { padding: 1rem 2rem; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">VD|III</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="agenda.html">Confraria</a></li>
+                <li><a href="gallery.html">Galeria</a></li>
+            </ul>
+            <div id="userNav">
+                <a href="login.html" class="btn btn-outline" style="padding: 0.8rem 1.5rem; font-size: 0.7rem;">Entrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="admin-hero">
+        <h1>PAINEL <span style="color: var(--accent);">ADMINISTRATIVO</span></h1>
+        <p id="heroSubtitle">Gerencie food trucks, usuários e galeria do Village Damha III</p>
+    </section>
+
+    <nav class="admin-tabs">
+        <button class="tab-btn active" data-tab="trucks">Food Trucks</button>
+        <button class="tab-btn" data-tab="gallery">Galeria</button>
+        <button class="tab-btn" data-tab="users" id="usersTabBtn">Usuários</button>
+    </nav>
+
+    <main>
+        <!-- FOOD TRUCKS SECTION -->
+        <section id="trucks-section" class="admin-section active">
+            <div id="trucksContent"></div>
+        </section>
+
+        <!-- GALLERY SECTION -->
+        <section id="gallery-section" class="admin-section">
+            <div class="section-header">
+                <div>
+                    <h2>Galeria</h2>
+                    <p id="gallerySubtitle">Adicione fotos ao álbum do condomínio</p>
+                </div>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="add-gallery-card" onclick="document.getElementById('newGalleryImage').click()">
+                    <span>+</span>
+                    <small>Adicionar Foto</small>
+                    <input type="file" id="newGalleryImage" accept="image/*" style="display: none;" onchange="handleGalleryUpload(this)">
+                </div>
+            </div>
+        </section>
+
+        <!-- USERS SECTION -->
+        <section id="users-section" class="admin-section">
+            <div id="usersContent"></div>
+        </section>
+    </main>
+
+    <!-- Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const isConfigured = firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "SUA_API_KEY" && firebaseConfig.apiKey.length > 20;
+
+        if (isConfigured) firebase.initializeApp(firebaseConfig);
+
+        // Ensure admin exists
+        let users = JSON.parse(localStorage.getItem('damha_users')) || [];
+        if (!users.some(u => u.role === 'admin')) {
+            users.unshift({ id: '1', name: 'Administrador', email: 'admin@damha.com', password: 'admin123', role: 'admin' });
+            localStorage.setItem('damha_users', JSON.stringify(users));
+        }
+        if (!localStorage.getItem('damha_foodtrucks')) {
+            localStorage.setItem('damha_foodtrucks', JSON.stringify([]));
+        }
+
+        // ============== SECURITY CHECK ==============
+        let currentUser = JSON.parse(localStorage.getItem('damha_currentUser'));
+
+        // If not logged in, redirect to login
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            throw new Error('Redirecting to login');
+        }
+
+        function isUserAdmin() {
+            return currentUser && currentUser.role === 'admin';
+        }
+
+        function checkAccess() {
+            currentUser = JSON.parse(localStorage.getItem('damha_currentUser'));
+
+            // Update header nav
+            const userNav = document.getElementById('userNav');
+            userNav.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="color: var(--accent); font-size: 0.8rem; font-weight: 600;">
+                        ${currentUser.name.split(' ')[0]} ${isUserAdmin() ? '(Admin)' : '(Morador)'}
+                    </span>
+                    <button onclick="logout()" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.65rem;">Sair</button>
+                </div>`;
+
+            // Update hero subtitle
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            if (isUserAdmin()) {
+                heroSubtitle.textContent = `Bem-vindo, ${currentUser.name}! Gerencie todos os recursos.`;
+            } else {
+                heroSubtitle.textContent = 'Área restrita. Adicione fotos à galeria.';
+            }
+
+            // Protect tabs
+            const usersTabBtn = document.getElementById('usersTabBtn');
+            if (!isUserAdmin()) {
+                usersTabBtn.classList.add('restricted');
+                usersTabBtn.title = 'Acesso restrito a administradores';
+            } else {
+                usersTabBtn.classList.remove('restricted');
+            }
+
+            renderSections();
+        }
+
+        function logout() { 
+            localStorage.removeItem('damha_currentUser'); 
+            window.location.href = 'login.html'; 
+        }
+
+        // Tab navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.onclick = () => {
+                if (btn.classList.contains('restricted')) {
+                    alert('Acesso restrito. Apenas administradores podem acessar esta seção.');
+                    return;
+                }
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab + '-section').classList.add('active');
+            };
+        });
+
+        // Scroll header
+        window.addEventListener('scroll', () => {
+            document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ============== RENDER SECTIONS ==============
+        function renderSections() {
+            renderTrucksSection();
+            renderUsersSection();
+            loadGallery();
+        }
+
+        // ============== FOOD TRUCKS ==============
+        function renderTrucksSection() {
+            const container = document.getElementById('trucksContent');
+            
+            // Se não é admin, mostra mensagem restrita
+            if (!isUserAdmin()) {
+                container.innerHTML = `
+                    <div class="restricted-message">
+                        <h3>Acesso Restrito</h3>
+                        <p>Apenas administradores podem gerenciar food trucks. Entre em contato com um administrador para alterações.</p>
+                        <a href="index.html" class="btn btn-outline">Voltar ao Início</a>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="section-header">
+                    <div>
+                        <h2>Gerenciar Food Trucks</h2>
+                        <p>Adicione, edite ou remova trucks da agenda</p>
+                    </div>
+                </div>
+                <div class="admin-grid">
+                    <div class="item-list" id="truckList"></div>
+                    <div class="form-card">
+                        <h3 id="truckFormTitle">Novo Food Truck</h3>
+                        <form id="truckForm">
+                            <input type="hidden" id="editTruckId">
+                            <div class="form-group">
+                                <label>Nome do Truck</label>
+                                <input type="text" id="truckName" placeholder="Ex: Parrilla Street" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Data</label>
+                                    <input type="date" id="truckDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Categoria</label>
+                                    <input type="text" id="truckType" placeholder="HAMBURGUERIA" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>URL da Imagem</label>
+                                <input type="url" id="truckImage" placeholder="https://..." required>
+                            </div>
+                            <div class="form-group">
+                                <label>Descrição Curta</label>
+                                <input type="text" id="truckShortDesc" placeholder="Breve descrição..." required>
+                            </div>
+                            <div class="form-group">
+                                <label>Descrição Completa</label>
+                                <textarea id="truckLongDesc" placeholder="Descrição detalhada..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div class="status-toggle">
+                                    <input type="checkbox" id="truckActive" checked>
+                                    <span style="font-size: 0.85rem; color: #fff;">Ativo (visível na agenda)</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Menu (Destaques)</label>
+                                <div id="menuItems">
+                                    <div class="menu-item-row">
+                                        <input type="text" placeholder="Item" class="menu-name" required>
+                                        <input type="text" placeholder="Preço" class="menu-price" required>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-menu-btn" id="addMenuBtn">+ Adicionar Item</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Salvar Food Truck</button>
+                            <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 1rem;" id="cancelEditBtn">Limpar Formulário</button>
+                        </form>
+                    </div>
+                </div>`;
+
+            initTruckFunctions();
+        }
+
+        function initTruckFunctions() {
+            const truckForm = document.getElementById('truckForm');
+            const menuItemsContainer = document.getElementById('menuItems');
+
+            loadTrucks();
+
+            document.getElementById('addMenuBtn').onclick = () => {
+                const row = document.createElement('div');
+                row.className = 'menu-item-row';
+                row.innerHTML = `<input type="text" placeholder="Item" class="menu-name" required><input type="text" placeholder="Preço" class="menu-price" required>`;
+                menuItemsContainer.appendChild(row);
+            };
+
+            document.getElementById('cancelEditBtn').onclick = () => {
+                truckForm.reset();
+                document.getElementById('editTruckId').value = '';
+                document.getElementById('truckFormTitle').textContent = 'Novo Food Truck';
+                menuItemsContainer.innerHTML = `<div class="menu-item-row"><input type="text" placeholder="Item" class="menu-name" required><input type="text" placeholder="Preço" class="menu-price" required></div>`;
+            };
+
+            truckForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('editTruckId').value;
+                const date = document.getElementById('truckDate').value;
+                const data = {
+                    id: id || Date.now().toString(),
+                    name: document.getElementById('truckName').value.toUpperCase(),
+                    date: date,
+                    day: new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long' }).toUpperCase().split('-')[0],
+                    type: document.getElementById('truckType').value.toUpperCase(),
+                    image: document.getElementById('truckImage').value,
+                    shortDesc: document.getElementById('truckShortDesc').value,
+                    longDesc: document.getElementById('truckLongDesc').value,
+                    active: document.getElementById('truckActive').checked,
+                    menu: Array.from(document.querySelectorAll('.menu-item-row')).map(row => ({
+                        item: row.querySelector('.menu-name').value,
+                        price: row.querySelector('.menu-price').value
+                    }))
+                };
+                if (isConfigured) {
+                    if (id) await firebase.firestore().collection("foodtrucks").doc(id).update(data);
+                    else await firebase.firestore().collection("foodtrucks").add(data);
+                } else {
+                    let trucks = JSON.parse(localStorage.getItem('damha_foodtrucks')) || [];
+                    if (id) trucks = trucks.map(t => t.id === id ? data : t);
+                    else trucks.push(data);
+                    localStorage.setItem('damha_foodtrucks', JSON.stringify(trucks));
+                    loadTrucks();
+                }
+                document.getElementById('cancelEditBtn').onclick();
+                alert('Salvo com sucesso!');
+            };
+        }
+
+        function loadTrucks() {
+            const truckListContainer = document.getElementById('truckList');
+            if (!truckListContainer) return;
+
+            if (isConfigured) {
+                firebase.firestore().collection("foodtrucks").orderBy("date", "asc").onSnapshot(snapshot => {
+                    renderTruckList(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                });
+            } else {
+                const localTrucks = JSON.parse(localStorage.getItem('damha_foodtrucks')) || [];
+                renderTruckList(localTrucks);
+            }
+        }
+
+        function renderTruckList(trucks) {
+            const truckListContainer = document.getElementById('truckList');
+            if (!truckListContainer) return;
+
+            if (trucks.length === 0) {
+                truckListContainer.innerHTML = `<div class="empty-state"><h3>Nenhum truck cadastrado</h3><p>Use o formulário ao lado para adicionar o primeiro.</p></div>`;
+                return;
+            }
+            trucks.sort((a,b) => new Date(a.date) - new Date(b.date));
+            truckListContainer.innerHTML = trucks.map(truck => {
+                let statusClass = 'status-active';
+                let statusText = 'Ativo';
+                if (truck.hasOwnProperty('active') && truck.active === false) {
+                    statusClass = 'status-inactive';
+                    statusText = 'Inativo';
+                }
+                return `<div class="list-item">
+                    <div class="item-thumb" style="background-image: url('${truck.image}')"></div>
+                    <div class="item-details">
+                        <h3>${truck.name}</h3>
+                        <div class="item-meta">
+                            <span>${truck.type}</span>
+                            <span>•</span>
+                            <span>${new Date(truck.date + 'T12:00:00').toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit'})}</span>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-action btn-edit" onclick='editTruck("${truck.id}", ${JSON.stringify(truck).replace(/'/g, "&apos;")})'>Editar</button>
+                        <button class="btn-action btn-pause" onclick='toggleTruck("${truck.id}", ${!truck.active})'>${truck.active ? 'Pausar' : 'Ativar'}</button>
+                        <button class="btn-action btn-delete" onclick='deleteTruck("${truck.id}")'>Remover</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function toggleTruck(id, newStatus) {
+            if (!isUserAdmin()) return;
+            if (isConfigured) {
+                await firebase.firestore().collection("foodtrucks").doc(id).update({ active: newStatus });
+            } else {
+                let trucks = JSON.parse(localStorage.getItem('damha_foodtrucks')) || [];
+                trucks = trucks.map(t => t.id === id ? { ...t, active: newStatus } : t);
+                localStorage.setItem('damha_foodtrucks', JSON.stringify(trucks));
+                loadTrucks();
+            }
+        }
+
+        async function deleteTruck(id) {
+            if (!isUserAdmin()) return;
+            if (!confirm('Excluir este truck?')) return;
+            if (isConfigured) {
+                await firebase.firestore().collection("foodtrucks").doc(id).delete();
+            } else {
+                let trucks = JSON.parse(localStorage.getItem('damha_foodtrucks')) || [];
+                trucks = trucks.filter(t => t.id !== id);
+                localStorage.setItem('damha_foodtrucks', JSON.stringify(trucks));
+                loadTrucks();
+            }
+        }
+
+        function editTruck(id, truck) {
+            document.getElementById('editTruckId').value = id;
+            document.getElementById('truckName').value = truck.name;
+            document.getElementById('truckDate').value = truck.date;
+            document.getElementById('truckType').value = truck.type;
+            document.getElementById('truckImage').value = truck.image;
+            document.getElementById('truckShortDesc').value = truck.shortDesc;
+            document.getElementById('truckLongDesc').value = truck.longDesc;
+            document.getElementById('truckActive').checked = truck.hasOwnProperty('active') ? truck.active : true;
+            document.getElementById('truckFormTitle').textContent = 'Editar Food Truck';
+            const menuItemsContainer = document.getElementById('menuItems');
+            menuItemsContainer.innerHTML = '';
+            (truck.menu || []).forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'menu-item-row';
+                row.innerHTML = `<input type="text" placeholder="Item" class="menu-name" value="${item.item}" required><input type="text" placeholder="Preço" class="menu-price" value="${item.price}" required>`;
+                menuItemsContainer.appendChild(row);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Seed initial trucks
+        setTimeout(() => {
+            if (!isConfigured) {
+                const currentTrucks = JSON.parse(localStorage.getItem('damha_foodtrucks')) || [];
+                if (currentTrucks.length < 2) {
+                    const getRelativeDate = (days) => {
+                        const d = new Date(); d.setDate(d.getDate() + days);
+                        return d.toISOString().split('T')[0];
+                    };
+                    const seeds = [
+                        { id: 'seed1', name: 'PARRILLA STREET', type: 'ARTISAN BURGER', date: getRelativeDate(3), day: 'QUARTA', active: true, image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=800', shortDesc: 'Hambúrgueres artesanais grelhados na brasa.', longDesc: 'Referência em Rio Preto.', menu: [{item: 'Classic Burger', price: 'R$ 38'}] },
+                        { id: 'seed2', name: "VITTORIO'S PIZZA", type: 'PIZZA NAPOLETANA', date: getRelativeDate(4), day: 'QUINTA', active: true, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800', shortDesc: 'Pizzas napolitanas clássicas.', longDesc: 'Massa leve e ingredientes selecionados.', menu: [{item: 'Margherita DOC', price: 'R$ 52'}] }
+                    ];
+                    if (!currentTrucks.some(t => t.name.includes('PARRILLA'))) {
+                        localStorage.setItem('damha_foodtrucks', JSON.stringify([...currentTrucks, ...seeds]));
+                    }
+                }
+            }
+        }, 500);
+
+        // ============== USERS ==============
+        function renderUsersSection() {
+            const container = document.getElementById('usersContent');
+            if (!isUserAdmin()) {
+                container.innerHTML = `
+                    <div class="restricted-message">
+                        <h3>Acesso Restrito</h3>
+                        <p>Apenas administradores podem gerenciar usuários.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="section-header">
+                    <div>
+                        <h2>Moradores</h2>
+                        <p>Gerencie os usuários cadastrados no sistema</p>
+                    </div>
+                </div>
+                <div class="admin-grid">
+                    <div class="item-list" id="userList"></div>
+                    <div class="form-card">
+                        <h3 id="userFormTitle">Novo Usuário</h3>
+                        <form id="userForm">
+                            <input type="hidden" id="editUserEmailOrig">
+                            <div class="form-group">
+                                <label>Nome Completo</label>
+                                <input type="text" id="userName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>E-mail (Login)</label>
+                                <input type="email" id="userEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Senha</label>
+                                <input type="text" id="userPassword" placeholder="Deixe em branco para gerar">
+                            </div>
+                            <div class="form-group">
+                                <label>Nível de Acesso</label>
+                                <select id="userRole" required>
+                                    <option value="morador">Morador (Padrão)</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Salvar Usuário</button>
+                            <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 1rem;" id="cancelEditUserBtn">Limpar</button>
+                        </form>
+                    </div>
+                </div>`;
+
+            initUserFunctions();
+        }
+
+        function initUserFunctions() {
+            loadUsers();
+
+            const userFormEl = document.getElementById('userForm');
+            document.getElementById('cancelEditUserBtn').addEventListener('click', () => {
+                userFormEl.reset();
+                document.getElementById('userEmail').readOnly = false;
+                document.getElementById('userFormTitle').textContent = 'Novo Usuário';
+                document.getElementById('editUserEmailOrig').value = '';
+            });
+
+            userFormEl.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('userName').value;
+                const emailOrig = document.getElementById('editUserEmailOrig').value;
+                const email = document.getElementById('userEmail').value;
+                const role = document.getElementById('userRole').value;
+                let pass = document.getElementById('userPassword').value;
+
+                if (isConfigured) {
+                    alert("Funcionalidade requer configuração Firebase Auth.");
+                    return;
+                }
+                
+                let users = JSON.parse(localStorage.getItem('damha_users')) || [];
+                
+                if (emailOrig) {
+                    const index = users.findIndex(u => u.email === emailOrig);
+                    if (index > -1) {
+                        users[index].name = name;
+                        users[index].email = email;
+                        users[index].role = role;
+                        if(pass) users[index].password = pass;
+                    }
+                } else {
+                    if (users.find(u => u.email === email)) {
+                        alert('Este e-mail já está cadastrado!');
+                        return;
+                    }
+                    if(!pass) pass = 'Village' + Math.random().toString(36).substring(2, 6);
+                    users.push({ name, email, role, password: pass });
+                }
+                
+                localStorage.setItem('damha_users', JSON.stringify(users));
+                
+                if(currentUser.email === emailOrig || currentUser.email === email) {
+                    const currentSync = {...currentUser, name, email, role};
+                    localStorage.setItem('damha_currentUser', JSON.stringify(currentSync));
+                    checkAccess();
+                }
+                loadUsers();
+                document.getElementById('cancelEditUserBtn').click();
+            });
+        }
+
+        function loadUsers() {
+            const userList = document.getElementById('userList');
+            if (!userList) return;
+            
+            userList.innerHTML = '<p style="color: var(--text-secondary); padding: 2rem;">Carregando...</p>';
+            
+            if (isConfigured) {
+                try {
+                    firebase.firestore().collection("users").get().then(snap => {
+                        renderUserList(snap.docs.map(d => d.data()));
+                    });
+                } catch(e) {
+                    renderUserList(JSON.parse(localStorage.getItem('damha_users')) || []);
+                }
+            } else {
+                renderUserList(JSON.parse(localStorage.getItem('damha_users')) || []);
+            }
+        }
+
+        function renderUserList(users) {
+            const userList = document.getElementById('userList');
+            if (!userList) return;
+            
+            if (users.length === 0) {
+                userList.innerHTML = '<div class="empty-state"><h3>Nenhum usuário</h3></div>';
+                return;
+            }
+            userList.innerHTML = users.map(user => {
+                const isSelf = currentUser && currentUser.email === user.email;
+                return `<div class="list-item user-card" style="flex-direction: column; align-items: stretch; gap: 1rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="user-avatar">${user.name.charAt(0).toUpperCase()}</div>
+                            <div class="user-info-details"><h4>${user.name} ${isSelf ? '(Você)' : ''}</h4><span>${user.email}</span></div>
+                        </div>
+                        <span class="user-badge ${user.role === 'admin' ? 'badge-admin' : 'badge-resident'}">${user.role === 'admin' ? 'Admin' : 'Morador'}</span>
+                    </div>
+                    <div class="item-actions" style="margin-top: 0.5rem; justify-content: flex-end;">
+                        <button class="btn-action btn-edit" onclick='editUser(${JSON.stringify(user).replace(/'/g, "&apos;")})'>Editar</button>
+                        <button class="btn-action btn-delete" onclick='deleteUser("${user.email}", "${user.role}")' ${isSelf ? 'disabled' : ''}>
+                            ${isSelf ? 'Você' : 'Excluir'}
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        window.editUser = function(user) {
+            document.getElementById('editUserEmailOrig').value = user.email;
+            document.getElementById('userName').value = user.name;
+            document.getElementById('userEmail').value = user.email;
+            document.getElementById('userEmail').readOnly = true;
+            document.getElementById('userRole').value = user.role;
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userFormTitle').textContent = 'Editar Usuário';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.deleteUser = function(email, role) {
+            if (!isUserAdmin()) {
+                alert('Apenas administradores podem excluir usuários.');
+                return;
+            }
+            
+            if (!confirm('Tem certeza? Este usuário será excluído permanentemente e não terá mais acesso ao sistema.')) return;
+            
+            let users = JSON.parse(localStorage.getItem('damha_users')) || [];
+            users = users.filter(u => u.email !== email);
+            localStorage.setItem('damha_users', JSON.stringify(users));
+            
+            // If deleted user is currently logged in, logout immediately
+            if (currentUser && currentUser.email === email) {
+                localStorage.removeItem('damha_currentUser');
+                alert('O usuário excluído estava logado. Você foi desconectado.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            loadUsers();
+        };
+
+        // ============== GALLERY ==============
+        function loadGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            const photos = JSON.parse(localStorage.getItem('damha_gallery')) || [];
+            const defaultPhotos = [
+                'https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&q=80&w=800',
+                'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
+                'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800'
+            ];
+            const allPhotos = photos.length > 0 ? photos : defaultPhotos;
+            
+            galleryGrid.innerHTML = allPhotos.map((photo, index) => `
+                <div class="gallery-item" style="background-image: url('${photo}')">
+                    <div class="gallery-overlay">
+                        ${isUserAdmin() ? `<button class="btn-set-main" onclick="setMainPhoto(${index})">Principal</button>` : ''}
+                        ${isUserAdmin() ? `<button class="btn-remove-gallery" onclick="removePhoto(${index})">Remover</button>` : ''}
+                    </div>
+                </div>`).join('') + `
+                <div class="add-gallery-card" onclick="document.getElementById('newGalleryImage').click()">
+                    <span>+</span>
+                    <small>Adicionar Foto</small>
+                    <input type="file" id="newGalleryImage" accept="image/*" style="display: none;" onchange="handleGalleryUpload(this)">
+                </div>`;
+        }
+
+        function handleGalleryUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const photos = JSON.parse(localStorage.getItem('damha_gallery')) || [];
+                photos.push(e.target.result);
+                localStorage.setItem('damha_gallery', JSON.stringify(photos));
+                loadGallery();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto(index) {
+            if (!isUserAdmin()) return;
+            if (!confirm('Remover esta foto?')) return;
+            let photos = JSON.parse(localStorage.getItem('damha_gallery')) || [];
+            photos.splice(index, 1);
+            localStorage.setItem('damha_gallery', JSON.stringify(photos));
+            loadGallery();
+        }
+
+        function setMainPhoto(index) {
+            if (!isUserAdmin()) return;
+            let photos = JSON.parse(localStorage.getItem('damha_gallery')) || [];
+            if (photos.length === 0) return;
+            const [main] = photos.splice(index, 1);
+            photos.unshift(main);
+            localStorage.setItem('damha_gallery', JSON.stringify(photos));
+            loadGallery();
+        }
+
+        // ============== INIT ==============
+        checkAccess();
+    </script>
+</body>
+</html>
