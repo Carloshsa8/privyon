@@ -538,44 +538,60 @@ h1, h2, h3, .logo-fallback {
 .footer-col p i { margin-top: 6px; margin-right: 15px; color: var(--accent); }
 .footer-bottom { text-align: center; padding-top: 25px; border-top: 1px solid #111; color: #444; font-size: 0.85rem; }
 
-/* RESPONSIVE */
+
+/* Responsive Optimizations */
+@media (max-width: 1200px) {
+  .container { padding: 0 5%; }
+  .header-container { padding: 0 5%; }
+  .hero h1 { font-size: clamp(3rem, 8vw, 5.5rem); }
+  .stats { gap: 3rem; }
+}
+
+@media (max-width: 992px) {
+  .header-container, .nav-container { padding: 0 2rem; justify-content: center; }
+  header nav { display: none; }
+  .nav-links { display: none; }
+  .grid, .vibe-box, .floor-plan-box, .calc-container { grid-template-columns: 1fr; }
+  .vibe-info, .plan-info { padding: 3rem 2rem; }
+  .contact-box { padding: 4rem 1.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .infra-section h2, .vibe-info h2, .contact-header h2, .section-title, .park-section h2 { font-size: 3rem; }
+  .stats { gap: 2rem; flex-wrap: wrap; justify-content: center; text-align: center; }
+  .hero-btns { flex-direction: column; }
+  .calc-container { grid-template-columns: 1fr; gap: 2rem; }
+  .amenity-grid, .services-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .infra-section, .amenities-section, .vibe-section, .contact-section, .park-section, .floor-plan-section, .section-padding { padding: 6rem 0; }
+  .logo { margin: 0 auto; text-align: center; }
+}
+
 @media (max-width: 768px) {
-    .header { padding: 15px 0; }
-    .header-content { flex-direction: row; padding: 5px 0; }
-    .logo-container { height: auto; margin: 0; }
-    .logo-text { font-size: 1.8rem; }
-    
-    .hamburger { display: block; }
-    
-    .nav-menu {
-        position: absolute;
-        top: 100%;
-        left: -100%; /* hide to left */
-        width: 100%;
-        height: 100vh;
-        background: rgba(5, 5, 5, 0.98);
-        border-top: 1px solid var(--glass-border);
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding-top: 80px;
-        transition: left 0.4s ease;
-    }
-    
-    .nav-menu.active { left: 0; }
-    
-    .nav {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        gap: 30px;
-        margin-bottom: 40px;
-    }
-    .nav a { font-size: 1.5rem; font-family: 'Oswald', sans-serif; letter-spacing: 2px;}
-    .btn { padding: 10px 20px; font-size: 0.9rem; }
-    .btn-large { padding: 15px 30px; font-size: 1.1rem; }
-    .hero h1 { font-size: 3rem; }
-    .hero { text-align: center; background-attachment: scroll; }
-    .hero-content { margin: 0 auto; padding-top: 50px; }
-    .section-title { font-size: 2.2rem; }
+  .hero { padding-top: 80px; }
+  .hero h1, .hero-h1 { font-size: clamp(2.5rem, 8vw, 4rem); }
+  .hero-desc, .hero p { font-size: 1.1rem; }
+  .vibe-info h2, .contact-header h2, .plan-info h2, .section-header h2 { font-size: 2.5rem; }
+  .contact-box { padding: 3rem 1rem; }
+  .amenity-card, .service-card { padding: 2rem 1.5rem; }
+  .infra-section { padding: 5rem 0; }
+  .contact-form { padding: 0 1rem; }
+  .hero-location { right: 2rem; bottom: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .hero h1, .hero-h1 { font-size: 2.5rem; }
+  .stat-item .val { font-size: 2.5rem; }
+  .btn { width: 100%; text-align: center; display: block; margin-bottom: 1rem; }
+  .vibe-info { padding: 2rem 1rem; }
+  .infra-section h2, .vibe-info h2, .contact-header h2 { font-size: 2rem; }
+  .amenity-card, .service-card { padding: 1.5rem 1rem; }
+  .hero .hero-content { padding: 0 1rem; }
+}
+
+
+.logo {
+  white-space: nowrap;
+}
+
+@media (max-width: 1400px) {
+  .nav-links { gap: 1.5rem; }
+  .header-container, .nav-container { padding: 0 2rem; }
 }
