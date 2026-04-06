@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Fit Academia — O Seu Limite Não Existe</title>
+    <meta name="description" content="A experiência premium que faltava em São Jose do Rio Preto. Tecnologia, estrutura climatizada e resultados reais.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/gallery-1.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <a href="#inicio" onclick="closeMobileNav()">Início</a>
+        <a href="#diferenciais" onclick="closeMobileNav()">Diferenciais</a>
+        <a href="#calculadora" onclick="closeMobileNav()">Calculadora</a>
+        <a href="#galeria" onclick="closeMobileNav()">A Academia</a>
+        <a href="#planos" onclick="closeMobileNav()">Planos</a>
+        <a href="#contato" onclick="closeMobileNav()" class="mobile-cta">Matricule-se</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="logo">SET<span>FIT</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="#inicio" class="nav-link">Início</a></li>
+                <li><a href="#diferenciais" class="nav-link">Diferenciais</a></li>
+                <li><a href="#calculadora" class="nav-link">Calculadora</a></li>
+                <li><a href="#galeria" class="nav-link">A Academia</a></li>
+                <li><a href="#planos" class="nav-link">Planos</a></li>
+                <li><a href="#contato" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Matricule-se</a></li>
+            </ul>
+
+            <!-- Hamburger Mobile -->
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menu" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-bg">
+            <img src="assets/hero-bg.png" alt="Interior da Academia Set Fit">
+        </div>
+        
+        <div class="container hero-content">
+            <div class="reveal">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-bolt"></i> Performance Premium
+                </div>
+                <h1 class="hero-h1">
+                    O seu limite<br>
+                    <span class="text-gradient glow-text">não existe</span>
+                </h1>
+                <p class="hero-desc">
+                    Entre na nova era do condicionamento físico. Tecnologia, estrutura de ponta e ambiente totalmente climatizado para o seu melhor resultado.
+                </p>
+                <div class="hero-btns">
+                    <a href="#planos" class="btn btn-primary">Escolher Plano <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#galeria" class="btn btn-outline">Ver Estrutura</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais Section -->
+    <section id="diferenciais" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">// Por que a Set Fit?</span>
+                <h2 class="section-title">A base para a sua <span class="text-gradient">evolução</span></h2>
+            </div>
+
+            <div class="services-grid">
+                <!-- Card 1 -->
+                <div class="glass-card service-card reveal">
+                    <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                    <h3 class="service-title">Máquinas Premium</h3>
+                    <p class="service-desc">Equipamentos de última geração com biomecânica avançada para resultados máximos com segurança total.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card service-card reveal" style="transition-delay: 0.1s;">
+                    <div class="service-icon"><i class="fa-solid fa-person-running"></i></div>
+                    <h3 class="service-title">Treino Funcional</h3>
+                    <p class="service-desc">Espaço dinâmico projetado para circuitos de alta intensidade e desenvolvimento de força atlética.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card service-card reveal" style="transition-delay: 0.2s;">
+                    <div class="service-icon"><i class="fa-solid fa-snowflake"></i></div>
+                    <h3 class="service-title">Climatização Total</h3>
+                    <p class="service-desc">Treine com conforto térmico absoluto, independentemente da temperatura externa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Calculator -->
+    <section id="calculadora" class="section-padding" style="background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(10px);">
+        <div class="container reveal">
+            <div class="glass-card calc-container">
+                <div class="calc-info">
+                    <span class="section-tag">// Métrica de Saúde</span>
+                    <h2 class="section-title">Calculadora de <span class="text-gradient">Performance</span></h2>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">
+                        Entenda seu ponto de partida para traçarmos a melhor estratégia para o seu objetivo.
+                    </p>
+                </div>
+
+                <div class="calc-box">
+                    <form id="calc-form" class="calc-form">
+                        <div class="input-row" style="display: flex; gap: 1rem;">
+                            <div class="input-group" style="flex: 1;">
+                                <label for="weight">Peso (kg)</label>
+                                <input type="number" id="weight" class="calc-input" placeholder="Ex: 75" required>
+                            </div>
+                            <div class="input-group" style="flex: 1;">
+                                <label for="height">Altura (cm)</label>
+                                <input type="number" id="height" class="calc-input" placeholder="Ex: 175" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Calcular Meu IMC</button>
+                    </form>
+
+                    <div class="calc-result" id="calc-result">
+                        <div class="result-value" id="calc-result-value">00.0</div>
+                        <div id="calc-status" style="font-weight: 700; text-transform: uppercase; margin-top: 0.5rem;">Aguardando Medidas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="section-padding">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">// A Academia</span>
+                <h2 class="section-title">Ambiente <span class="text-gradient">Inspirador</span></h2>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-full reveal">
+                    <img src="assets/gallery-1.png" alt="Equipamentos Premium">
+                </div>
+                <div class="gallery-half reveal">
+                    <img src="assets/gallery-2.png" alt="Área Funcional">
+                </div>
+                <div class="gallery-half reveal">
+                    <img src="assets/hero-bg.png" alt="Musculação">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="planos" class="section-padding" style="background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(10px);">
+        <div class="container">
+            <div class="section-header reveal text-center" style="text-align: center;">
+                <span class="section-tag">// Investimento</span>
+                <h2 class="section-title">Escolha seu <span class="text-gradient">Plano</span></h2>
+            </div>
+
+            <div class="services-grid" style="margin-top: 3rem;">
+                <!-- Plano Individual -->
+                <div class="glass-card service-card reveal" style="padding: 4rem 3rem; border-color: var(--border);">
+                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">INDIVIDUAL</h3>
+                    <div style="font-size: 3rem; font-family: 'Oswald'; color: var(--primary);">R$ 99<span style="font-size: 1.5rem;">,00</span></div>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Por mês</p>
+                    <ul style="margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Acesso Musculação</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Avaliação Física</li>
+                        <li style="opacity: 0.4;"><i class="fa-solid fa-xmark"></i> Acompanhante Grátis</li>
+                        <li style="opacity: 0.4;"><i class="fa-solid fa-xmark"></i> Treino em Dupla</li>
+                    </ul>
+                    <a href="https://wa.me/5517997878350" target="_blank" class="btn btn-outline" style="width: 100%; justify-content: center;">Assinar Plano</a>
+                </div>
+
+                <!-- Plano Casal -->
+                <div class="glass-card service-card reveal" style="padding: 4rem 3rem; border: 2px solid var(--primary); transform: scale(1.05); background: rgba(255, 215, 0, 0.03);">
+                    <div style="position: absolute; top: 1.5rem; right: 1.5rem; background: var(--primary); color: #000; padding: 0.2rem 1rem; border-radius: 2px; font-weight: 800; font-size: 0.7rem;">MELHOR VALOR</div>
+                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">CASAL / DUPLA</h3>
+                    <div style="font-size: 3rem; font-family: 'Oswald'; color: var(--primary);">R$ 180<span style="font-size: 1.5rem;">,00</span></div>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Por mês</p>
+                    <ul style="margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Acesso para 2 pessoas</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Aulas Coletivas</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Treinamento Funcional</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Avaliação Trimestral</li>
+                    </ul>
+                    <a href="https://wa.me/5517997878350" target="_blank" class="btn btn-primary" style="width: 100%; justify-content: center;">Matricule-se Agora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Hub Section -->
+    <footer id="contato" class="section-padding">
+        <div class="container">
+            <div class="glass-card footer-card">
+                <div class="reveal">
+                    <span class="section-tag" style="margin-bottom: 2rem;">// Comece Hoje</span>
+                    <h2 class="section-title" style="font-size: 4rem; margin-bottom: 2.5rem;">Pronto para o<br><span class="text-gradient">Próximo Nível?</span></h2>
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                        <a href="https://wa.me/5517997878350" target="_blank" class="btn btn-primary">
+                            <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
+                        </a>
+                        <a href="https://www.instagram.com/setfitacademia/" target="_blank" class="btn btn-outline">
+                            <i class="fa-brands fa-instagram"></i> Ver Instagram
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal footer-info-grid" style="margin-top: 6rem;">
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">HORÁRIOS</h4>
+                        <p>Seg a Sex: 05:30 – 11h | 14h – 22h</p>
+                        <p>Sábado: 08h – 12h</p>
+                        <p>Domingo: Fechado</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">LOCALIZAÇÃO</h4>
+                        <p>Av.: Júlio Aldo Arvati, n° 1435</p>
+                        <p>Setvalley – São José do Rio Preto - SP</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">CONTATO</h4>
+                        <p>(17) 99787-8350</p>
+                        <p>setfit@academia.com.br</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">
+                <p>&copy; 2024 SET FIT ACADEMIA. TODOS OS DIREITOS RESERVADOS.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Nav
+        function toggleMobileNav() {
+            const overlay = document.getElementById('mobileNavOverlay');
+            const toggle = document.getElementById('mobileToggle');
+            overlay.classList.toggle('open');
+            toggle.classList.toggle('open');
+            document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+        }
+        function closeMobileNav() {
+            const overlay = document.getElementById('mobileNavOverlay');
+            const toggle = document.getElementById('mobileToggle');
+            overlay.classList.remove('open');
+            toggle.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('mobileNavOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeMobileNav();
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
