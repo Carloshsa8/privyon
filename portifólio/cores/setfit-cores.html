@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set Fit — Por que essas cores?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #050505;
+      --card: #111111;
+      --yellow: #f3ca20;
+      --yellow-2: #ffd95a;
+      --white: #f8f8f8;
+      --muted: #888888;
+      --soft: #2a2a2a;
+      --grad: linear-gradient(135deg, #f3ca20, #ffd95a);
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(5, 5, 5, .92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(243, 202, 32, .10);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: .1em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-dots {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4f4f4f;
+      cursor: pointer;
+      border: none;
+      transition: all .3s;
+    }
+
+    .dot.active, .dot:hover {
+      background: var(--yellow);
+      transform: scale(1.3);
+    }
+
+    .slide-counter {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+
+    .slides-wrap { overflow: hidden; }
+
+    .slides {
+      display: flex;
+      transition: transform .6s cubic-bezier(.77, 0, .18, 1);
+    }
+
+    .slide {
+      min-width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 7rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 50% 40% at 80% 30%, rgba(243, 202, 32, .05), transparent 70%),
+        radial-gradient(ellipse 35% 30% at 15% 75%, rgba(255, 217, 90, .04), transparent 60%);
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: .025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .slide-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(243, 202, 32, .45);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .big-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: .95;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      border: 1px solid rgba(243, 202, 32, .25);
+      padding: .3rem .9rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .grad-line {
+      width: 100%;
+      max-width: 960px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--yellow), var(--yellow-2), transparent);
+      margin: 2rem auto 0;
+      opacity: .25;
+    }
+
+    .s1 { text-align: center; max-width: 750px; }
+    .s1-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: .92;
+      margin-bottom: 1.5rem;
+    }
+    .s1-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .s1-div {
+      width: 50px;
+      height: 2px;
+      background: var(--grad);
+      margin: 0 auto 1.5rem;
+    }
+    .s1-by {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem;
+      letter-spacing: .2em;
+      color: var(--muted);
+    }
+    .s1-by strong { color: var(--yellow); }
+
+    .s2, .s3, .s4, .s5 { max-width: 960px; width: 100%; }
+    .s2-grid, .compare-grid, .consistency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .compare-grid, .consistency-grid { grid-template-columns: 1fr 1fr; }
+
+    .color-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .06);
+      background: rgba(255,255,255,.02);
+    }
+    .color-card-swatch {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .swatch-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: .1em;
+      text-shadow: 0 2px 10px rgba(0,0,0,.5);
+    }
+    .color-card-body {
+      background: rgba(255,255,255,.03);
+      padding: 1.5rem;
+    }
+    .color-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: .1em;
+      font-weight: 700;
+      margin-bottom: .25rem;
+    }
+    .color-card-hex {
+      font-size: .75rem;
+      color: var(--muted);
+      font-family: monospace;
+      margin-bottom: .75rem;
+      letter-spacing: .1em;
+    }
+    .color-card-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .color-card-desc strong,
+    .compare-list li strong,
+    .insight-text p strong,
+    .consist-card p strong,
+    .principle-text p strong { color: var(--white); }
+
+    .compare-card {
+      padding: 1.8rem;
+      border-radius: 6px;
+    }
+    .compare-card.no {
+      background: rgba(140, 140, 140, .08);
+      border: 1px solid rgba(160, 160, 160, .18);
+    }
+    .compare-card.yes {
+      background: rgba(243, 202, 32, .05);
+      border: 1px solid rgba(243, 202, 32, .2);
+    }
+    .compare-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      margin-bottom: 1rem;
+    }
+    .compare-card.no h3 { color: #b8b8b8; }
+    .compare-card.yes h3 { color: var(--yellow); }
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .compare-list li {
+      font-size: .9rem;
+      color: var(--muted);
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+    .compare-list li .icon { flex-shrink: 0; }
+
+    .brand-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .brand-pill {
+      padding: .7rem 1.4rem;
+      border-radius: 40px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .brand-pill.generic {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--muted);
+    }
+    .brand-pill.premium {
+      background: rgba(243, 202, 32, .08);
+      border: 1px solid rgba(243, 202, 32, .25);
+      color: var(--yellow);
+    }
+    .brand-pill .dot-brand {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .insight-box {
+      margin-top: 2rem;
+      padding: 2rem;
+      border-radius: 6px;
+      background: rgba(243, 202, 32, .04);
+      border: 1px solid rgba(243, 202, 32, .15);
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .insight-icon { font-size: 2rem; flex-shrink: 0; }
+    .insight-text h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: .08em;
+      margin-bottom: .5rem;
+      color: var(--yellow);
+    }
+    .insight-text p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .consist-card {
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 6px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .consist-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--grad);
+      border-radius: 3px 0 0 3px;
+    }
+    .consist-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      margin-bottom: .6rem;
+      margin-left: .8rem;
+    }
+    .consist-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-left: .8rem;
+    }
+
+    .palette-preview {
+      display: flex;
+      gap: .8rem;
+      margin-top: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .palette-chip {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: .5rem 1rem;
+      border-radius: 40px;
+    }
+    .chip-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chip-label {
+      font-size: .8rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    .chip-name {
+      font-size: .75rem;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: .05em;
+    }
+
+    .s6 {
+      text-align: center;
+      max-width: 700px;
+    }
+    .s6-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: .95;
+      margin-bottom: 2rem;
+    }
+    .principles {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      text-align: left;
+    }
+    .principle {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,.025);
+      border-radius: 4px;
+      border: 1px solid rgba(243, 202, 32, .1);
+    }
+    .principle-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      flex-shrink: 0;
+    }
+    .principle-text h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      letter-spacing: .08em;
+      margin-bottom: .25rem;
+    }
+    .principle-text p {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .nav-arrows {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: .8rem;
+      z-index: 100;
+    }
+    .arrow-btn {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(243, 202, 32, .2);
+      color: var(--yellow);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .arrow-btn:hover {
+      background: var(--grad);
+      color: #000;
+      border-color: transparent;
+    }
+    .arrow-btn:disabled {
+      opacity: .25;
+      cursor: default;
+    }
+
+    .progress {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--grad);
+      transition: width .4s ease;
+      z-index: 200;
+    }
+
+    @media (max-width: 768px) {
+      .s2-grid, .compare-grid, .consistency-grid { grid-template-columns: 1fr; }
+      .slide { padding: 5.5rem 1.5rem 5rem; }
+      nav { padding: 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-logo">SET FIT CORES</div>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="slide-counter"><span id="current">01</span> / 06</div>
+  </nav>
+
+  <div class="progress" id="progress"></div>
+
+  <div class="slides-wrap">
+    <div class="slides" id="slides">
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s1">
+          <div class="tag">Design Strategy — Set Fit</div>
+          <h1 class="s1-title">POR QUE<br><span class="grad-text">ESSAS</span><br>CORES?</h1>
+          <div class="s1-div"></div>
+          <p class="s1-sub">Cada cor foi escolhida com um motivo. Aqui a identidade não fala de tecnologia fria, e sim de força, energia e presença.</p>
+          <p class="s1-by">Análise de identidade visual por <strong>Carlos</strong></p>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s2">
+          <span class="slide-label">Psicologia das cores</span>
+          <h2 class="big-title">O QUE CADA COR<br><span class="grad-text">COMUNICA</span></h2>
+          <div class="s2-grid">
+            <div class="color-card">
+              <div class="color-card-swatch" style="background:#050505;border-bottom:1px solid rgba(255,255,255,.06);">
+                <span class="swatch-label" style="color:#f8f8f8;">PRETO</span>
+              </div>
+              <div class="color-card-body">
+                <div class="color-card-name" style="color:#f8f8f8;">Base Escura</div>
+                <div class="color-card-hex">#050505</div>
+                <div class="color-card-desc">Transmite <strong>força, foco e seriedade</strong>. Fundo escuro reduz distração visual e faz a marca parecer mais firme, intensa e segura.</div>
+              </div>
+            </div>
+
+            <div class="color-card">
+              <div class="color-card-swatch" style="background:linear-gradient(135deg,#f3ca20,#8e7400);border-bottom:1px solid rgba(243,202,32,.18);">
+                <span class="swatch-label" style="color:#050505;text-shadow:none;">AMARELO</span>
+              </div>
+              <div class="color-card-body">
+                <div class="color-card-name" style="color:#f3ca20;">Energia e Ação</div>
+                <div class="color-card-hex">#F3CA20</div>
+                <div class="color-card-desc"><strong>Chama atenção e ativa decisão.</strong> O amarelo comunica movimento, impulso e presença. É a cor que empurra o aluno para o clique, para o contato e para a matrícula.</div>
+              </div>
+            </div>
+
+            <div class="color-card">
+              <div class="color-card-swatch" style="background:linear-gradient(135deg,#2a2a2a,#050505);border-bottom:1px solid rgba(255,255,255,.08);">
+                <span class="swatch-label" style="color:#d0d0d0;">GRAFITE</span>
+              </div>
+              <div class="color-card-body">
+                <div class="color-card-name" style="color:#d0d0d0;">Suporte e Equilíbrio</div>
+                <div class="color-card-hex">#2A2A2A</div>
+                <div class="color-card-desc"><strong>Organiza sem competir.</strong> O grafite segura a composição, cria profundidade e deixa o amarelo ocupar o lugar certo: o destaque principal.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s3">
+          <span class="slide-label">A escolha estratégica</span>
+          <h2 class="big-title">POR QUE NÃO<br><span class="grad-text">OUTRAS CORES?</span></h2>
+          <div class="compare-grid">
+            <div class="compare-card no">
+              <h3>O que foi descartado</h3>
+              <ul class="compare-list">
+                <li><span class="icon">•</span><span><strong>Verde e ciano</strong> puxam para tecnologia, app ou startup. Não passam o peso físico que uma academia precisa.</span></li>
+                <li><span class="icon">•</span><span><strong>Azul corporativo</strong> lembra consultório, banco ou empresa institucional. Falta pulso e impacto.</span></li>
+                <li><span class="icon">•</span><span><strong>Branco dominante</strong> deixa o visual limpo demais. Academia precisa de contraste e presença, não de clima clínico.</span></li>
+                <li><span class="icon">•</span><span><strong>Vermelho agressivo</strong> gera tensão e urgência excessiva. Pode até chamar atenção, mas cansa mais rápido.</span></li>
+              </ul>
+            </div>
+            <div class="compare-card yes">
+              <h3>O que o preto + amarelo entrega</h3>
+              <ul class="compare-list">
+                <li><span class="icon">•</span><span><strong>Impacto imediato</strong> porque o contraste é alto e memorável.</span></li>
+                <li><span class="icon">•</span><span><strong>Energia sem parecer digital</strong>, mais ligada a movimento real do que a interface de aplicativo.</span></li>
+                <li><span class="icon">•</span><span><strong>Leitura clara de hierarquia</strong>: preto sustenta, amarelo chama, cinza organiza.</span></li>
+                <li><span class="icon">•</span><span><strong>Visual popular-premium</strong>: acessível, forte e com cara de marca conhecida.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s4">
+          <span class="slide-label">Posicionamento de mercado</span>
+          <h2 class="big-title">ONDE A SET FIT<br><span class="grad-text">SE POSICIONA</span></h2>
+          <div class="brand-row">
+            <div class="brand-pill generic"><div class="dot-brand" style="background:#777;"></div>Academia local genérica</div>
+            <div class="brand-pill generic"><div class="dot-brand" style="background:#999;"></div>Site sem contraste e sem assinatura</div>
+            <div class="brand-pill generic"><div class="dot-brand" style="background:#555;"></div>Visual comum que some rápido</div>
+            <div class="brand-pill premium"><div class="dot-brand" style="background:linear-gradient(90deg,#f3ca20,#ffd95a);"></div>Set Fit com presença forte</div>
+            <div class="brand-pill premium"><div class="dot-brand" style="background:linear-gradient(90deg,#f3ca20,#ffd95a);"></div>Referência visual de academia marcante</div>
+            <div class="brand-pill premium"><div class="dot-brand" style="background:linear-gradient(90deg,#f3ca20,#ffd95a);"></div>Mais lembrança e mais clique</div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-icon">✦</div>
+            <div class="insight-text">
+              <h3>A percepção decide antes da visita</h3>
+              <p>Duas academias com estrutura parecida podem ser percebidas de forma totalmente diferente. A que se apresenta com clareza visual, contraste forte e identidade coerente <strong>parece mais profissional, mais valiosa e mais confiável</strong> antes mesmo do primeiro treino.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s5" style="max-width:900px;">
+          <span class="slide-label">Identidade consistente</span>
+          <h2 class="big-title">UMA COR SÓ<br><span class="grad-text">NÃO BASTA</span></h2>
+          <div class="consistency-grid">
+            <div class="consist-card">
+              <div class="consist-accent"></div>
+              <h3>Amarelo como ação</h3>
+              <p>Toda vez que o site quer que a pessoa <strong>faça algo</strong> — clicar, chamar no WhatsApp, iniciar matrícula — o amarelo aparece. Ele vira gatilho visual de movimento.</p>
+            </div>
+            <div class="consist-card">
+              <div class="consist-accent"></div>
+              <h3>Grafite como estrutura</h3>
+              <p>Cards, blocos e separações usam tons escuros para <strong>organizar sem competir</strong>. Assim o conteúdo fica limpo e o destaque continua onde interessa.</p>
+            </div>
+            <div class="consist-card">
+              <div class="consist-accent"></div>
+              <h3>Preto como base</h3>
+              <p>O fundo escuro dá profundidade e faz os elementos claros <strong>saltarem com mais força</strong>. O contraste aumenta a sensação de potência.</p>
+            </div>
+            <div class="consist-card">
+              <div class="consist-accent"></div>
+              <h3>Amarelo como assinatura</h3>
+              <p>O amarelo não entra como detalhe perdido. Ele aparece nos botões, destaques e pontos-chave como <strong>marca registrada da comunicação</strong>.</p>
+            </div>
+          </div>
+          <div class="palette-preview">
+            <div class="palette-chip"><div class="chip-dot" style="background:#050505;border:1px solid rgba(255,255,255,.2);"></div><div><div class="chip-name">PRETO</div><div class="chip-label">#050505</div></div></div>
+            <div class="palette-chip"><div class="chip-dot" style="background:#f3ca20;"></div><div><div class="chip-name">AMARELO</div><div class="chip-label">#F3CA20</div></div></div>
+            <div class="palette-chip"><div class="chip-dot" style="background:#2a2a2a;"></div><div><div class="chip-name">GRAFITE</div><div class="chip-label">#2A2A2A</div></div></div>
+            <div class="palette-chip"><div class="chip-dot" style="background:linear-gradient(135deg,#f3ca20,#ffd95a);"></div><div><div class="chip-name">DESTAQUE</div><div class="chip-label">Amarelo quente</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="grain"></div>
+        <div class="s6">
+          <div class="tag">Conclusão</div>
+          <h2 class="s6-title">COR É<br><span class="grad-text">POSICIONAMENTO</span></h2>
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">01</div>
+              <div class="principle-text">
+                <h4>PRETO = FORÇA E FOCO</h4>
+                <p>Cria peso visual, reduz distração e faz a marca parecer <strong>mais séria e mais intensa</strong>.</p>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">02</div>
+              <div class="principle-text">
+                <h4>AMARELO = ENERGIA E AÇÃO</h4>
+                <p>É a cor do impulso. Atrai o olhar, orienta o clique e comunica <strong>movimento imediato</strong>.</p>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">03</div>
+              <div class="principle-text">
+                <h4>GRAFITE = EQUILÍBRIO VISUAL</h4>
+                <p>Serve de apoio para a hierarquia, organiza os blocos e deixa a identidade <strong>mais sólida e profissional</strong>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="grad-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-arrows">
+    <button class="arrow-btn" id="prev" onclick="changeSlide(-1)">‹</button>
+    <button class="arrow-btn" id="next" onclick="changeSlide(1)">›</button>
+  </div>
+
+  <script>
+    const total = 6;
+    let cur = 0;
+    const slidesEl = document.getElementById('slides');
+    const progressEl = document.getElementById('progress');
+    const currentEl = document.getElementById('current');
+    const dotsWrap = document.getElementById('navDots');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goTo(i);
+      dotsWrap.appendChild(d);
+    }
+
+    function update() {
+      slidesEl.style.transform = `translateX(-${cur * 100}vw)`;
+      progressEl.style.width = `${((cur + 1) / total) * 100}%`;
+      currentEl.textContent = String(cur + 1).padStart(2, '0');
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+      prevBtn.disabled = cur === 0;
+      nextBtn.disabled = cur === total - 1;
+    }
+
+    function changeSlide(dir) { goTo(cur + dir); }
+    function goTo(n) {
+      cur = Math.max(0, Math.min(total - 1, n));
+      update();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+    });
+
+    let tx = 0;
+    document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+      const dx = tx - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 50) changeSlide(dx > 0 ? 1 : -1);
+    });
+
+    update();
+  </script>
+</body>
+</html>
