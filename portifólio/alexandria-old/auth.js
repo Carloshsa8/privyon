@@ -107,72 +107,41 @@ const Auth = {
 function renderAuthHeader() {
     const session = Auth.getSession();
     const authContainer = document.getElementById('authHeaderActions');
+    if (!authContainer) return;
+
     const basePath = Auth._getBasePath();
 
-    // Desktop header auth
-    if (authContainer) {
-        if (session) {
-            authContainer.innerHTML = `
-                <div class="user-menu">
-                    <button class="user-menu-btn" onclick="toggleUserMenu()" id="userMenuBtn">
-                        <div class="user-avatar-small">${session.name.charAt(0).toUpperCase()}</div>
-                        <span class="user-name-header">${session.name.split(' ')[0]}</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="user-dropdown" id="userDropdown">
-                        <a href="${Auth.getDashboardUrl()}" class="dropdown-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                            Meu Painel
-                        </a>
-                        ${session.role === 'aluno' ? `<a href="${basePath}meus-cursos.html" class="dropdown-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                            Meus Cursos
-                        </a>` : ''}
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item dropdown-logout" onclick="Auth.logout()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                            Sair
-                        </button>
-                    </div>
-                </div>
-            `;
-        } else {
-            authContainer.innerHTML = `
-                <a href="${basePath}login.html" class="btn btn-sm">Entrar</a>
-                <a href="${basePath}registro.html" class="btn btn-sm btn-primary">Cadastrar</a>
-            `;
-        }
-    }
-
-    // Mobile menu auth
-    renderMobileMenuAuth(session, basePath);
-}
-
-function renderMobileMenuAuth(session, basePath) {
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) return;
-
-    // Remove existing auth section if any
-    const existingAuth = mobileMenu.querySelector('.mobile-menu-auth');
-    if (existingAuth) existingAuth.remove();
-
-    const authDiv = document.createElement('div');
-    authDiv.className = 'mobile-menu-auth';
-
     if (session) {
-        authDiv.innerHTML = `
-            <a href="${Auth.getDashboardUrl()}" class="mobile-nav-link" onclick="closeMobileMenu()" style="font-size:1.5rem;">Meu Painel</a>
-            ${session.role === 'aluno' ? `<a href="${basePath}meus-cursos.html" class="mobile-nav-link" onclick="closeMobileMenu()" style="font-size:1.5rem;">Meus Cursos</a>` : ''}
-            <button class="btn btn-primary" onclick="Auth.logout()" style="margin-top:0.5rem;">Sair</button>
+        authContainer.innerHTML = `
+            <div class="user-menu">
+                <button class="user-menu-btn" onclick="toggleUserMenu()" id="userMenuBtn">
+                    <div class="user-avatar-small">${session.name.charAt(0).toUpperCase()}</div>
+                    <span class="user-name-header">${session.name.split(' ')[0]}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="${Auth.getDashboardUrl()}" class="dropdown-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Meu Painel
+                    </a>
+                    ${session.role === 'aluno' ? `<a href="${basePath}meus-cursos.html" class="dropdown-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        Meus Cursos
+                    </a>` : ''}
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item dropdown-logout" onclick="Auth.logout()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Sair
+                    </button>
+                </div>
+            </div>
         `;
     } else {
-        authDiv.innerHTML = `
-            <a href="${basePath}login.html" class="btn" onclick="closeMobileMenu()">Entrar</a>
-            <a href="${basePath}registro.html" class="btn btn-primary" onclick="closeMobileMenu()">Cadastrar</a>
+        authContainer.innerHTML = `
+            <a href="${basePath}login.html" class="btn btn-sm">Entrar</a>
+            <a href="${basePath}registro.html" class="btn btn-sm btn-primary">Cadastrar</a>
         `;
     }
-
-    mobileMenu.appendChild(authDiv);
 }
 
 function toggleUserMenu() {
@@ -197,23 +166,16 @@ function toggleMobileMenu() {
     if (menu && hamburger) {
         menu.classList.toggle('open');
         hamburger.classList.toggle('open');
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
     }
-}
-
-function closeMobileMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const hamburger = document.getElementById('hamburgerBtn');
-    if (menu) menu.classList.remove('open');
-    if (hamburger) hamburger.classList.remove('open');
-    document.body.style.overflow = '';
 }
 
 // Close mobile menu on link click
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('mobile-nav-link')) {
-        closeMobileMenu();
+        const menu = document.getElementById('mobileMenu');
+        const hamburger = document.getElementById('hamburgerBtn');
+        if (menu) menu.classList.remove('open');
+        if (hamburger) hamburger.classList.remove('open');
     }
 });
 
