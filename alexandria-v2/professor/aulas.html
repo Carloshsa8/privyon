@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Aulas - Professor - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Painel</a>
+                <a href="cursos.html" class="nav-link">Meus Cursos</a>
+                <a href="aulas.html" class="nav-link active">Aulas</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+        <a href="cursos.html" class="mobile-nav-link">Meus Cursos</a>
+        <a href="aulas.html" class="mobile-nav-link">Aulas</a>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-sidebar-header"><div class="dash-sidebar-role">Professor</div><div class="dash-sidebar-name" id="profName">Professor</div></div>
+            <nav class="dash-sidebar-nav">
+                <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+                <a href="cursos.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Meus Cursos</a>
+                <a href="aulas.html" class="dash-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>Gerenciar Aulas</a>
+            </nav>
+        </aside>
+
+        <main class="dash-content">
+            <div class="dash-content-header">
+                <h1 class="dash-page-title" id="pageTitle">Gerenciar Aulas</h1>
+                <p class="dash-page-desc" id="pageDesc">Selecione um curso para gerenciar suas aulas</p>
+            </div>
+
+            <!-- Course Selector -->
+            <div id="courseSelector" class="chart-card">
+                <h3 class="chart-title">Selecionar Curso</h3>
+                <div class="student-courses-grid" id="courseSelectorGrid"></div>
+            </div>
+
+            <!-- Module/Lesson Manager -->
+            <div id="lessonManager" style="display:none;">
+                <button class="btn btn-sm" onclick="showSelector()" style="margin-bottom:1.5rem;">← Voltar aos cursos</button>
+
+                <div id="modulesContainer"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../courses.js"></script>
+    <script src="../data.js"></script>
+    <script src="../auth.js"></script>
+    <script>
+        if (!Auth.requireAuth(['professor'])) {}
+        else {
+            const user = Auth.getCurrentUser();
+            document.getElementById('profName').textContent = user.name;
+
+            const params = new URLSearchParams(window.location.search);
+            const courseId = params.get('courseId');
+            const myCourses = getCoursesByInstructor(user.id);
+
+            // Course selector
+            document.getElementById('courseSelectorGrid').innerHTML = myCourses.map(c => `
+                <div class="student-course-card" onclick="selectCourse(${c.id})" style="cursor:pointer;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                        <div class="course-icon" style="width:40px;height:40px;">${courseImages[c.image]||courseImages.notion}</div>
+                        <span class="course-category">${c.category}</span>
+                    </div>
+                    <div class="student-course-title">${c.name}</div>
+                    <div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.5rem;">${c.modules.length} módulos · ${c.modules.reduce((s,m)=>s+m.lessons.length,0)} aulas</div>
+                </div>
+            `).join('') || '<p style="color:var(--text-dim);">Nenhum curso encontrado.</p>';
+
+            if (courseId) selectCourse(parseInt(courseId));
+        }
+
+        function showSelector() {
+            document.getElementById('courseSelector').style.display = '';
+            document.getElementById('lessonManager').style.display = 'none';
+            document.getElementById('pageTitle').textContent = 'Gerenciar Aulas';
+            document.getElementById('pageDesc').textContent = 'Selecione um curso para gerenciar suas aulas';
+        }
+
+        function selectCourse(id) {
+            const course = getCourseById(id);
+            if (!course) return;
+
+            document.getElementById('courseSelector').style.display = 'none';
+            document.getElementById('lessonManager').style.display = '';
+            document.getElementById('pageTitle').textContent = course.name;
+            document.getElementById('pageDesc').textContent = `${course.modules.length} módulos · ${course.modules.reduce((s,m)=>s+m.lessons.length,0)} aulas`;
+
+            renderModules(course);
+        }
+
+        function renderModules(course) {
+            const container = document.getElementById('modulesContainer');
+            container.innerHTML = course.modules.map((mod, i) => `
+                <div class="course-module" style="margin-bottom:1.5rem;">
+                    <div class="course-module-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                        <div>
+                            <span class="course-module-title">Módulo ${i+1}: ${mod.title}</span>
+                        </div>
+                        <span class="course-module-count">${mod.lessons.length} aulas</span>
+                    </div>
+                    <div class="course-module-lessons open">
+                        ${mod.lessons.map((l, j) => `
+                            <div class="course-lesson" style="justify-content:space-between;">
+                                <div style="display:flex;align-items:center;gap:0.75rem;">
+                                    <span style="color:var(--text-dim);font-size:0.8rem;">${j+1}.</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--gold);flex-shrink:0;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                    <div>
+                                        <div style="color:var(--text);">${l.title}</div>
+                                        <div style="font-size:0.75rem;color:var(--text-dim);">${l.type === 'exercise' ? 'Exercício' : 'Vídeo'} · ${l.duration}</div>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success" style="font-size:0.65rem;">Publicada</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            if (course.modules.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Nenhum módulo criado</div><p class="empty-state-text">Crie módulos e aulas para seu curso.</p></div>';
+            }
+        }
+    </script>
+</body>
+</html>

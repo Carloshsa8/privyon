@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar - Alexandria</title>
+    <meta name="description" content="Acesse sua conta na Alexandria - Plataforma de Conhecimento">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <a href="index.html" class="auth-logo" style="display:block;text-decoration:none;">Alexandria</a>
+            <p class="auth-subtitle">Acesse sua conta</p>
+
+            <div class="auth-error" id="authError"></div>
+
+            <form class="auth-form" id="loginForm" onsubmit="return handleLogin(event)">
+                <input type="email" class="form-input" id="loginEmail" placeholder="Seu email" required>
+                <input type="password" class="form-input" id="loginPassword" placeholder="Sua senha" required>
+                <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+            </form>
+
+            <div class="auth-links">
+                <p>Não tem conta? <a href="registro.html">Cadastre-se</a></p>
+            </div>
+
+            <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+                <p style="font-size:0.75rem;color:var(--text-dim);text-align:center;margin-bottom:1rem;letter-spacing:0.1em;text-transform:uppercase;">Contas de Teste</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                    <button class="action-btn" onclick="fillLogin('admin@alexandria.com','admin123')" style="width:100%;text-align:left;padding:0.6rem 1rem;">
+                        <span style="color:var(--gold);">Admin</span> — admin@alexandria.com
+                    </button>
+                    <button class="action-btn" onclick="fillLogin('prof@alexandria.com','prof123')" style="width:100%;text-align:left;padding:0.6rem 1rem;">
+                        <span style="color:var(--gold);">Professor</span> — prof@alexandria.com
+                    </button>
+                    <button class="action-btn" onclick="fillLogin('aluno@alexandria.com','aluno123')" style="width:100%;text-align:left;padding:0.6rem 1rem;">
+                        <span style="color:var(--gold);">Aluno</span> — aluno@alexandria.com
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Redirect if already logged in
+        Auth.redirectIfLoggedIn();
+
+        function fillLogin(email, password) {
+            document.getElementById('loginEmail').value = email;
+            document.getElementById('loginPassword').value = password;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('authError');
+
+            const result = Auth.login(email, password);
+            if (result.success) {
+                Auth.redirectIfLoggedIn();
+            } else {
+                errorEl.textContent = result.message;
+                errorEl.classList.add('show');
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

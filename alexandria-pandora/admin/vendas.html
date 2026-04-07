@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Vendas - Admin - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Painel</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="usuarios.html" class="nav-link">Usuários</a>
+                <a href="vendas.html" class="nav-link active">Vendas</a>
+                <a href="configuracoes.html" class="nav-link">Config</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+        <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+        <a href="usuarios.html" class="mobile-nav-link">Usuários</a>
+        <a href="vendas.html" class="mobile-nav-link">Vendas</a>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-sidebar-header"><div class="dash-sidebar-role">Administrador</div><div class="dash-sidebar-name" id="adminName">Admin</div></div>
+            <nav class="dash-sidebar-nav">
+                <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+                <a href="cursos.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Cursos</a>
+                <a href="usuarios.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Usuários</a>
+                <a href="vendas.html" class="dash-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Vendas</a>
+                <a href="configuracoes.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/></svg>Configurações</a>
+            </nav>
+        </aside>
+
+        <main class="dash-content">
+            <div class="dash-content-header">
+                <h1 class="dash-page-title">Gerenciar Vendas</h1>
+                <p class="dash-page-desc">Histórico completo de vendas e pedidos</p>
+            </div>
+
+            <div class="stats-grid" id="salesStats"></div>
+
+            <div class="table-header">
+                <input type="text" class="search-input" placeholder="Buscar por aluno ou curso..." oninput="filterSales(this.value)">
+                <div style="display:flex;gap:0.5rem;">
+                    <button class="action-btn" onclick="filterStatus('all')" style="border-color:var(--gold);color:var(--gold);">Todos</button>
+                    <button class="action-btn" onclick="filterStatus('completed')">Concluídas</button>
+                    <button class="action-btn" onclick="filterStatus('pending')">Pendentes</button>
+                    <button class="action-btn" onclick="filterStatus('refunded')">Reembolsos</button>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead><tr><th>#</th><th>Data</th><th>Aluno</th><th>Curso</th><th>Valor</th><th>Pagamento</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody id="salesBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../courses.js"></script>
+    <script src="../data.js"></script>
+    <script src="../auth.js"></script>
+    <script>
+        let currentFilter = 'all';
+
+        if (!Auth.requireAuth(['admin'])) {}
+        else {
+            document.getElementById('adminName').textContent = Auth.getCurrentUser().name;
+            loadSales();
+        }
+
+        function loadSales() {
+            const sales = DB.getSales();
+            const completed = sales.filter(s=>s.status==='completed');
+            const total = completed.reduce((s,v)=>s+v.price,0);
+            const pending = sales.filter(s=>s.status==='pending');
+            const refunded = sales.filter(s=>s.status==='refunded');
+
+            document.getElementById('salesStats').innerHTML = `
+                <div class="stat-card"><div class="stat-label">Receita Total</div><div class="stat-value">${formatPrice(total)}</div></div>
+                <div class="stat-card"><div class="stat-label">Vendas Concluídas</div><div class="stat-value">${completed.length}</div></div>
+                <div class="stat-card"><div class="stat-label">Pendentes</div><div class="stat-value" style="color:var(--warning)">${pending.length}</div></div>
+                <div class="stat-card"><div class="stat-label">Reembolsos</div><div class="stat-value" style="color:var(--danger)">${refunded.length}</div></div>
+            `;
+
+            renderSales(currentFilter === 'all' ? sales : sales.filter(s => s.status === currentFilter));
+        }
+
+        function renderSales(list) {
+            const statusMap = {completed:'badge-success',pending:'badge-warning',refunded:'badge-danger'};
+            const statusLabel = {completed:'Concluída',pending:'Pendente',refunded:'Reembolsado'};
+            const payLabel = {pix:'PIX',cartao:'Cartão',boleto:'Boleto'};
+
+            document.getElementById('salesBody').innerHTML = list.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s => {
+                const u = DB.getUserById(s.userId);
+                const c = getCourseById(s.courseId);
+                return `<tr>
+                    <td>#${s.id}</td>
+                    <td>${new Date(s.date).toLocaleDateString('pt-BR')}</td>
+                    <td style="color:var(--text)">${u?u.name:'—'}</td>
+                    <td>${c?c.shortName:'—'}</td>
+                    <td style="color:var(--gold)">${formatPrice(s.price)}</td>
+                    <td>${payLabel[s.paymentMethod]||s.paymentMethod}</td>
+                    <td><span class="badge ${statusMap[s.status]}">${statusLabel[s.status]}</span></td>
+                    <td class="actions-cell">
+                        ${s.status==='pending'?`<button class="action-btn" onclick="updateStatus(${s.id},'completed')">Aprovar</button>`:''}
+                        ${s.status==='completed'?`<button class="action-btn action-btn-danger" onclick="updateStatus(${s.id},'refunded')">Reembolsar</button>`:''}
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function filterSales(q) {
+            let sales = DB.getSales();
+            if (currentFilter !== 'all') sales = sales.filter(s => s.status === currentFilter);
+            if (q) {
+                sales = sales.filter(s => {
+                    const u = DB.getUserById(s.userId);
+                    const c = getCourseById(s.courseId);
+                    return (u && u.name.toLowerCase().includes(q.toLowerCase())) || (c && c.name.toLowerCase().includes(q.toLowerCase()));
+                });
+            }
+            renderSales(sales);
+        }
+
+        function filterStatus(status) {
+            currentFilter = status;
+            loadSales();
+        }
+
+        function updateStatus(id, status) {
+            DB.updateSale(id, { status });
+            loadSales();
+        }
+    </script>
+</body>
+</html>

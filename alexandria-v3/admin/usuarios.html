@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Usuários - Admin - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Painel</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="usuarios.html" class="nav-link active">Usuários</a>
+                <a href="vendas.html" class="nav-link">Vendas</a>
+                <a href="configuracoes.html" class="nav-link">Config</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+        <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+        <a href="usuarios.html" class="mobile-nav-link">Usuários</a>
+        <a href="vendas.html" class="mobile-nav-link">Vendas</a>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-sidebar-header"><div class="dash-sidebar-role">Administrador</div><div class="dash-sidebar-name" id="adminName">Admin</div></div>
+            <nav class="dash-sidebar-nav">
+                <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+                <a href="cursos.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Cursos</a>
+                <a href="usuarios.html" class="dash-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Usuários</a>
+                <a href="vendas.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Vendas</a>
+                <a href="configuracoes.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/></svg>Configurações</a>
+            </nav>
+        </aside>
+
+        <main class="dash-content">
+            <div class="dash-content-header">
+                <h1 class="dash-page-title">Gerenciar Usuários</h1>
+                <p class="dash-page-desc">Todos os usuários cadastrados na plataforma</p>
+            </div>
+
+            <div class="stats-grid" id="userStats"></div>
+
+            <div class="table-header">
+                <input type="text" class="search-input" placeholder="Buscar usuário..." oninput="filterUsers(this.value)">
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead><tr><th>Nome</th><th>Email</th><th>Função</th><th>Cadastro</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody id="usersBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header"><h3 class="modal-title">Editar Usuário</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+            <div class="modal-body">
+                <input type="hidden" id="editUserId">
+                <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Nome</label>
+                <input type="text" class="form-input" id="editName">
+                <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Email</label>
+                <input type="email" class="form-input" id="editEmail">
+                <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Função</label>
+                <select class="form-input" id="editRole">
+                    <option value="aluno">Aluno</option>
+                    <option value="professor">Professor</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-sm btn-primary" onclick="saveUser()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../courses.js"></script>
+    <script src="../data.js"></script>
+    <script src="../auth.js"></script>
+    <script>
+        if (!Auth.requireAuth(['admin'])) {}
+        else {
+            document.getElementById('adminName').textContent = Auth.getCurrentUser().name;
+            loadUsers();
+        }
+
+        function loadUsers() {
+            const users = DB.getUsers();
+            const alunos = users.filter(u=>u.role==='aluno').length;
+            const profs = users.filter(u=>u.role==='professor').length;
+            const admins = users.filter(u=>u.role==='admin').length;
+
+            document.getElementById('userStats').innerHTML = `
+                <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value">${users.length}</div></div>
+                <div class="stat-card"><div class="stat-label">Alunos</div><div class="stat-value">${alunos}</div></div>
+                <div class="stat-card"><div class="stat-label">Professores</div><div class="stat-value">${profs}</div></div>
+                <div class="stat-card"><div class="stat-label">Admins</div><div class="stat-value">${admins}</div></div>
+            `;
+            renderUsers(users);
+        }
+
+        function renderUsers(list) {
+            const roleMap = {aluno:'badge-info',professor:'badge-warning',admin:'badge-danger'};
+            const roleLabel = {aluno:'Aluno',professor:'Professor',admin:'Admin'};
+            document.getElementById('usersBody').innerHTML = list.map(u => `<tr>
+                <td style="color:var(--text);">${u.name}</td>
+                <td>${u.email}</td>
+                <td><span class="badge ${roleMap[u.role]}">${roleLabel[u.role]}</span></td>
+                <td>${new Date(u.createdAt).toLocaleDateString('pt-BR')}</td>
+                <td><span class="badge ${u.active?'badge-success':'badge-danger'}">${u.active?'Ativo':'Inativo'}</span></td>
+                <td class="actions-cell">
+                    <button class="action-btn" onclick="editUser(${u.id})">Editar</button>
+                    <button class="action-btn action-btn-danger" onclick="toggleUserActive(${u.id})">${u.active?'Desativar':'Ativar'}</button>
+                </td>
+            </tr>`).join('');
+        }
+
+        function filterUsers(q) {
+            const filtered = DB.getUsers().filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase()));
+            renderUsers(filtered);
+        }
+
+        function editUser(id) {
+            const u = DB.getUserById(id);
+            if (!u) return;
+            document.getElementById('editUserId').value = id;
+            document.getElementById('editName').value = u.name;
+            document.getElementById('editEmail').value = u.email;
+            document.getElementById('editRole').value = u.role;
+            document.getElementById('editModal').classList.add('open');
+        }
+
+        function closeModal() { document.getElementById('editModal').classList.remove('open'); }
+
+        function saveUser() {
+            const id = parseInt(document.getElementById('editUserId').value);
+            DB.updateUser(id, {
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                role: document.getElementById('editRole').value
+            });
+            closeModal();
+            loadUsers();
+        }
+
+        function toggleUserActive(id) {
+            const u = DB.getUserById(id);
+            if (u) { DB.updateUser(id, { active: !u.active }); loadUsers(); }
+        }
+    </script>
+</body>
+</html>

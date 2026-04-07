@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - Alexandria</title>
+    <meta name="description" content="Explore nossos cursos de produtividade, automação e IA na Alexandria.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="cursos.html" class="nav-link active">Cursos</a>
+                <a href="contato.html" class="nav-link">Contato</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="cart-btn" aria-label="Carrinho">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-nav-link">Início</a>
+        <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+        <a href="contato.html" class="mobile-nav-link">Contato</a>
+        <a href="login.html" class="mobile-nav-link">Entrar</a>
+    </div>
+
+    <main class="courses-page">
+        <div class="container">
+            <div class="courses-page-header">
+                <span class="section-tag">// Catálogo</span>
+                <h1 class="courses-page-title">Todos os<br><span class="text-gradient">Cursos</span></h1>
+                <p class="courses-page-desc">Escolha o curso ideal para sua jornada de produtividade.</p>
+            </div>
+
+            <div class="table-header" style="justify-content:center;">
+                <input type="text" class="search-input" placeholder="Buscar curso..." oninput="handleSearch(event)" style="max-width:400px;">
+            </div>
+
+            <div class="courses-filters">
+                <button class="filter-btn active" onclick="filterByCategory('all')">Todos</button>
+                <button class="filter-btn" onclick="filterByCategory('Notion')">Notion</button>
+                <button class="filter-btn" onclick="filterByCategory('Obsidian')">Obsidian</button>
+                <button class="filter-btn" onclick="filterByCategory('Automação')">Automação</button>
+                <button class="filter-btn" onclick="filterByCategory('IA')">IA</button>
+                <button class="filter-btn" onclick="filterByCategory('Produtividade')">Produtividade</button>
+                <button class="filter-btn" onclick="filterByCategory('Google')">Google/Excel</button>
+            </div>
+
+            <div class="courses-grid" id="coursesGrid"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="index.html" class="footer-logo">Alexandria</a>
+                <div class="footer-links">
+                    <a href="cursos.html" class="footer-link">Cursos</a>
+                    <a href="contato.html" class="footer-link">Contato</a>
+                    <a href="login.html" class="footer-link">Entrar</a>
+                </div>
+                <p class="footer-copy">© 2026 Alexandria. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3>Carrinho</h3><button class="close-cart" onclick="toggleCart()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

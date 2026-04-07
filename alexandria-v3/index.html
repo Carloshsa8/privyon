@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexandria — O conhecimento é a base de tudo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { overflow-x: hidden; }
+
+        /* ===== INTRO OVERLAY ===== */
+        .intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #06060a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
+        .intro-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(0, 201, 167, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 50%);
+            animation: introPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes introPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            transition: all 1s ease;
+        }
+
+        .intro-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            opacity: 0;
+            animation: logoReveal 1.2s ease forwards;
+        }
+
+        .intro-logo span {
+            color: var(--accent);
+        }
+
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-subtitle {
+            font-size: clamp(0.65rem, 1.5vw, 0.85rem);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-top: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating particles */
+        .intro-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .intro-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .intro-particle:nth-child(1) { left: 20%; animation: particleFloat 6s ease-in-out infinite 0s; }
+        .intro-particle:nth-child(2) { left: 40%; animation: particleFloat 8s ease-in-out infinite 1s; }
+        .intro-particle:nth-child(3) { left: 60%; animation: particleFloat 7s ease-in-out infinite 2s; }
+        .intro-particle:nth-child(4) { left: 80%; animation: particleFloat 9s ease-in-out infinite 3s; }
+
+        @keyframes particleFloat {
+            0%, 100% { top: 80%; opacity: 0; transform: scale(0.5); }
+            10% { opacity: 0.6; }
+            50% { opacity: 0.4; transform: scale(1); }
+            90% { opacity: 0.6; }
+            95% { opacity: 0; transform: scale(0.5); top: 20%; }
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: 
+                radial-gradient(ellipse at 20% 40%, rgba(0, 201, 167, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, var(--bg-deep) 70%);
+            pointer-events: none;
+        }
+
+        /* Grid pattern */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 201, 167, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 201, 167, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 1.5rem auto 2.5rem;
+            max-width: 580px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-dim);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .scroll-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(8px); opacity: 1; }
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            padding: 8rem 2rem;
+            background: var(--bg-card);
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+
+        .feature:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 201, 167, 0.08);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 1.25rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .feature-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+            position: relative;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .home-stat {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .home-stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .home-stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+        }
+
+        /* ===== COURSES PREVIEW ===== */
+        .courses-preview {
+            padding: 8rem 2rem;
+            background: var(--bg-deep);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            padding: 8rem 2rem;
+            background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 100%);
+        }
+
+        /* ===== SCROLL TOP BTN ===== */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 4rem 2rem;
+            background: var(--bg-dark);
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .footer-logo span { color: var(--accent); }
+
+        .footer-copy {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        /* ===== COURSE CARDS ===== */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+        }
+
+        .course-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 201, 167, 0.1);
+        }
+
+        .course-category {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            margin: 0.5rem 0 0.5rem;
+            font-weight: 500;
+        }
+
+        .course-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .course-price {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ===== TESTIMONIAL CARDS ===== */
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(0, 201, 167, 0.08);
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            font-size: 0.9rem;
+        }
+
+        .testimonial-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-top: 0.25rem;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container { padding: 0 1.5rem; }
+            .hero-cta { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-bg"></div>
+        <div class="intro-particles">
+            <div class="intro-particle"></div>
+            <div class="intro-particle"></div>
+            <div class="intro-particle"></div>
+            <div class="intro-particle"></div>
+        </div>
+        <div class="intro-content">
+            <h1 class="intro-logo">Alexandria<span>.</span></h1>
+            <p class="intro-subtitle">O conhecimento é a base de tudo</p>
+        </div>
+    </div>
+
+    <main class="main-content" id="mainContent">
+        <header class="header">
+            <div class="header-container">
+                <a href="index.html" class="logo">Alexandria<span>.</span></a>
+                
+                <nav class="nav">
+                    <a href="#" class="nav-link active" onclick="scrollToTop(); return false;">Início</a>
+                    <a href="cursos.html" class="nav-link">Cursos</a>
+                    <a href="contato.html" class="nav-link">Contato</a>
+                </nav>
+
+                <div class="header-right">
+                    <div id="authHeaderActions" class="auth-header-actions"></div>
+                    <button class="cart-btn" aria-label="Carrinho">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                        <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">Início</a>
+            <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+            <a href="contato.html" class="mobile-nav-link">Contato</a>
+            <a href="login.html" class="mobile-nav-link">Entrar</a>
+            <a href="registro.html" class="mobile-nav-link">Cadastrar</a>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-grid"></div>
+            
+            <div class="hero-content">
+                <p class="hero-eyebrow">Plataforma de conhecimento</p>
+                <h1 class="hero-title">
+                    Alexandria
+                </h1>
+                <p class="hero-subtitle">
+                    O conhecimento é a base de tudo. Descubra ferramentas e métodos 
+                    que vão transformar sua produtividade e sua forma de trabalhar.
+                </p>
+                <div class="hero-cta">
+                    <a href="cursos.html" class="btn btn-primary">Explorar Cursos</a>
+                    <a href="#about" class="btn">Conhecer Mais</a>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <div class="scroll-dot"></div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Por que Alexandria</span>
+                    <h2 class="section-title">Aprenda com profundidade</h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <h3 class="feature-title">Preços Acessíveis</h3>
+                        <p class="feature-text">Investimento que cabe no seu bolso para transformar sua produtividade</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="feature-title">Comunidade Ativa</h3>
+                        <p class="feature-text">Suporte e networking com outros alunos comprometidos com evolução</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3 class="feature-title">Certificado</h3>
+                        <p class="feature-text">Certificado de conclusão para valorizar seu currículo e carreira</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="home-stat">
+                    <div class="home-stat-value">10.000+</div>
+                    <div class="home-stat-label">Alunos Ativos</div>
+                </div>
+                <div class="home-stat">
+                    <div class="home-stat-value">12</div>
+                    <div class="home-stat-label">Cursos Completos</div>
+                </div>
+                <div class="home-stat">
+                    <div class="home-stat-value">98%</div>
+                    <div class="home-stat-label">Satisfação</div>
+                </div>
+                <div class="home-stat">
+                    <div class="home-stat-value">300h+</div>
+                    <div class="home-stat-label">De Conteúdo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Preview -->
+        <section class="courses-preview" id="courses">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Nossos Cursos</span>
+                    <h2 class="section-title">Domine suas ferramentas</h2>
+                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="cursos.html" class="btn">Ver Todos os Cursos</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Depoimentos</span>
+                    <h2 class="section-title">O que dizem nossos alunos</h2>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">O curso de Notion transformou minha forma de trabalhar. Hoje organizo toda minha empresa com os templates do curso. Recomendo muito!</p>
+                        <div class="testimonial-author">Maria Oliveira</div>
+                        <div class="testimonial-role">Empreendedora Digital</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Nunca imaginei que aprender IA pudesse aumentar tanto minha produtividade. Consigo fazer em 1h o que levava 1 dia. Curso excepcional!</p>
+                        <div class="testimonial-author">João Santos</div>
+                        <div class="testimonial-role">Desenvolvedor Full Stack</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">As automações que aprendi me economizam mais de 20h por semana. O investimento se pagou no primeiro mês!</p>
+                        <div class="testimonial-author">Ana Beatriz</div>
+                        <div class="testimonial-role">Gerente de Projetos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <a href="index.html" class="footer-logo">Alexandria<span>.</span></a>
+                <span class="footer-tagline">Plataforma de Conhecimento</span>
+                <div class="footer-links">
+                    <a href="cursos.html" class="footer-link">Cursos</a>
+                    <a href="contato.html" class="footer-link">Contato</a>
+                    <a href="login.html" class="footer-link">Entrar</a>
+                </div>
+                <p class="footer-copy">© 2026 Alexandria. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </main>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3>Carrinho</h3><button class="close-cart" onclick="toggleCart()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const overlay = document.getElementById('introOverlay');
+                overlay.classList.add('fade-out');
+                document.getElementById('mainContent').classList.add('visible');
+                setTimeout(() => overlay.remove(), 800);
+            }, 2500);
+        });
+    </script>
+</body>
+</html>

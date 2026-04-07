@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Cursos - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="meus-cursos.html" class="nav-link active">Meus Cursos</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-nav-link">Início</a>
+        <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+        <a href="meus-cursos.html" class="mobile-nav-link">Meus Cursos</a>
+    </div>
+
+    <main class="student-page">
+        <div class="container">
+            <div class="student-header">
+                <h1 class="student-greeting" id="studentGreeting">Meus Cursos</h1>
+                <p class="student-sub">Continue de onde parou</p>
+            </div>
+            <div class="student-courses-grid" id="studentCoursesGrid"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container"><div class="footer-inner"><a href="index.html" class="footer-logo">Alexandria</a><p class="footer-copy">© 2026 Alexandria. Todos os direitos reservados.</p></div></div>
+    </footer>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if (!Auth.requireAuth(['aluno'])) { /* redirected */ }
+        else {
+            const session = Auth.getSession();
+            const user = Auth.getCurrentUser();
+            document.getElementById('studentGreeting').textContent = `Olá, ${user.name.split(' ')[0]}!`;
+
+            const enrollments = DB.getEnrollmentsByUser(session.userId);
+            const grid = document.getElementById('studentCoursesGrid');
+
+            if (enrollments.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <div class="empty-state-title">Nenhum curso ainda</div>
+                        <p class="empty-state-text">Explore nosso catálogo e comece a aprender!</p>
+                        <a href="cursos.html" class="btn" style="margin-top:1.5rem;">Ver Cursos</a>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = enrollments.map(e => {
+                    const course = getCourseById(e.courseId);
+                    if (!course) return '';
+                    const instructor = DB.getUserById(course.instructorId);
+                    return `
+                        <a href="aula.html?courseId=${course.id}" class="student-course-card" style="text-decoration:none;">
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                                <div class="course-icon" style="width:40px;height:40px;">${courseImages[course.image] || courseImages.notion}</div>
+                                <span class="course-category">${course.category}</span>
+                            </div>
+                            <div class="student-course-title">${course.name}</div>
+                            <div class="student-course-instructor">${instructor ? instructor.name : ''}</div>
+                            <div class="progress-bar"><div class="progress-bar-fill" style="width:${e.progress}%"></div></div>
+                            <div class="progress-text">${e.progress}% concluído</div>
+                            ${e.progress === 100 ? '<span class="badge badge-success" style="margin-top:0.5rem;">✓ Certificado disponível</span>' : ''}
+                        </a>
+                    `;
+                }).join('');
+            }
+        }
+    </script>
+</body>
+</html>

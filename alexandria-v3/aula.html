@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="meus-cursos.html" class="nav-link">Meus Cursos</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="meus-cursos.html" class="mobile-nav-link">Meus Cursos</a>
+        <a href="cursos.html" class="mobile-nav-link">Catálogo</a>
+        <a href="index.html" class="mobile-nav-link">Início</a>
+    </div>
+
+    <main class="lesson-page" id="lessonPage"></main>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if (!Auth.requireAuth(['aluno'])) { /* redirected */ }
+        else {
+            const params = new URLSearchParams(window.location.search);
+            const courseId = parseInt(params.get('courseId'));
+            let lessonId = parseInt(params.get('lessonId')) || null;
+            const course = getCourseById(courseId);
+            const session = Auth.getSession();
+            const page = document.getElementById('lessonPage');
+
+            if (!course) {
+                page.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-dim);">Curso não encontrado. <a href="meus-cursos.html" style="color:var(--gold);">Voltar</a></div>';
+            } else {
+                const enrollment = DB.getEnrollment(session.userId, courseId);
+                if (!enrollment) {
+                    page.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-dim);">Você não está matriculado neste curso. <a href="meus-cursos.html" style="color:var(--gold);">Voltar</a></div>';
+                } else {
+                    // Default to first lesson if none specified
+                    if (!lessonId && course.modules.length > 0 && course.modules[0].lessons.length > 0) {
+                        lessonId = course.modules[0].lessons[0].id;
+                    }
+
+                    let currentLesson = null;
+                    let currentModule = null;
+                    course.modules.forEach(m => {
+                        m.lessons.forEach(l => {
+                            if (l.id === lessonId) { currentLesson = l; currentModule = m; }
+                        });
+                    });
+
+                    document.title = `${currentLesson ? currentLesson.title : course.name} - Alexandria`;
+
+                    // Get all lessons flat for prev/next
+                    const allLessons = course.modules.flatMap(m => m.lessons);
+                    const currentIdx = allLessons.findIndex(l => l.id === lessonId);
+                    const prevLesson = currentIdx > 0 ? allLessons[currentIdx - 1] : null;
+                    const nextLesson = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1] : null;
+                    const isCompleted = enrollment.completedLessons.includes(lessonId);
+
+                    page.innerHTML = `
+                        <aside class="lesson-sidebar">
+                            <div class="lesson-sidebar-header">
+                                <div class="lesson-sidebar-title">${course.name}</div>
+                                <a href="meus-cursos.html" class="lesson-sidebar-back">← Voltar aos meus cursos</a>
+                                <div class="progress-bar" style="margin-top:1rem;"><div class="progress-bar-fill" style="width:${enrollment.progress}%"></div></div>
+                                <div class="progress-text">${enrollment.progress}% concluído</div>
+                            </div>
+                            ${course.modules.map(mod => `
+                                <div class="lesson-module-group">
+                                    <div class="lesson-module-label">${mod.title}</div>
+                                    ${mod.lessons.map(l => {
+                                        const done = enrollment.completedLessons.includes(l.id);
+                                        const active = l.id === lessonId;
+                                        return `
+                                        <a href="aula.html?courseId=${courseId}&lessonId=${l.id}" class="lesson-item ${active ? 'active' : ''} ${done ? 'completed' : ''}" style="text-decoration:none;">
+                                            <span class="lesson-item-check">${done ? '✓' : ''}</span>
+                                            ${l.title}
+                                            <span class="lesson-item-duration">${l.duration}</span>
+                                        </a>`;
+                                    }).join('')}
+                                </div>
+                            `).join('')}
+                        </aside>
+
+                        <div class="lesson-content">
+                            <div class="lesson-video">
+                                <div class="lesson-video-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                    <p>Conteúdo da aula</p>
+                                    <p style="font-size:0.8rem;margin-top:0.5rem;">Em uma plataforma real, o vídeo seria exibido aqui</p>
+                                </div>
+                            </div>
+
+                            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+                                <div>
+                                    <span style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">${currentModule ? currentModule.title : ''}</span>
+                                    <h1 class="lesson-title-main">${currentLesson ? currentLesson.title : ''}</h1>
+                                </div>
+                                <button class="lesson-complete-btn ${isCompleted ? 'completed' : ''}" onclick="markComplete(${courseId}, ${lessonId})" id="completeBtn">
+                                    ${isCompleted ? '✓ Concluída' : 'Marcar como concluída'}
+                                </button>
+                            </div>
+
+                            <p class="lesson-desc">Esta aula aborda os conceitos fundamentais necessários para dominar ${currentLesson ? currentLesson.title.toLowerCase() : 'o conteúdo'}. Aproveite o conteúdo e pratique os exercícios propostos.</p>
+
+                            <div class="lesson-nav">
+                                ${prevLesson ? `<a href="aula.html?courseId=${courseId}&lessonId=${prevLesson.id}" class="btn btn-sm">← Anterior</a>` : '<div></div>'}
+                                ${nextLesson ? `<a href="aula.html?courseId=${courseId}&lessonId=${nextLesson.id}" class="btn btn-sm btn-primary">Próxima →</a>` : '<div></div>'}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function markComplete(courseId, lessonId) {
+            const session = Auth.getSession();
+            DB.completeLesson(session.userId, courseId, lessonId);
+            location.reload();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Cursos - Admin - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Painel</a>
+                <a href="cursos.html" class="nav-link active">Cursos</a>
+                <a href="usuarios.html" class="nav-link">Usuários</a>
+                <a href="vendas.html" class="nav-link">Vendas</a>
+                <a href="configuracoes.html" class="nav-link">Config</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+        <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+        <a href="usuarios.html" class="mobile-nav-link">Usuários</a>
+        <a href="vendas.html" class="mobile-nav-link">Vendas</a>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-sidebar-header"><div class="dash-sidebar-role">Administrador</div><div class="dash-sidebar-name" id="adminName">Admin</div></div>
+            <nav class="dash-sidebar-nav">
+                <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+                <a href="cursos.html" class="dash-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Cursos</a>
+                <a href="usuarios.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Usuários</a>
+                <a href="vendas.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Vendas</a>
+                <a href="configuracoes.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Configurações</a>
+            </nav>
+        </aside>
+
+        <main class="dash-content">
+            <div class="dash-content-header">
+                <h1 class="dash-page-title">Gerenciar Cursos</h1>
+                <p class="dash-page-desc">Todos os cursos da plataforma</p>
+            </div>
+
+            <div class="table-header">
+                <input type="text" class="search-input" placeholder="Buscar curso..." oninput="filterCourses(this.value)">
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead><tr><th>Curso</th><th>Professor</th><th>Preço</th><th>Alunos</th><th>Rating</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody id="coursesBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../courses.js"></script>
+    <script src="../data.js"></script>
+    <script src="../auth.js"></script>
+    <script>
+        if (!Auth.requireAuth(['admin'])) {}
+        else {
+            document.getElementById('adminName').textContent = Auth.getCurrentUser().name;
+            renderCourses(getAllCourses());
+        }
+
+        function renderCourses(list) {
+            document.getElementById('coursesBody').innerHTML = list.map(c => {
+                const instr = DB.getUserById(c.instructorId);
+                const enrolled = DB.getEnrollmentsByCourse(c.id).length;
+                const rating = DB.getCourseRating(c.id);
+                return `<tr>
+                    <td style="color:var(--text);">${c.shortName}</td>
+                    <td>${instr?instr.name:'—'}</td>
+                    <td style="color:var(--gold);">${formatPrice(c.price)}</td>
+                    <td>${c.students + enrolled}</td>
+                    <td style="color:var(--gold);">★ ${rating.avg || c.rating}</td>
+                    <td><span class="badge ${c.published?'badge-success':'badge-warning'}">${c.published?'Publicado':'Rascunho'}</span></td>
+                    <td class="actions-cell">
+                        <a href="../curso-detalhe.html?id=${c.id}" class="action-btn" style="text-decoration:none;">Ver</a>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function filterCourses(q) {
+            const filtered = getAllCourses().filter(c => c.name.toLowerCase().includes(q.toLowerCase()) || c.category.toLowerCase().includes(q.toLowerCase()));
+            renderCourses(filtered);
+        }
+    </script>
+</body>
+</html>

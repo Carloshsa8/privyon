@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <a href="index.html" class="auth-logo" style="display:block;text-decoration:none;">Alexandria</a>
+            <p class="auth-subtitle">Crie sua conta</p>
+
+            <div class="auth-error" id="authError"></div>
+
+            <form class="auth-form" id="registerForm" onsubmit="return handleRegister(event)">
+                <input type="text" class="form-input" id="regName" placeholder="Nome completo" required>
+                <input type="email" class="form-input" id="regEmail" placeholder="Seu email" required>
+                <input type="password" class="form-input" id="regPassword" placeholder="Senha (min. 6 caracteres)" required minlength="6">
+                <input type="password" class="form-input" id="regConfirm" placeholder="Confirmar senha" required>
+
+                <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:0.75rem;">Eu sou:</p>
+                <div class="auth-role-select">
+                    <div class="role-option active" data-role="aluno" onclick="selectRole(this)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:0.25rem;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        <div>Aluno</div>
+                    </div>
+                    <div class="role-option" data-role="professor" onclick="selectRole(this)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:0.25rem;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <div>Professor</div>
+                    </div>
+                </div>
+                <input type="hidden" id="regRole" value="aluno">
+
+                <button type="submit" class="btn btn-primary btn-full">Criar Conta</button>
+            </form>
+
+            <div class="auth-links">
+                <p>Já tem conta? <a href="login.html">Entrar</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        Auth.redirectIfLoggedIn();
+
+        function selectRole(el) {
+            document.querySelectorAll('.role-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('regRole').value = el.dataset.role;
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const errorEl = document.getElementById('authError');
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+
+            if (password !== confirm) {
+                errorEl.textContent = 'As senhas não coincidem.';
+                errorEl.classList.add('show');
+                return false;
+            }
+
+            const result = Auth.register({
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: password,
+                role: document.getElementById('regRole').value
+            });
+
+            if (result.success) {
+                Auth.redirectIfLoggedIn();
+            } else {
+                errorEl.textContent = result.message;
+                errorEl.classList.add('show');
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Admin - Alexandria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">Alexandria</a>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Painel</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="usuarios.html" class="nav-link">Usuários</a>
+                <a href="vendas.html" class="nav-link">Vendas</a>
+                <a href="configuracoes.html" class="nav-link active">Config</a>
+            </nav>
+            <div class="header-right">
+                <div id="authHeaderActions" class="auth-header-actions"></div>
+                <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+        <a href="configuracoes.html" class="mobile-nav-link">Configurações</a>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dash-sidebar">
+            <div class="dash-sidebar-header"><div class="dash-sidebar-role">Administrador</div><div class="dash-sidebar-name" id="adminName">Admin</div></div>
+            <nav class="dash-sidebar-nav">
+                <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+                <a href="cursos.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Cursos</a>
+                <a href="usuarios.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Usuários</a>
+                <a href="vendas.html" class="dash-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Vendas</a>
+                <a href="configuracoes.html" class="dash-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/></svg>Configurações</a>
+            </nav>
+        </aside>
+
+        <main class="dash-content">
+            <div class="dash-content-header">
+                <h1 class="dash-page-title">Configurações</h1>
+                <p class="dash-page-desc">Configurações gerais da plataforma</p>
+            </div>
+
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3 class="settings-card-title">Informações da Plataforma</h3>
+                    <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Nome da Plataforma</label>
+                    <input type="text" class="form-input" id="settName" value="">
+                    <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Tagline</label>
+                    <input type="text" class="form-input" id="settTagline" value="">
+                    <button class="btn btn-sm btn-primary" onclick="saveSettings()">Salvar Alterações</button>
+                </div>
+
+                <div class="settings-card">
+                    <h3 class="settings-card-title">Financeiro</h3>
+                    <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Comissão da Plataforma (%)</label>
+                    <input type="number" class="form-input" id="settCommission" min="0" max="100" value="">
+                    <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Moeda</label>
+                    <select class="form-input" id="settCurrency">
+                        <option value="BRL">BRL - Real Brasileiro</option>
+                        <option value="USD">USD - Dólar Americano</option>
+                        <option value="EUR">EUR - Euro</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" onclick="saveSettings()">Salvar Alterações</button>
+                </div>
+
+                <div class="settings-card">
+                    <h3 class="settings-card-title">Dados</h3>
+                    <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:1rem;">Resetar todos os dados da plataforma para os valores padrão. Esta ação não pode ser desfeita.</p>
+                    <button class="btn btn-sm btn-danger" onclick="resetData()">Resetar Dados</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../courses.js"></script>
+    <script src="../data.js"></script>
+    <script src="../auth.js"></script>
+    <script>
+        if (!Auth.requireAuth(['admin'])) {}
+        else {
+            document.getElementById('adminName').textContent = Auth.getCurrentUser().name;
+            const settings = DB.getSettings();
+            document.getElementById('settName').value = settings.platformName;
+            document.getElementById('settTagline').value = settings.platformTagline;
+            document.getElementById('settCommission').value = settings.commissionRate;
+            document.getElementById('settCurrency').value = settings.currency;
+        }
+
+        function saveSettings() {
+            DB.updateSettings({
+                platformName: document.getElementById('settName').value,
+                platformTagline: document.getElementById('settTagline').value,
+                commissionRate: parseInt(document.getElementById('settCommission').value),
+                currency: document.getElementById('settCurrency').value
+            });
+            alert('Configurações salvas!');
+        }
+
+        function resetData() {
+            if (confirm('Tem certeza? Todos os dados serão resetados para os valores padrão.')) {
+                DB.reset();
+                alert('Dados resetados!');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
