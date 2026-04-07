@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SkillStack</title>
+    <meta name="description" content="Finalizar compra dos cursos." />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Skill<span>Stack</span></a>
+            
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="index.html#contato" class="nav-link">Contato</a>
+            </nav>
+            
+            <button class="cart-btn" aria-label="Carrinho">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="checkout-page">
+        <div class="container">
+            <div class="courses-page-header">
+                <span class="section-tag">// CHECKOUT</span>
+                <h1 class="courses-page-title">Finalizar<br><span class="text-gradient">Pedido</span></h1>
+            </div>
+            
+            <div class="checkout-container">
+                <div class="checkout-form">
+                    <form id="checkoutForm" onsubmit="return handleCheckout(event)">
+                        <div class="form-section">
+                            <h2 class="form-section-title">Informações Pessoais</h2>
+                            <div class="form-row">
+                                <input type="text" class="form-input" placeholder="Nome Completo" required>
+                                <input type="email" class="form-input" placeholder="Email" required>
+                            </div>
+                            <input type="tel" class="form-input" placeholder="WhatsApp" required>
+                        </div>
+
+                        <div class="form-section">
+                            <h2 class="form-section-title">Pagamento</h2>
+                            <input type="text" class="form-input" placeholder="Número do Cartão" required>
+                            <div class="form-row">
+                                <input type="text" class="form-input" placeholder="Validade (MM/AA)" required>
+                                <input type="text" class="form-input" placeholder="CVV" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full">Finalizar Pedido</button>
+                    </form>
+                </div>
+
+                <aside class="checkout-summary">
+                    <h2 class="summary-title">Resumo do Pedido</h2>
+                    <div class="summary-items" id="summaryItems"><p class="cart-empty">Carrinho vazio</p></div>
+                    <div class="summary-totals">
+                        <div class="summary-row"><span>Subtotal</span><span id="summarySubtotal">R$ 0,00</span></div>
+                        <div class="summary-row total"><span>Total</span><span id="summaryTotal">R$ 0,00</span></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

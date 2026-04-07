@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - Produtividade Digital</title>
+    <meta name="description" content="Cursos de produtividade digital, Notion, Obsidian e mais." />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Skill<span>Stack</span></a>
+            
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Início</a>
+                <a href="cursos.html" class="nav-link">Cursos</a>
+                <a href="#contato" class="nav-link">Contato</a>
+            </nav>
+            
+            <button class="cart-btn" aria-label="Carrinho">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">Educação Digital</div>
+                <h1 class="hero-title">Domine suas<br>ferramentas<span class="text-gradient">.</span></h1>
+                <p class="hero-subtitle">Cursos práticos para transformar sua produtividade. Notion, Obsidian, automações e mais.</p>
+                <div class="hero-btns">
+                    <a href="cursos.html" class="btn btn-primary">Ver Cursos</a>
+                    <a href="#contato" class="btn btn-outline">Falar Conosco</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="courses-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// CURSOS</span>
+                    <h2 class="section-title">Nossos <span class="text-gradient">Cursos</span></h2>
+                    <p class="section-desc">Aprenda com profundidade e pratique imediatamente</p>
+                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg></div>
+                        <h3 class="feature-title">Preços Acessíveis</h3>
+                        <p class="feature-text">Investimento que cabe no seu bolso</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                        <h3 class="feature-title">Acesso Vitalício</h3>
+                        <p class="feature-text">Estude no seu ritmo, anytime</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                        <h3 class="feature-title">Comunidade Ativa</h3>
+                        <p class="feature-text">Suporte e networking com alunos</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                        <h3 class="feature-title">Certificado</h3>
+                        <p class="feature-text">Certificado de conclusão</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// CONTATO</span>
+                    <h2 class="section-title">Vamos <span class="text-gradient">conversar</span></h2>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+                            <div><div class="contact-label">Email</div><div class="contact-value">contato@skillstack.com</div></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.27 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                            <div><div class="contact-label">WhatsApp</div><div class="contact-value">+55 (17) 99999-9999</div></div>
+                        </div>
+                    </div>
+                    <form class="contact-form" onsubmit="return handleContact(event)">
+                        <div class="form-row">
+                            <input type="text" class="form-input" placeholder="Nome" required>
+                            <input type="email" class="form-input" placeholder="Email" required>
+                        </div>
+                        <textarea class="form-input" rows="4" placeholder="Como podemos te ajudar?" required></textarea>
+                        <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="index.html" class="footer-logo">Skill<span>Stack</span></a>
+                <p class="footer-copy">© 2026 SkillStack. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

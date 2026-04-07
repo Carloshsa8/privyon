@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Cursos - SkillStack</title>
+    <meta name="description" content="Todos os cursos de produtividade digital." />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">Skill<span>Stack</span></a>
+            
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="cursos.html" class="nav-link active">Cursos</a>
+                <a href="index.html#contato" class="nav-link">Contato</a>
+            </nav>
+            
+            <button class="cart-btn" aria-label="Carrinho">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="courses-page">
+        <div class="container">
+            <div class="courses-page-header">
+                <span class="section-tag">// CURSOS</span>
+                <h1 class="courses-page-title">Todos os<br><span class="text-gradient">Cursos</span></h1>
+                <p class="courses-page-desc">Escolha o curso ideal para sua jornada de produtividade.</p>
+            </div>
+            <div class="courses-page-grid" id="coursesGrid"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="index.html" class="footer-logo">Skill<span>Stack</span></a>
+                <p class="footer-copy">© 2026 SkillStack. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

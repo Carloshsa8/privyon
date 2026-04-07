@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços - Privyon</title>
+    <meta name="description" content="Todos os serviços de privacidade e segurança digital." />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 83.03 126.33"><path d="m 41.512,0.261 a 41.253,41.629 0 0 0 -41.252,41.628 41.253,41.629 0 0 0 32.323,40.643 41.253,41.629 0 0 0 1.355,0.279 l 3.605,-15.214 a 25.783,26.018 0 0 1 -21.813,-25.707 25.783,26.018 0 0 1 25.782,-26.017 25.783,26.018 0 0 1 25.785,26.017 25.783,26.018 0 0 1 -22.433,25.798 l -8.7,15.48 -1.096,1.946 -1.634,2.91 -0.538,1.198 -0.254,0.56 0.25,31.085 a 5.157,5.204 0 0 0 5.158,5.203 5.157,5.204 0 0 0 5.154,-5.203 l 0.094,-9.977 10.985,-0.232 a 5.157,5.204 0 0 0 5.158,-5.203 5.157,5.204 0 0 0 -5.158,-5.206 5.157,5.204 0 0 0 -0.438,0.031 5.157,5.204 0 0 1 0.232,-0.026 l -10.682,0.213 0.157,-16.997 a 41.253,41.629 0 0 0 39.214,-41.578 41.253,41.629 0 0 0 -41.255,-41.628 z"/></svg>
+                <span>Priv<span>yon</span></span>
+            </a>
+            
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="servicos.html" class="nav-link active">Serviços</a>
+                <a href="index.html#contato" class="nav-link">Contato</a>
+            </nav>
+            
+            <button class="cart-btn" aria-label="Carrinho">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="services-page">
+        <div class="container">
+            <div class="services-page-header">
+                <span class="section-tag">// Serviços</span>
+                <h1 class="services-page-title">Proteção digital<br><span class="text-gradient">completa</span></h1>
+                <p class="services-page-desc">Escolha os serviços que precisa para proteger sua vida digital.</p>
+            </div>
+            <div class="services-grid" id="servicesGrid"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <a href="index.html" class="footer-logo">
+                    <svg viewBox="0 0 83.03 126.33"><path d="m 41.512,0.261 a 41.253,41.629 0 0 0 -41.252,41.628 41.253,41.629 0 0 0 32.323,40.643 41.253,41.629 0 0 0 1.355,0.279 l 3.605,-15.214 a 25.783,26.018 0 0 1 -21.813,-25.707 25.783,26.018 0 0 1 25.782,-26.017 25.783,26.018 0 0 1 25.785,26.017 25.783,26.018 0 0 1 -22.433,25.798 l -8.7,15.48 -1.096,1.946 -1.634,2.91 -0.538,1.198 -0.254,0.56 0.25,31.085 a 5.157,5.204 0 0 0 5.158,5.203 5.157,5.204 0 0 0 5.154,-5.203 l 0.094,-9.977 10.985,-0.232 a 5.157,5.204 0 0 0 5.158,-5.203 5.157,5.204 0 0 0 -5.158,-5.206 5.157,5.204 0 0 0 -0.438,0.031 5.157,5.204 0 0 1 0.232,-0.026 l -10.682,0.213 0.157,-16.997 a 41.253,41.629 0 0 0 39.214,-41.578 41.253,41.629 0 0 0 -41.255,-41.628 z"/></svg>
+                    <span>Priv<span>yon</span></span>
+                </a>
+                <p class="footer-copy">© 2026 Privyon. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="services.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexandria - Plataforma de Conhecimento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --text: #f5f5f5;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-backgrounds {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .intro-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: bgFade 1.2s infinite;
+        }
+
+        .intro-bg:nth-child(1) {
+            animation-delay: 0s;
+            background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1920&q=80');
+        }
+
+        .intro-bg:nth-child(2) {
+            animation-delay: 0.3s;
+            background-image: url('https://images.unsplash.com/photo-1512821900802-78bb9256b96f?w=1920&q=80');
+        }
+
+        .intro-bg:nth-child(3) {
+            animation-delay: 0.6s;
+            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&q=80');
+        }
+
+        .intro-bg:nth-child(4) {
+            animation-delay: 0.9s;
+            background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920&q=80');
+        }
+
+        @keyframes bgFade {
+            0%, 100% { opacity: 0; }
+            40%, 60% { opacity: 0.15; }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            transition: all 1s ease;
+        }
+
+        .intro-content.shrink {
+            transform: scale(0.4);
+            opacity: 0;
+        }
+
+        .intro-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-shadow: 0 0 60px rgba(201, 162, 39, 0.5);
+            opacity: 0;
+            animation: titleReveal 1s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .intro-subtitle {
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            animation-delay: 1.3s;
+        }
+
+        @keyframes titleReveal {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-content {
+            position: relative;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 1s ease;
+            padding-top: 70px;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        .hero {
+            height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: -70px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, var(--darker) 70%);
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .hero-title span {
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 2rem;
+        }
+
+        .hero-cta {
+            margin-top: 4rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--darker);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--darker);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            border-color: var(--gold-light);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .features {
+            padding: 8rem 2rem;
+            background: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .feature-text {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .courses-preview {
+            padding: 8rem 2rem;
+            background: var(--darker);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-top: 1rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--dark);
+            border: 1px solid #1a1a1a;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .course-category {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .course-desc {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-price {
+            font-size: 1.1rem;
+            color: var(--gold);
+        }
+
+        .footer {
+            padding: 4rem 2rem;
+            background: var(--dark);
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .footer-copy {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-backgrounds">
+            <div class="intro-bg"></div>
+            <div class="intro-bg"></div>
+            <div class="intro-bg"></div>
+            <div class="intro-bg"></div>
+        </div>
+        <div class="intro-content">
+            <h1 class="intro-title">Alexandria</h1>
+            <p class="intro-subtitle">O conhecimento是人类进步的唯一途径</p>
+        </div>
+    </div>
+
+    <main class="main-content" id="mainContent">
+        <header class="header">
+            <div class="header-container">
+                <a href="index.html" class="logo">Alexandria</a>
+                
+                <nav class="nav">
+                    <a href="index.html" class="nav-link active">Início</a>
+                    <a href="cursos.html" class="nav-link">Cursos</a>
+                    <a href="contato.html" class="nav-link">Contato</a>
+                </nav>
+                
+                <button class="cart-btn" aria-label="Carrinho">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1 class="hero-title">Alexandria</h1>
+            <p class="hero-subtitle">Plataforma de Conhecimento</p>
+            <div class="hero-cta">
+                <a href="#courses" class="btn btn-primary">Ver Cursos</a>
+                <a href="#about" class="btn">Saiba Mais</a>
+            </div>
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </div>
+        </section>
+
+        <section class="features" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Por que Alexandria</span>
+                    <h2 class="section-title">Aprenda com profundidade</h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Preços Acessíveis</h3>
+                        <p class="feature-text">Investimento que cabe no seu bolso para transformar sua produtividade</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Comunidade Ativa</h3>
+                        <p class="feature-text">Suporte e networking com outros alunos comprometidos</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Certificado</h3>
+                        <p class="feature-text">Certificado de conclusão para valorizar seu currículo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="courses-preview" id="courses">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Nossos Cursos</span>
+                    <h2 class="section-title">Domine suas ferramentas</h2>
+                </div>
+                <div class="courses-grid" id="coursesGrid"></div>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="cursos.html" class="btn">Ver Todos os Cursos</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <a href="index.html" class="footer-logo">Alexandria</a>
+                    <p class="footer-copy">© 2026 Alexandria. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            <a href="checkout.html" class="btn btn-primary btn-full">Finalizar Compra</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <script src="courses.js"></script>
+    <script src="app.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.intro-content').classList.add('shrink');
+                document.getElementById('introOverlay').classList.add('fade-out');
+                document.getElementById('mainContent').classList.add('visible');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
