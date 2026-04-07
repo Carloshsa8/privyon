@@ -30,6 +30,23 @@
             color: var(--text);
             line-height: 1.6;
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&q=60') center/cover no-repeat;
+            opacity: 0.04;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
         }
 
         .intro-overlay {
@@ -450,6 +467,38 @@
             font-size: 0.8rem;
             margin-top: 1rem;
         }
+
+        /* Responsive overrides for inline styles */
+        @media (max-width: 1024px) {
+            .container { padding: 0 2rem; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 1.25rem; }
+            .features { padding: 4rem 1rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .courses-preview { padding: 4rem 1rem; }
+            .courses-grid { grid-template-columns: 1fr; }
+            .course-card { padding: 1.25rem; }
+            .hero-title { font-size: clamp(2rem, 10vw, 6rem); letter-spacing: 0.08em; }
+            .hero-subtitle { font-size: clamp(0.65rem, 2.5vw, 1rem); letter-spacing: 0.15em; }
+            .hero-cta { margin-top: 2rem; }
+            .scroll-indicator { bottom: 1.5rem; }
+            .intro-title { font-size: clamp(2rem, 12vw, 8rem); letter-spacing: 0.1em; }
+            .intro-subtitle { font-size: clamp(0.6rem, 2vw, 1rem); letter-spacing: 0.15em; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 0 1rem; }
+            .features { padding: 3rem 0.5rem; }
+            .courses-preview { padding: 3rem 0.5rem; }
+            .hero-title { font-size: clamp(1.8rem, 9vw, 4rem); letter-spacing: 0.05em; }
+            .hero-subtitle { font-size: clamp(0.55rem, 2.5vw, 0.85rem); letter-spacing: 0.1em; }
+            .hero-cta { flex-direction: column; align-items: center; margin-top: 1.5rem; gap: 0.75rem; }
+            .hero-cta .btn { width: 100%; max-width: 260px; text-align: center; }
+            .intro-title { letter-spacing: 0.05em; }
+            .intro-subtitle { letter-spacing: 0.1em; }
+            .course-card { padding: 1rem; }
+            .course-title { font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
@@ -496,13 +545,11 @@
             <a href="index.html" class="mobile-nav-link">Início</a>
             <a href="cursos.html" class="mobile-nav-link">Cursos</a>
             <a href="contato.html" class="mobile-nav-link">Contato</a>
-            <a href="login.html" class="mobile-nav-link">Entrar</a>
-            <a href="registro.html" class="mobile-nav-link">Cadastrar</a>
         </div>
 
         <section class="hero">
-            <h1 class="hero-title">Alexandria</h1>
-            <p class="hero-subtitle">O conhecimento é o único caminho para a evolução</p>
+            <h1 class="hero-title" style="text-align:center;padding:0 1rem;">Alexandria</h1>
+            <p class="hero-subtitle" style="text-align:center;padding:0 1rem;">O conhecimento é o único caminho para a evolução</p>
             <div class="hero-cta">
                 <a href="cursos.html" class="btn btn-primary">Ver Cursos</a>
                 <a href="#about" class="btn">Saiba Mais</a>
