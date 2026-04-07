@@ -38,6 +38,10 @@
             inset: 0;
             z-index: 9999;
             background: var(--darker);
+            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -667,7 +671,7 @@
                 overlay.classList.add('fade-out');
                 document.getElementById('mainContent').classList.add('visible');
                 setTimeout(() => overlay.remove(), 800);
-            }, 2000);
+            }, 4000);
         });
     </script>
 </body>
