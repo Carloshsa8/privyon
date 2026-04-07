@@ -29,23 +29,25 @@
             background: var(--darker);
             color: var(--text);
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         .intro-overlay {
             position: fixed;
             inset: 0;
-            z-index: 1000;
+            z-index: 9999;
             background: var(--darker);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 1;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
         .intro-overlay.fade-out {
             opacity: 0;
-            pointer-events: none;
+            pointer-events: none !important;
+            visibility: hidden !important;
         }
 
         .intro-backgrounds {
@@ -60,32 +62,42 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            animation: bgFade 1.2s infinite;
+            animation: bgFade 2.4s infinite;
         }
 
         .intro-bg:nth-child(1) {
             animation-delay: 0s;
-            background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1920&q=80');
+            background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1920&q=80'); /* Nebula / Universe */
         }
 
         .intro-bg:nth-child(2) {
-            animation-delay: 0.3s;
-            background-image: url('https://images.unsplash.com/photo-1512821900802-78bb9256b96f?w=1920&q=80');
+            animation-delay: 0.4s;
+            background-image: url('https://images.unsplash.com/photo-1532012197267-da84d127e765?w=1920&q=80'); /* Ancient book / Magic */
         }
 
         .intro-bg:nth-child(3) {
-            animation-delay: 0.6s;
-            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&q=80');
+            animation-delay: 0.8s;
+            background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1920&q=80'); /* Infinite library */
         }
 
         .intro-bg:nth-child(4) {
-            animation-delay: 0.9s;
-            background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920&q=80');
+            animation-delay: 1.2s;
+            background-image: url('https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=1920&q=80'); /* Glowing geometric / Energy */
+        }
+
+        .intro-bg:nth-child(5) {
+            animation-delay: 1.6s;
+            background-image: url('https://images.unsplash.com/photo-1447433583459-f243008064d1?w=1920&q=80'); /* Microscopic / Cellular */
+        }
+
+        .intro-bg:nth-child(6) {
+            animation-delay: 2s;
+            background-image: url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1920&q=80'); /* Earth / Cosmos */
         }
 
         @keyframes bgFade {
             0%, 100% { opacity: 0; }
-            40%, 60% { opacity: 0.15; }
+            40%, 60% { opacity: 0.2; }
         }
 
         .intro-content {
@@ -140,6 +152,13 @@
             opacity: 0;
             transition: opacity 1s ease;
             padding-top: 70px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .main-content.visible {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .main-content.visible {
@@ -147,7 +166,7 @@
         }
 
         .hero {
-            height: calc(100vh - 70px);
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -156,6 +175,7 @@
             position: relative;
             overflow: hidden;
             margin-top: -70px;
+            padding-top: 70px;
         }
 
         .hero::before {
@@ -192,11 +212,42 @@
             margin-top: 4rem;
             display: flex;
             gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            color: var(--darker);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
         }
 
         .btn {
-            padding: 1rem 2.5rem;
-            font-size: 0.85rem;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.7rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             text-decoration: none;
@@ -230,18 +281,41 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
             color: var(--text-dim);
             font-size: 0.7rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            animation: bounce 2s infinite;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
+        .scroll-pill {
+            width: 20px;
+            height: 32px;
+            border: 1px solid var(--text-dim);
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
         }
+
+        .scroll-pill::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            width: 1px;
+            height: 8px;
+            background-color: var(--gold);
+            animation: scrollWheel 2s infinite;
+        }
+
+        @keyframes scrollWheel {
+            0% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(8px); opacity: 0; }
+            51% { transform: translateY(-8px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+
 
         .features {
             padding: 8rem 2rem;
@@ -249,8 +323,9 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1800px;
             margin: 0 auto;
+            padding: 0 4rem;
         }
 
         .features-grid {
@@ -315,8 +390,8 @@
 
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 2.5rem;
         }
 
         .course-card {
@@ -384,10 +459,12 @@
             <div class="intro-bg"></div>
             <div class="intro-bg"></div>
             <div class="intro-bg"></div>
+            <div class="intro-bg"></div>
+            <div class="intro-bg"></div>
         </div>
         <div class="intro-content">
             <h1 class="intro-title">Alexandria</h1>
-            <p class="intro-subtitle">O conhecimento是人类进步的唯一途径</p>
+            <p class="intro-subtitle">O conhecimento é o único caminho para a evolução</p>
         </div>
     </div>
 
@@ -397,30 +474,42 @@
                 <a href="index.html" class="logo">Alexandria</a>
                 
                 <nav class="nav">
-                    <a href="index.html" class="nav-link active">Início</a>
+                    <a href="#" class="nav-link active" onclick="scrollToTop(); return false;">Início</a>
                     <a href="cursos.html" class="nav-link">Cursos</a>
                     <a href="contato.html" class="nav-link">Contato</a>
                 </nav>
-                
-                <button class="cart-btn" aria-label="Carrinho">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
+
+                <div class="header-right">
+                    <div id="authHeaderActions" class="auth-header-actions"></div>
+                    <button class="cart-btn" aria-label="Carrinho">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+                        <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+                    </button>
+                </div>
             </div>
         </header>
 
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">Início</a>
+            <a href="cursos.html" class="mobile-nav-link">Cursos</a>
+            <a href="contato.html" class="mobile-nav-link">Contato</a>
+            <a href="login.html" class="mobile-nav-link">Entrar</a>
+            <a href="registro.html" class="mobile-nav-link">Cadastrar</a>
+        </div>
+
         <section class="hero">
             <h1 class="hero-title">Alexandria</h1>
-            <p class="hero-subtitle">Plataforma de Conhecimento</p>
+            <p class="hero-subtitle">O conhecimento é o único caminho para a evolução</p>
             <div class="hero-cta">
-                <a href="#courses" class="btn btn-primary">Ver Cursos</a>
+                <a href="cursos.html" class="btn btn-primary">Ver Cursos</a>
                 <a href="#about" class="btn">Saiba Mais</a>
             </div>
             <div class="scroll-indicator">
                 <span>Scroll</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                    <path d="M12 5v14M5 12l7 7 7-7"/>
-                </svg>
+                <div class="scroll-pill"></div>
             </div>
         </section>
 
@@ -433,32 +522,35 @@
                 <div class="features-grid">
                     <div class="feature">
                         <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
                         <h3 class="feature-title">Preços Acessíveis</h3>
                         <p class="feature-text">Investimento que cabe no seu bolso para transformar sua produtividade</p>
                     </div>
                     <div class="feature">
                         <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                         </div>
                         <h3 class="feature-title">Comunidade Ativa</h3>
                         <p class="feature-text">Suporte e networking com outros alunos comprometidos</p>
                     </div>
                     <div class="feature">
                         <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                         </div>
                         <h3 class="feature-title">Certificado</h3>
                         <p class="feature-text">Certificado de conclusão para valorizar seu currículo</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="home-stat"><div class="home-stat-value">10.000+</div><div class="home-stat-label">Alunos Ativos</div></div>
+                <div class="home-stat"><div class="home-stat-value">12</div><div class="home-stat-label">Cursos Completos</div></div>
+                <div class="home-stat"><div class="home-stat-value">98%</div><div class="home-stat-label">Satisfação</div></div>
+                <div class="home-stat"><div class="home-stat-value">300h+</div><div class="home-stat-label">De Conteúdo</div></div>
             </div>
         </section>
 
@@ -475,23 +567,54 @@
             </div>
         </section>
 
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Depoimentos</span>
+                    <h2 class="section-title">O que dizem nossos alunos</h2>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">O curso de Notion transformou minha forma de trabalhar. Hoje organizo toda minha empresa com os templates do curso. Recomendo muito!</p>
+                        <div class="testimonial-author">Maria Oliveira</div>
+                        <div class="testimonial-role">Empreendedora Digital</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Nunca imaginei que aprender ChatGPT pudesse aumentar tanto minha produtividade. Consigo fazer em 1h o que levava 1 dia. Curso excepcional!</p>
+                        <div class="testimonial-author">João Santos</div>
+                        <div class="testimonial-role">Desenvolvedor Full Stack</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">As automações que aprendi com o curso de Zapier me economizam mais de 20h por semana. O investimento se pagou no primeiro mês!</p>
+                        <div class="testimonial-author">Ana Beatriz</div>
+                        <div class="testimonial-role">Gerente de Projetos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <footer class="footer">
             <div class="container">
                 <div class="footer-inner">
                     <a href="index.html" class="footer-logo">Alexandria</a>
+                    <span class="footer-tagline">Plataforma de Conhecimento</span>
+                    <div class="footer-links">
+                        <a href="cursos.html" class="footer-link">Cursos</a>
+                        <a href="contato.html" class="footer-link">Contato</a>
+                        <a href="login.html" class="footer-link">Entrar</a>
+                    </div>
                     <p class="footer-copy">© 2026 Alexandria. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
     </main>
 
+    <div class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </div>
+
     <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>Carrinho</h3>
-            <button class="close-cart" onclick="toggleCart()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
+        <div class="cart-header"><h3>Carrinho</h3><button class="close-cart" onclick="toggleCart()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
         <div class="cart-items" id="cartItems"><p class="cart-empty">Seu carrinho está vazio</p></div>
         <div class="cart-footer">
             <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
@@ -502,13 +625,17 @@
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
     <script src="courses.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
     <script src="app.js"></script>
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.querySelector('.intro-content').classList.add('shrink');
-                document.getElementById('introOverlay').classList.add('fade-out');
+                const overlay = document.getElementById('introOverlay');
+                overlay.classList.add('fade-out');
                 document.getElementById('mainContent').classList.add('visible');
+                setTimeout(() => overlay.remove(), 800);
             }, 2000);
         });
     </script>
