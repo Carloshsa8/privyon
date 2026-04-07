@@ -41,7 +41,7 @@ nav{
   letter-spacing:0.12em;
   color:var(--gold);
 }
-.nav-logo span{color:var(--white)}
+.nav-logo .setfit{color:var(--gold)}
 .nav-dots{display:flex;gap:0.5rem;align-items:center}
 .dot{
   width:8px;height:8px;border-radius:50%;
@@ -302,6 +302,7 @@ nav{
   transition:all .2s;
 }
 .plan-card.highlight .plan-cta{background:var(--gold);color:var(--black)}
+.plan-note{font-size:.65rem;color:var(--muted);margin-top:.6rem;text-align:center;line-height:1.4}
 
 /* SLIDE 6 — FECHAMENTO */
 .s6-content{text-align:center;max-width:700px}
@@ -365,7 +366,7 @@ nav{
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SET<span>FIT</span></div>
+  <div class="nav-logo">SET<span class="setfit">FIT</span></div>
   <div class="nav-dots" id="navDots"></div>
   <div class="slide-counter"><span id="current">01</span> / 06</div>
 </nav>
@@ -561,7 +562,7 @@ nav{
       <div class="plans-grid">
         <div class="plan-card">
           <div class="plan-name">BÁSICO</div>
-          <div class="plan-price"><span>R$</span>400</div>
+          <div class="plan-price"><span>R$</span>500</div>
           <div class="plan-desc">Entrega única. Site pronto, no ar, sem mensalidade.</div>
           <ul class="plan-features">
             <li>Versão essencial do site</li>
@@ -574,7 +575,7 @@ nav{
         <div class="plan-card highlight">
           <div class="plan-badge">RECOMENDADO</div>
           <div class="plan-name">COMPLETO</div>
-          <div class="plan-price"><span>R$</span>700</div>
+          <div class="plan-price"><span>R$</span>800</div>
           <div class="plan-desc">O site chique que vocês já viram — completo e no ar.</div>
           <ul class="plan-features">
             <li>Design premium</li>
@@ -587,13 +588,13 @@ nav{
         </div>
         <div class="plan-card">
           <div class="plan-name">MENSAL</div>
-          <div class="plan-price"><span>R$</span>200 <span style="font-size:.9rem">+ 80/mês</span></div>
-          <div class="plan-desc">Entrada menor + R$80/mês para manutenção e hospedagem.</div>
+          <div class="plan-price"><span>R$</span>300 <span style="font-size:.9rem">+ 100/mês</span></div>
+          <div class="plan-desc">Entrada menor + R$100/mês. <span style="color:var(--gold)">*Versão simples · mín. 6 meses.</span></div>
           <ul class="plan-features">
-            <li>Tudo do plano completo</li>
-            <li>Atualizações incluídas</li>
-            <li>Suporte contínuo</li>
-            <li>Sem preocupação técnica</li>
+            <li>Site versão essencial</li>
+            <li>Hospedagem + SSL incluídos</li>
+            <li>Até 2 ajustes de conteúdo/mês</li>
+            <li>Alterações extras: orçamento aparte</li>
           </ul>
           <button class="plan-cta">Quero esse</button>
         </div>
