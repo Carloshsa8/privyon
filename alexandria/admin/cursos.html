@@ -76,14 +76,15 @@
                 <button onclick="document.getElementById('courseModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
             </div>
             <form id="courseForm" onsubmit="handleCreateCourse(event)">
-                <div style="margin-bottom:1rem;">
-                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título do Curso</label>
-                    <input type="text" id="cTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
-                </div>
-                <!-- Simulating professor assignment for admin -->
-                <div style="margin-bottom:1rem;">
-                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">ID do Professor Responsável</label>
-                    <input type="number" id="cInstr" required min="1" value="2" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <div style="flex:2;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título do Curso</label>
+                        <input type="text" id="cTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">ID Professor</label>
+                        <input type="number" id="cInstr" required min="1" value="2" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
                 </div>
                 <div style="display:flex; gap:1rem; margin-bottom:1rem;">
                     <div style="flex:1;">
@@ -131,13 +132,15 @@
             </div>
             <form id="editCourseForm" onsubmit="handleUpdateCourse(event)">
                 <input type="hidden" id="eCourseId">
-                <div style="margin-bottom:1rem;">
-                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título do Curso</label>
-                    <input type="text" id="eTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
-                </div>
-                <div style="margin-bottom:1rem;">
-                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">ID do Professor Responsável</label>
-                    <input type="number" id="eInstr" required min="1" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <div style="flex:2;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título do Curso</label>
+                        <input type="text" id="eTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">ID Professor</label>
+                        <input type="number" id="eInstr" required min="1" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
                 </div>
                 <div style="display:flex; gap:1rem; margin-bottom:1rem;">
                     <div style="flex:1;">
@@ -201,8 +204,10 @@
                     <td><span class="badge ${c.published?'badge-success':'badge-warning'}">${c.published?'Publicado':'Rascunho'}</span></td>
                     <td class="actions-cell">
                         <button class="action-btn" onclick="openEditCourse(${c.id})">Editar</button>
-                        <a href="../curso-detalhe.html?id=${c.id}" class="action-btn" style="text-decoration:none;">Ver</a>
-                        <a href="../professor/aulas.html?courseId=${c.id}" class="action-btn" style="text-decoration:none;">Grade</a>
+                        <button class="action-btn" onclick="toggleCoursePublished(${c.id})">${c.published?'Desativar':'Ativar'}</button>
+                        <button class="action-btn action-btn-danger" onclick="deleteCourse(${c.id})">Deletar</button>
+                        <a href="../professor/aulas.html?courseId=${c.id}" class="action-btn" style="text-decoration:none;">Gerenciar</a>
+                        <a href="../curso-detalhe.html?id=${c.id}" class="action-btn" style="text-decoration:none;">Ver Página</a>
                     </td>
                 </tr>`;
             }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:2rem;">Nenhum curso encontrado</td></tr>';
@@ -287,6 +292,20 @@
 
             document.getElementById('editCourseModal').classList.remove('open');
             renderCourses(getAllCourses());
+        };
+
+        window.toggleCoursePublished = function(id) {
+            const course = getCourseById(id);
+            if (!course) return;
+            DB.updateCourse(id, { published: !course.published });
+            renderCourses(getAllCourses());
+        };
+
+        window.deleteCourse = function(id) {
+            if (confirm('Tem certeza que deseja DELETAR este curso? Esta ação não pode ser desfeita.')) {
+                DB.deleteCourse(id);
+                renderCourses(getAllCourses());
+            }
         };
     </script>
 </body>
