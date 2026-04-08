@@ -230,6 +230,11 @@ const DB = {
         this._set(DB_KEYS.users, users);
     },
 
+    deleteCourse(id) {
+        const courses = this.getCourses().filter(c => c.id !== id);
+        this._set(DB_KEYS.courses, courses);
+    },
+
     /* --- Sales --- */
     getSales() { return this._get(DB_KEYS.sales) || []; },
     getSaleById(id) { return this.getSales().find(s => s.id === id); },
@@ -359,6 +364,31 @@ const DB = {
         });
 
         return Object.values(months).sort((a, b) => a.label.localeCompare(b.label));
+    },
+
+    getProfessorSales() {
+        const professors = this.getUsers().filter(u => u.role === 'professor');
+        const courses = this.getCourses();
+        const sales = this.getSales().filter(s => s.status === 'completed');
+        
+        return professors.map(prof => {
+            const profCourses = courses.filter(c => c.instructorId === prof.id);
+            const profCourseIds = profCourses.map(c => c.id);
+            const profSales = sales.filter(s => profCourseIds.includes(s.courseId));
+            const totalRevenue = profSales.reduce((sum, s) => sum + s.price, 0);
+            const totalLessons = profCourses.reduce((sum, c) => {
+                if (!c.modules) return sum;
+                return sum + c.modules.reduce((mSum, m) => mSum + (m.lessons ? m.lessons.length : 0), 0);
+            }, 0);
+            
+            return {
+                professor: prof,
+                totalSales: profSales.length,
+                totalRevenue: totalRevenue,
+                totalCourses: profCourses.length,
+                totalLessons: totalLessons
+            };
+        }).sort((a, b) => b.totalRevenue - a.totalRevenue);
     }
 };
 

@@ -116,14 +116,16 @@
     <script src="../data.js"></script>
     <script src="../auth.js"></script>
     <script>
-        if (!Auth.requireAuth(['professor'])) {}
+        if (!Auth.requireAuth(['professor', 'admin'])) {}
         else {
             const user = Auth.getCurrentUser();
             document.getElementById('profName').textContent = user.name;
 
             const params = new URLSearchParams(window.location.search);
             const courseId = params.get('courseId');
-            const myCourses = getCoursesByInstructor(user.id);
+            
+            // If admin, show all courses, if professor show only theirs
+            const myCourses = user.role === 'admin' ? getAllCourses() : getCoursesByInstructor(user.id);
 
             // Course selector
             document.getElementById('courseSelectorGrid').innerHTML = myCourses.map(c => `
@@ -133,7 +135,7 @@
                         <span class="course-category">${c.category}</span>
                     </div>
                     <div class="student-course-title">${c.name}</div>
-                    <div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.5rem;">${c.modules.length} módulos · ${c.modules.reduce((s,m)=>s+m.lessons.length,0)} aulas</div>
+                    <div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.5rem;">${c.modules ? c.modules.length : 0} módulos · ${c.modules ? c.modules.reduce((s,m)=>s+m.lessons.length,0) : 0} aulas</div>
                 </div>
             `).join('') || '<p style="color:var(--text-dim);">Nenhum curso encontrado.</p>';
 
