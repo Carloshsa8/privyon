@@ -69,8 +69,8 @@
         </main>
     </div>
 
-    <div class="modal" id="courseModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:flex-end;">
-        <div class="modal-content" style="background:var(--dark); width:90%; max-width:500px; height:100vh; padding:2rem; border-left:1px solid var(--gold); max-height: 100vh; overflow-y:auto; box-sizing:border-box;">
+    <div class="modal" id="courseModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#121212; width:90%; max-width:600px; padding:2rem; border-radius:8px; border:1px solid var(--gold); max-height:90vh; overflow-y:auto; margin:auto; position:relative;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
                 <h2 style="color:var(--gold);">Criar Novo Curso</h2>
                 <button onclick="document.getElementById('courseModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
@@ -101,15 +101,15 @@
                 </div>
                 <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Mínimo (R$)</label>
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.8rem;">Mínimo (R$)</label>
                         <input type="number" id="cMinPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Ideal (R$)</label>
-                        <input type="number" id="cIdealPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--gold); font-size:0.8rem;">Ideal (R$)</label>
+                        <input type="number" id="cIdealPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gold); color:var(--text); border-radius:4px;">
                     </div>
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Máximo (R$)</label>
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.8rem;">Máximo (R$)</label>
                         <input type="number" id="cMaxPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                 </div>
@@ -119,8 +119,8 @@
     </div>
 
     <!-- Edit Course Modal -->
-    <div class="modal" id="editCourseModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:flex-end;">
-        <div class="modal-content" style="background:var(--dark); width:90%; max-width:500px; height:100vh; padding:2rem; border-left:1px solid var(--gold); max-height: 100vh; overflow-y:auto; box-sizing:border-box;">
+    <div class="modal" id="editCourseModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:#121212; width:90%; max-width:600px; padding:2rem; border-radius:8px; border:1px solid var(--gold); max-height:90vh; overflow-y:auto; margin:auto; position:relative;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
                 <h2 style="color:var(--gold);">Editar Curso</h2>
                 <button onclick="document.getElementById('editCourseModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
@@ -151,15 +151,15 @@
                 </div>
                 <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Mínimo (R$)</label>
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.8rem;">Mínimo (R$)</label>
                         <input type="number" id="eMinPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Ideal (R$)</label>
-                        <input type="number" id="eIdealPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--gold); font-size:0.8rem;">Ideal (R$)</label>
+                        <input type="number" id="eIdealPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gold); color:var(--text); border-radius:4px;">
                     </div>
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Máximo (R$)</label>
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.8rem;">Máximo (R$)</label>
                         <input type="number" id="eMaxPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                 </div>
@@ -193,8 +193,6 @@
                     <td><span class="badge ${c.published?'badge-success':'badge-warning'}">${c.published?'Publicado':'Rascunho'}</span></td>
                     <td class="actions-cell">
                         <button class="action-btn" onclick="openEditCourse(${c.id})">Editar</button>
-                        <button class="action-btn" onclick="toggleCoursePublished(${c.id})">${c.published?'Desativar':'Ativar'}</button>
-                        <button class="action-btn action-btn-danger" onclick="deleteCourse(${c.id})">Deletar</button>
                         <a href="../curso-detalhe.html?id=${c.id}" class="action-btn" style="text-decoration:none;">Ver</a>
                         <a href="../professor/aulas.html?courseId=${c.id}" class="action-btn" style="text-decoration:none;">Grade</a>
                     </td>
@@ -224,7 +222,6 @@
                 category: cat,
                 description: desc,
                 minPrice: minPrice,
-                idealPrice: idealPrice,
                 maxPrice: maxPrice,
                 price: idealPrice,
                 image: img,
@@ -253,7 +250,7 @@
             document.getElementById('eImg').value = course.image;
             document.getElementById('eDesc').value = course.description;
             document.getElementById('eMinPrice').value = course.minPrice || course.price;
-            document.getElementById('eIdealPrice').value = course.idealPrice || course.price;
+            document.getElementById('eIdealPrice').value = course.price;
             document.getElementById('eMaxPrice').value = course.maxPrice || course.price;
 
             document.getElementById('editCourseModal').classList.add('open');
@@ -272,28 +269,13 @@
                 image: document.getElementById('eImg').value,
                 description: document.getElementById('eDesc').value,
                 minPrice: parseFloat(document.getElementById('eMinPrice').value),
-                idealPrice: parseFloat(document.getElementById('eIdealPrice').value),
-                maxPrice: parseFloat(document.getElementById('eMaxPrice').value),
-                price: parseFloat(document.getElementById('eIdealPrice').value)
+                price: parseFloat(document.getElementById('eIdealPrice').value),
+                maxPrice: parseFloat(document.getElementById('eMaxPrice').value)
             });
 
             document.getElementById('editCourseModal').classList.remove('open');
             renderCourses(getAllCourses());
         };
-
-        function toggleCoursePublished(id) {
-            const course = getCourseById(id);
-            if (!course) return;
-            DB.updateCourse(id, { published: !course.published });
-            renderCourses(getAllCourses());
-        }
-
-        function deleteCourse(id) {
-            if (confirm('Tem certeza que deseja DELETAR este curso? Esta ação não pode ser desfeita.')) {
-                DB.deleteCourse(id);
-                renderCourses(getAllCourses());
-            }
-        }
     </script>
 </body>
 </html>

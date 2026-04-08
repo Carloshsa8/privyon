@@ -57,7 +57,6 @@
 
             <div class="table-header">
                 <input type="text" class="search-input" placeholder="Buscar usuário..." oninput="filterUsers(this.value)">
-                <button class="btn btn-primary" onclick="openCreateModal()">+ Novo Usuário</button>
             </div>
 
             <div class="data-table-wrapper">
@@ -71,15 +70,13 @@
 
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <div class="modal-header"><h3 class="modal-title" id="modalTitle">Editar Usuário</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+            <div class="modal-header"><h3 class="modal-title">Editar Usuário</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
             <div class="modal-body">
                 <input type="hidden" id="editUserId">
                 <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Nome</label>
                 <input type="text" class="form-input" id="editName">
                 <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Email</label>
                 <input type="email" class="form-input" id="editEmail">
-                <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Senha</label>
-                <input type="password" class="form-input" id="editPassword" placeholder="Deixe em branco para manter a atual">
                 <label style="font-size:0.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;">Função</label>
                 <select class="form-input" id="editRole">
                     <option value="aluno">Aluno</option>
@@ -144,44 +141,22 @@
         function editUser(id) {
             const u = DB.getUserById(id);
             if (!u) return;
-            document.getElementById('modalTitle').textContent = 'Editar Usuário';
             document.getElementById('editUserId').value = id;
             document.getElementById('editName').value = u.name;
             document.getElementById('editEmail').value = u.email;
-            document.getElementById('editPassword').value = '';
             document.getElementById('editRole').value = u.role;
-            document.getElementById('editModal').classList.add('open');
-        }
-
-        function openCreateModal() {
-            document.getElementById('modalTitle').textContent = 'Criar Novo Usuário';
-            document.getElementById('editUserId').value = '';
-            document.getElementById('editName').value = '';
-            document.getElementById('editEmail').value = '';
-            document.getElementById('editPassword').value = '';
-            document.getElementById('editRole').value = 'aluno';
             document.getElementById('editModal').classList.add('open');
         }
 
         function closeModal() { document.getElementById('editModal').classList.remove('open'); }
 
         function saveUser() {
-            const id = document.getElementById('editUserId').value;
-            const name = document.getElementById('editName').value;
-            const email = document.getElementById('editEmail').value;
-            const password = document.getElementById('editPassword').value;
-            const role = document.getElementById('editRole').value;
-
-            if (!name || !email) { alert('Preencha nome e email'); return; }
-
-            if (id) {
-                const updates = { name, email, role };
-                if (password) updates.password = password;
-                DB.updateUser(parseInt(id), updates);
-            } else {
-                if (!password) { alert('Crie uma senha para o novo usuário'); return; }
-                DB.addUser({ name, email, password, role, active: true });
-            }
+            const id = parseInt(document.getElementById('editUserId').value);
+            DB.updateUser(id, {
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                role: document.getElementById('editRole').value
+            });
             closeModal();
             loadUsers();
         }
