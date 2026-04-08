@@ -24,6 +24,11 @@ function updateCartCount() {
 }
 
 function addToCart(courseId, selectedPrice = null) {
+    if (typeof Auth !== 'undefined' && !Auth.getCurrentUser()) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     const course = getCourseById(courseId);
     if (!course) return;
     
