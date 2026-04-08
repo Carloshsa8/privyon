@@ -171,6 +171,35 @@ const DB = {
         return stored[idx];
     },
 
+    addModuleToCourse(courseId, title) {
+        const course = this.getCourses().find(c => c.id === courseId);
+        if (!course) return null;
+        if (!course.modules) course.modules = [];
+        
+        const newMod = {
+            id: course.modules.length ? Math.max(...course.modules.map(m => m.id)) + 1 : 1,
+            title: title,
+            lessons: []
+        };
+        course.modules.push(newMod);
+        this.updateCourse(courseId, course);
+        return newMod;
+    },
+
+    addLessonToModule(courseId, moduleId, lesson) {
+        const course = this.getCourses().find(c => c.id === courseId);
+        if (!course) return null;
+        if (!course.modules) course.modules = [];
+        
+        const mod = course.modules.find(m => m.id === moduleId);
+        if (!mod) return null;
+        
+        lesson.id = mod.lessons.length ? Math.max(...mod.lessons.map(l => l.id)) + 1 : 1;
+        mod.lessons.push(lesson);
+        this.updateCourse(courseId, course);
+        return lesson;
+    },
+
     /* --- Users --- */
     getUsers() { return this._get(DB_KEYS.users) || []; },
     getUserById(id) { return this.getUsers().find(u => u.id === id); },

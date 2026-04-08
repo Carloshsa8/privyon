@@ -56,12 +56,61 @@
 
             <!-- Module/Lesson Manager -->
             <div id="lessonManager" style="display:none;">
-                <button class="btn btn-sm" onclick="showSelector()" style="margin-bottom:1.5rem;">← Voltar aos cursos</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <button class="btn btn-sm" onclick="showSelector()" style="background:var(--dark); border:1px solid var(--gray); color:var(--text);">← Voltar aos cursos</button>
+                    <button class="btn btn-sm" style="background:var(--gold); color:var(--darker);" onclick="document.getElementById('moduleModal').classList.add('open')">+ Novo Módulo</button>
+                </div>
 
                 <div id="modulesContainer"></div>
             </div>
         </main>
     </div>
+
+    <!-- Modals -->
+    <div class="modal" id="moduleModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:var(--dark); width:90%; max-width:400px; padding:2rem; border-radius:8px; border:1px solid var(--gray);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="color:var(--gold); font-size:1.2rem;">Criar Novo Módulo</h2>
+                <button onclick="document.getElementById('moduleModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <form id="moduleForm" onsubmit="handleCreateModule(event)">
+                <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Nome do Módulo</label>
+                <input type="text" id="mTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px; margin-bottom:1.5rem;">
+                <button type="submit" class="btn btn-primary" style="width:100%;">Salvar Módulo</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="lessonModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:var(--dark); width:90%; max-width:500px; padding:2rem; border-radius:8px; border:1px solid var(--gray);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="color:var(--gold); font-size:1.2rem;">Criar Nova Aula</h2>
+                <button onclick="document.getElementById('lessonModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <form id="lessonForm" onsubmit="handleCreateLesson(event)">
+                <input type="hidden" id="lModuleId">
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título da Aula</label>
+                    <input type="text" id="lTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                </div>
+                <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Tipo</label>
+                        <select id="lType" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                            <option value="video">Vídeo</option>
+                            <option value="exercise">Exercício</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Duração (ex: 15:00)</label>
+                        <input type="text" id="lDuration" required value="10:00" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Publicar Aula</button>
+            </form>
+        </div>
+    </div>
+    <style> .modal.open { display: flex !important; } </style>
 
     <script src="../courses.js"></script>
     <script src="../data.js"></script>
@@ -99,26 +148,35 @@
         }
 
         function selectCourse(id) {
+            currentCourseId = id;
             const course = getCourseById(id);
             if (!course) return;
 
             document.getElementById('courseSelector').style.display = 'none';
             document.getElementById('lessonManager').style.display = '';
             document.getElementById('pageTitle').textContent = course.name;
-            document.getElementById('pageDesc').textContent = `${course.modules.length} módulos · ${course.modules.reduce((s,m)=>s+m.lessons.length,0)} aulas`;
+            
+            const totalMod = course.modules ? course.modules.length : 0;
+            const totalLes = course.modules ? course.modules.reduce((s,m)=>s+m.lessons.length,0) : 0;
+            document.getElementById('pageDesc').textContent = `${totalMod} módulos · ${totalLes} aulas`;
 
             renderModules(course);
         }
 
         function renderModules(course) {
             const container = document.getElementById('modulesContainer');
+            if (!course.modules || course.modules.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Nenhum módulo criado</div><p class="empty-state-text">Crie módulos e aulas para seu curso.</p></div>';
+                return;
+            }
             container.innerHTML = course.modules.map((mod, i) => `
                 <div class="course-module" style="margin-bottom:1.5rem;">
-                    <div class="course-module-header" onclick="this.nextElementSibling.classList.toggle('open')">
-                        <div>
+                    <div class="course-module-header">
+                        <div onclick="this.parentElement.nextElementSibling.classList.toggle('open')" style="flex:1; cursor:pointer;">
                             <span class="course-module-title">Módulo ${i+1}: ${mod.title}</span>
+                            <span class="course-module-count" style="margin-left: 1rem;">${mod.lessons.length} aulas</span>
                         </div>
-                        <span class="course-module-count">${mod.lessons.length} aulas</span>
+                        <button class="action-btn" onclick="openLessonModal(${mod.id})" style="background:none; border:1px solid var(--gold); color:var(--gold); padding:0.25rem 0.75rem; border-radius:4px; cursor:pointer;">+ Aula</button>
                     </div>
                     <div class="course-module-lessons open">
                         ${mod.lessons.map((l, j) => `
@@ -137,11 +195,44 @@
                     </div>
                 </div>
             `).join('');
-
-            if (course.modules.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Nenhum módulo criado</div><p class="empty-state-text">Crie módulos e aulas para seu curso.</p></div>';
-            }
         }
+
+        // --- Create Logic ---
+        let currentCourseId = null;
+
+        function openLessonModal(moduleId) {
+            document.getElementById('lModuleId').value = moduleId;
+            document.getElementById('lessonModal').classList.add('open');
+        }
+
+        window.handleCreateModule = function(e) {
+            e.preventDefault();
+            if(!currentCourseId) return;
+            const title = document.getElementById('mTitle').value;
+            DB.addModuleToCourse(currentCourseId, title);
+            document.getElementById('moduleModal').classList.remove('open');
+            e.target.reset();
+            selectCourse(currentCourseId);
+        };
+
+        window.handleCreateLesson = function(e) {
+            e.preventDefault();
+            if(!currentCourseId) return;
+            const modId = parseInt(document.getElementById('lModuleId').value);
+            const title = document.getElementById('lTitle').value;
+            const type = document.getElementById('lType').value;
+            const duration = document.getElementById('lDuration').value;
+
+            DB.addLessonToModule(currentCourseId, modId, {
+                title: title,
+                type: type,
+                duration: duration
+            });
+            
+            document.getElementById('lessonModal').classList.remove('open');
+            e.target.reset();
+            selectCourse(currentCourseId);
+        };
     </script>
 </body>
 </html>
