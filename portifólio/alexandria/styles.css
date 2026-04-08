@@ -300,7 +300,11 @@ img { max-width: 100%; }
 
 .course-category { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
 .course-title { font-size: 1.1rem; margin: 0.5rem 0; }
-.course-desc { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
+.course-content { display: flex; flex-direction: column; flex-grow: 1; }
+.course-desc { 
+    color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+}
 
 .course-meta {
     display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;
