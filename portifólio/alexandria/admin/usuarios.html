@@ -128,6 +128,7 @@
                 <td class="actions-cell">
                     <button class="action-btn" onclick="editUser(${u.id})">Editar</button>
                     <button class="action-btn action-btn-danger" onclick="toggleUserActive(${u.id})">${u.active?'Desativar':'Ativar'}</button>
+                    <button class="action-btn action-btn-danger" onclick="deleteUser(${u.id})">Deletar</button>
                 </td>
             </tr>`).join('');
         }
@@ -163,6 +164,13 @@
         function toggleUserActive(id) {
             const u = DB.getUserById(id);
             if (u) { DB.updateUser(id, { active: !u.active }); loadUsers(); }
+        }
+
+        function deleteUser(id) {
+            if (confirm('Tem certeza que deseja deletar permanentemente este usuário?')) {
+                DB.deleteUser(id);
+                loadUsers();
+            }
         }
     </script>
 </body>
