@@ -15,9 +15,9 @@
     "description": "Projeto adicionado à pasta academia-completo."
   },
   {
-    "title": "Village 3",
-    "folder": "village-3",
-    "description": "Projeto adicionado à pasta village-3."
+    "title": "Alexandria",
+    "folder": "alexandria",
+    "description": "Plataforma de cursos online."
   },
   {
     "title": "Modelo Condomínio Horizontal",
@@ -25,13 +25,23 @@
     "description": "Projeto adicionado à pasta modelo-condominio-horizontal."
   },
   {
-    "title": "Alexandria",
-    "folder": "alexandria",
-    "description": "Plataforma de cursos online."
+    "title": "Villaggio Bonifacia",
+    "folder": "villaggio-bonifacia",
+    "description": "Landing page para condomínio vertical em Cuiabá."
   },
   {
-    "title": "Village 3",
-    "folder": "village-3",
-    "description": "Projeto adicionado à pasta village-3."
+    "title": "SetFit — Cores",
+    "folder": "setfit-cores",
+    "description": "Apresentação visual das cores."
+  },
+  {
+    "title": "SetFit — Pitch Comercial",
+    "folder": "setfit-pitch",
+    "description": "Apresentação comercial."
+  },
+  {
+    "title": "SetFit — Proposta de Site",
+    "folder": "setfit-proposta",
+    "description": "Documento de proposta técnica."
   }
 ]
