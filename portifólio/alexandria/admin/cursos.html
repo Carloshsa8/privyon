@@ -105,15 +105,57 @@
                         <input type="number" id="cMinPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                     <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Ideal (R$)</label>
-                        <input type="number" id="cIdealPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
-                    </div>
-                    <div style="flex:1;">
                         <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Máximo (R$)</label>
                         <input type="number" id="cMaxPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">Salvar Curso e Publicar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Course Modal -->
+    <div class="modal" id="editCourseModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:var(--dark); width:90%; max-width:600px; padding:2rem; border-radius:8px; border:1px solid var(--gray); max-height: 90vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="color:var(--gold);">Editar Curso</h2>
+                <button onclick="document.getElementById('editCourseModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <form id="editCourseForm" onsubmit="handleUpdateCourse(event)">
+                <input type="hidden" id="eCourseId">
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título do Curso</label>
+                    <input type="text" id="eTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">ID do Professor Responsável</label>
+                    <input type="number" id="eInstr" required min="1" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                </div>
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Categoria</label>
+                        <input type="text" id="eCat" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Imagem (nome ícone)</label>
+                        <input type="text" id="eImg" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Descrição</label>
+                    <textarea id="eDesc" required rows="3" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px; max-width: 100%"></textarea>
+                </div>
+                <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Mínimo (R$)</label>
+                        <input type="number" id="eMinPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Preço Máximo (R$)</label>
+                        <input type="number" id="eMaxPrice" required min="0" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Salvar Alterações</button>
             </form>
         </div>
     </div>
@@ -142,6 +184,7 @@
                     <td style="color:var(--gold);">★ ${rating.avg || c.rating || 0}</td>
                     <td><span class="badge ${c.published?'badge-success':'badge-warning'}">${c.published?'Publicado':'Rascunho'}</span></td>
                     <td class="actions-cell">
+                        <button class="action-btn" onclick="openEditCourse(${c.id})">Editar</button>
                         <a href="../curso-detalhe.html?id=${c.id}" class="action-btn" style="text-decoration:none;">Ver</a>
                         <a href="../professor/aulas.html?courseId=${c.id}" class="action-btn" style="text-decoration:none;">Grade</a>
                     </td>
@@ -160,7 +203,6 @@
             const cat = document.getElementById('cCat').value;
             const desc = document.getElementById('cDesc').value;
             const minPrice = parseFloat(document.getElementById('cMinPrice').value);
-            const idealPrice = parseFloat(document.getElementById('cIdealPrice').value);
             const maxPrice = parseFloat(document.getElementById('cMaxPrice').value);
             const instrId = parseInt(document.getElementById('cInstr').value) || 2;
             const img = document.getElementById('cImg').value;
@@ -171,9 +213,8 @@
                 category: cat,
                 description: desc,
                 minPrice: minPrice,
-                idealPrice: idealPrice,
                 maxPrice: maxPrice,
-                price: idealPrice,
+                price: minPrice,
                 image: img,
                 instructorId: instrId,
                 level: "Iniciante",
@@ -186,6 +227,42 @@
             
             document.getElementById('courseModal').classList.remove('open');
             e.target.reset();
+            renderCourses(getAllCourses());
+        };
+
+        function openEditCourse(id) {
+            const course = getCourseById(id);
+            if (!course) return;
+
+            document.getElementById('eCourseId').value = course.id;
+            document.getElementById('eTitle').value = course.name;
+            document.getElementById('eInstr').value = course.instructorId;
+            document.getElementById('eCat').value = course.category;
+            document.getElementById('eImg').value = course.image;
+            document.getElementById('eDesc').value = course.description;
+            document.getElementById('eMinPrice').value = course.minPrice || course.price;
+            document.getElementById('eMaxPrice').value = course.maxPrice || course.price;
+
+            document.getElementById('editCourseModal').classList.add('open');
+        }
+
+        window.handleUpdateCourse = function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('eCourseId').value);
+            const title = document.getElementById('eTitle').value;
+            
+            DB.updateCourse(id, {
+                name: title,
+                shortName: title.split(':')[0] || title,
+                instructorId: parseInt(document.getElementById('eInstr').value),
+                category: document.getElementById('eCat').value,
+                image: document.getElementById('eImg').value,
+                description: document.getElementById('eDesc').value,
+                minPrice: parseFloat(document.getElementById('eMinPrice').value),
+                maxPrice: parseFloat(document.getElementById('eMaxPrice').value)
+            });
+
+            document.getElementById('editCourseModal').classList.remove('open');
             renderCourses(getAllCourses());
         };
     </script>
