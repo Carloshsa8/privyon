@@ -10,7 +10,6 @@
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Estilos específicos para o Portfólio */
     .portfolio-grid {
       display: grid;
       gap: 3rem;
@@ -42,14 +41,13 @@
       border-bottom: 1px solid var(--border);
     }
 
-    /* Iframe scaled for preview */
     .portfolio-iframe {
       width: 1280px;
       height: 960px;
       border: none;
       transform: scale(0.25);
       transform-origin: 0 0;
-      pointer-events: none; /* Não permitir interação no card */
+      pointer-events: none;
       transition: opacity 0.3s;
       opacity: 0.8;
     }
@@ -58,7 +56,6 @@
       opacity: 1;
     }
 
-    /* Responsividade do Iframe para manter o scale consistente no card */
     @media (max-width: 400px) {
       .portfolio-iframe {
         width: 1000px;
@@ -143,11 +140,9 @@
 
 <body>
 
-  <!-- Custom cursor -->
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
 
-  <!-- ==================== NAVBAR ==================== -->
   <nav id="navbar">
     <div class="inner">
       <a href="index.html#inicio" class="nav-logo">
@@ -174,7 +169,6 @@
     </div>
   </nav>
 
-  <!-- ==================== PORTFOLIO CONTENT ==================== -->
   <section id="portfolio-page" style="padding-top: 10rem; padding-bottom: 8rem; min-height: 100vh;">
     <div class="container">
       <div class="section-header reveal">
@@ -189,14 +183,14 @@
 
       <div class="portfolio-grid">
 
-        <!-- Projeto Auto-gerado: Academia Setfit -->
+        <!-- Academia Setfit -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/Academia%20Setfit/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">Academia Setfit</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta Academia Setfit.</p>
+            <h3 class="portfolio-title">Academia SetFit (V1)</h3>
+            <p class="portfolio-desc">Site institucional para academia com identidade visual preta e amarela. O Seu Limite Não Existe.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
@@ -210,20 +204,20 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: village-3 -->
+        <!-- Academia Essencial -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
-            <iframe class="portfolio-iframe" src="portifólio/village-3/index.html" loading="lazy" scrolling="no"></iframe>
+            <iframe class="portfolio-iframe" src="portifólio/academia-essencial/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">Village 3</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta village-3.</p>
+            <h3 class="portfolio-title">Academia SetFit (V2)</h3>
+            <p class="portfolio-desc">Versão simplificada do site para academia SetFit com foco em essência e funcionalidades básicas.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
                 <span class="tech-tag">CSS</span>
               </div>
-              <a href="portifólio/village-3/index.html" target="_blank" class="btn-visit">
+              <a href="portifólio/academia-essencial/index.html" target="_blank" class="btn-visit">
                 Acessar
                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
               </a>
@@ -231,20 +225,20 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: academia-completo -->
+        <!-- Academia Completo -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/academia-completo/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">Academia Completo</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta academia-completo.</p>
+            <h3 class="portfolio-title">Academia SetFit (Completo)</h3>
+            <p class="portfolio-desc">Versão completa do site institucional para academia com todas as funcionalidades e seções.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
                 <span class="tech-tag">CSS</span>
               </div>
-              <a href="portifólio/academia%201/index.html" target="_blank" class="btn-visit">
+              <a href="portifólio/academia-completo/index.html" target="_blank" class="btn-visit">
                 Acessar
                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
               </a>
@@ -252,35 +246,14 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: academia-essencial -->
-        <div class="portfolio-card reveal delay-1">
-          <div class="portfolio-view">
-            <iframe class="portfolio-iframe" src="portifólio/academia%202/index.html" loading="lazy" scrolling="no"></iframe>
-          </div>
-          <div class="portfolio-content">
-            <h3 class="portfolio-title">Academia 2</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta academia-essencial.</p>
-            <div class="portfolio-footer">
-              <div class="tech-stack">
-                <span class="tech-tag">HTML</span>
-                <span class="tech-tag">CSS</span>
-              </div>
-              <a href="portifólio/academia%202/index.html" target="_blank" class="btn-visit">
-                Acessar
-                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Projeto Auto-gerado: alexandria -->
+        <!-- Alexandria -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/alexandria/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
             <h3 class="portfolio-title">Alexandria</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta alexandria.</p>
+            <p class="portfolio-desc">Plataforma de conhecimento e cursos online com design sofisticado e navegação intuitiva.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
@@ -294,14 +267,77 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: setfit-cores -->
+        <!-- Village 3 - Condomínio Vertical -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/village-3/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Modelo Condomínio Vertical</h3>
+            <p class="portfolio-desc">Landing page para condomínio vertical em Cuiabá. O Padrão Ouro de Viver na cidade.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/village-3/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Villaggio Bonifacia -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/villaggio-bonifacia/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Villaggio Bonifacia</h3>
+            <p class="portfolio-desc">Site para residencial Village Damha III com foco em exclusividade e bem-estar.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/villaggio-bonifacia/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modelo Condomínio Horizontal -->
+        <div class="portfolio-card reveal delay-1">
+          <div class="portfolio-view">
+            <iframe class="portfolio-iframe" src="portifólio/modelo-condominio-horizontal/index.html" loading="lazy" scrolling="no"></iframe>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Modelo Condomínio Horizontal</h3>
+            <p class="portfolio-desc">Landing page para residencial horizontal em Rio Preto com padrão de bem-estar.</p>
+            <div class="portfolio-footer">
+              <div class="tech-stack">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <a href="portifólio/modelo-condominio-horizontal/index.html" target="_blank" class="btn-visit">
+                Acessar
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SetFit Cores -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/setfit-cores/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">SetFit Cores</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta setfit-cores.</p>
+            <h3 class="portfolio-title">SetFit — Cores</h3>
+            <p class="portfolio-desc">Apresentação visual explicando a escolha de cores da identidade SetFit.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
@@ -315,14 +351,14 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: setfit-pitch -->
+        <!-- SetFit Pitch -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/setfit-pitch/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">SetFit Pitch</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta setfit-pitch.</p>
+            <h3 class="portfolio-title">SetFit — Pitch Comercial</h3>
+            <p class="portfolio-desc">Apresentação comercial para prospecção de clientes e vendas.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
@@ -336,14 +372,14 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: setfit-proposta -->
+        <!-- SetFit Proposta -->
         <div class="portfolio-card reveal delay-1">
           <div class="portfolio-view">
             <iframe class="portfolio-iframe" src="portifólio/setfit-proposta/index.html" loading="lazy" scrolling="no"></iframe>
           </div>
           <div class="portfolio-content">
-            <h3 class="portfolio-title">SetFit Proposta</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta setfit-proposta.</p>
+            <h3 class="portfolio-title">SetFit — Proposta de Site</h3>
+            <p class="portfolio-desc">Documento de proposta técnica e comercial para o site da academia.</p>
             <div class="portfolio-footer">
               <div class="tech-stack">
                 <span class="tech-tag">HTML</span>
@@ -357,52 +393,10 @@
           </div>
         </div>
 
-        <!-- Projeto Auto-gerado: modelo-condominio-horizontal -->
-        <div class="portfolio-card reveal delay-1">
-          <div class="portfolio-view">
-            <iframe class="portfolio-iframe" src="portifólio/village%203/index.html" loading="lazy" scrolling="no"></iframe>
-          </div>
-          <div class="portfolio-content">
-            <h3 class="portfolio-title">Modelo Condomínio Horizontal</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta modelo-condominio-horizontal.</p>
-            <div class="portfolio-footer">
-              <div class="tech-stack">
-                <span class="tech-tag">HTML</span>
-                <span class="tech-tag">CSS</span>
-              </div>
-              <a href="portifólio/village%203/index.html" target="_blank" class="btn-visit">
-                Acessar
-                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Projeto Auto-gerado: village-3 -->
-        <div class="portfolio-card reveal delay-1">
-          <div class="portfolio-view">
-            <iframe class="portfolio-iframe" src="portifólio/village-3/index.html" loading="lazy" scrolling="no"></iframe>
-          </div>
-          <div class="portfolio-content">
-            <h3 class="portfolio-title">Village 3</h3>
-            <p class="portfolio-desc">Projeto adicionado à pasta village-3.</p>
-            <div class="portfolio-footer">
-              <div class="tech-stack">
-                <span class="tech-tag">HTML</span>
-                <span class="tech-tag">CSS</span>
-              </div>
-              <a href="portifólio/village-3/index.html" target="_blank" class="btn-visit">
-                Acessar
-                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== FOOTER ==================== -->
   <footer>
     <div class="container">
       <div class="footer-inner">
@@ -419,10 +413,8 @@
     </div>
   </footer>
 
-  <!-- Modais (Injetados via main.js) -->
   <script src="main.js"></script>
   
-  <!-- Mobile menu move to body end for better isolation -->
   <div id="mobile-menu">
     <a href="index.html#inicio" onclick="window.closeMobile()">Início</a>
     <a href="index.html#solucoes" onclick="window.closeMobile()">Soluções</a>
