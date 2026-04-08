@@ -163,14 +163,14 @@ function renderCourseCard(course) {
                     <span class="course-meta-item">👤 ${course.students} alunos</span>
                     <span class="course-meta-item">⏱ ${course.duration}</span>
                 </div>
-                <div class="course-footer">
+                <div class="course-footer" style="flex-direction: column; align-items: stretch; gap: 1rem;">
                     <div>
                         <span style="font-size: 0.75rem; color: var(--text-dim);">A partir de</span>
                         <div class="course-price">${formatPrice(course.minPrice)}</div>
                     </div>
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                        <button class="course-btn" onclick="viewCourse(${course.id})" style="flex:1;">Ver Mais</button>
-                        <button class="course-btn" onclick="viewCourse(${course.id})" style="background:var(--gold);color:var(--darker);flex:1;">Escolher Valor</button>
+                    <div style="display:flex;gap:0.5rem;">
+                        <button class="course-btn" onclick="viewCourse(${course.id})" style="flex:1;text-align:center;">Ver Mais</button>
+                        <button class="course-btn" onclick="viewCourse(${course.id})" style="background:var(--gold);color:var(--darker);flex:1;text-align:center;">Escolher Valor</button>
                     </div>
                 </div>
             </div>
