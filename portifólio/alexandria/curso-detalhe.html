@@ -100,17 +100,30 @@
                             </div>
                             <div class="course-purchase-card">
                                 <div style="margin-bottom: 0.5rem; color: var(--text-dim); font-size: 0.9rem;">Escolha o quanto deseja pagar:</div>
-                                <div class="course-purchase-price" id="dynamicPriceLabel" style="margin-bottom: 0;">${formatPrice(course.minPrice)}</div>
+                                <div class="course-purchase-price" id="dynamicPriceLabel" style="margin-bottom: 0;">${formatPrice(course.idealPrice || course.minPrice)}</div>
                                 
-                                <div style="margin: 1.5rem 0;">
-                                    <input type="range" class="price-slider" id="priceSlider" min="${course.minPrice}" max="${course.maxPrice}" step="10" value="${course.minPrice}" oninput="document.getElementById('dynamicPriceLabel').textContent = formatPrice(this.value);" style="width:100%;">
+                                <div style="margin: 1.5rem 0;" id="sliderContainer">
+                                    <input type="range" class="price-slider" id="priceSlider" min="${course.minPrice}" max="${course.maxPrice}" step="10" value="${course.idealPrice || course.minPrice}" oninput="document.getElementById('dynamicPriceLabel').textContent = formatPrice(this.value);" style="width:100%;">
                                     <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">
                                         <span>Min: ${formatPrice(course.minPrice)}</span>
+                                        <span>Ideal: ${formatPrice(course.idealPrice || course.minPrice)}</span>
                                         <span>Max: ${formatPrice(course.maxPrice)}</span>
                                     </div>
                                 </div>
+
+                                <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--card); border-radius: 4px;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-bottom: 0.5rem;">
+                                        <input type="radio" name="priceType" value="slider" checked onchange="togglePriceInput()">
+                                        <span style="font-size: 0.9rem;">Usar valores sugeridos</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="radio" name="priceType" value="free" onchange="togglePriceInput()">
+                                        <span style="font-size: 0.9rem;">Valor livre (escolher quanto pagar)</span>
+                                    </label>
+                                    <input type="number" id="freePriceInput" placeholder="Digite o valor que deseja pagar" min="0" max="10000" style="display:none; width:100%; margin-top:0.5rem; padding:0.5rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;" oninput="document.getElementById('dynamicPriceLabel').textContent = 'R$ ' + this.value">
+                                </div>
                                 
-                                <button class="btn btn-primary btn-full" style="margin-top:0.5rem;" onclick="addToCart(${course.id}, parseFloat(document.getElementById('priceSlider').value))">Adicionar ao Carrinho</button>
+                                <button class="btn btn-primary btn-full" style="margin-top:0.5rem;" id="addToCartBtn" onclick="addToCart(${course.id}, parseFloat(document.getElementById('priceSlider').value))">Adicionar ao Carrinho</button>
                                 <ul class="course-purchase-features">
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Acesso vitalício</li>
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${totalLessons} aulas em ${course.modules.length} módulos</li>
@@ -179,6 +192,31 @@
                     </div>
                 </section>
             `;
+        }
+
+        function togglePriceInput() {
+            const priceType = document.querySelector('input[name="priceType"]:checked').value;
+            const sliderContainer = document.getElementById('sliderContainer');
+            const freeInput = document.getElementById('freePriceInput');
+            const priceLabel = document.getElementById('dynamicPriceLabel');
+            const addBtn = document.getElementById('addToCartBtn');
+
+            if (priceType === 'free') {
+                sliderContainer.style.display = 'none';
+                freeInput.style.display = 'block';
+                freeInput.value = '';
+                addBtn.onclick = function() {
+                    const val = parseFloat(freeInput.value) || course.minPrice;
+                    addToCart(${course.id}, val);
+                };
+            } else {
+                sliderContainer.style.display = 'block';
+                freeInput.style.display = 'none';
+                priceLabel.textContent = formatPrice(document.getElementById('priceSlider').value);
+                addBtn.onclick = function() {
+                    addToCart(${course.id}, parseFloat(document.getElementById('priceSlider').value));
+                };
+            }
         }
     </script>
 </body>
