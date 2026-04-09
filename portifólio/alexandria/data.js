@@ -223,6 +223,38 @@ const DB = {
         return true;
     },
 
+    getCourseTotalDuration(course) {
+        if (!course || !course.modules) return "0h";
+        
+        let totalSeconds = 0;
+        let hasLessons = false;
+
+        course.modules.forEach(m => {
+            if (m.lessons) {
+                m.lessons.forEach(l => {
+                    hasLessons = true;
+                    if (l.duration && typeof l.duration === 'string') {
+                        const parts = l.duration.split(':');
+                        if (parts.length === 2) {
+                            totalSeconds += (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0);
+                        } else if (parts.length === 1) {
+                            totalSeconds += (parseInt(parts[0]) || 0) * 60;
+                        }
+                    }
+                });
+            }
+        });
+
+        if (totalSeconds > 0) {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            if (h > 0) return `${h}h ${m}m`;
+            return `${m}m`;
+        }
+
+        return course.duration || "0h";
+    },
+
     /* --- Users --- */
     getUsers() { return this._get(DB_KEYS.users) || []; },
     getUserById(id) { return this.getUsers().find(u => u.id === id); },

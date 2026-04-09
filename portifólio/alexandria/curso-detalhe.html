@@ -94,7 +94,7 @@
                                 <div class="course-detail-meta">
                                     <span class="course-detail-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> ${rating.avg || course.rating} (${rating.count || 0} avaliações)</span>
                                     <span class="course-detail-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> ${course.students + enrolled} alunos</span>
-                                    <span class="course-detail-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${course.duration}</span>
+                                    <span class="course-detail-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${DB.getCourseTotalDuration(course)}</span>
                                     <span class="course-detail-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> ${totalLessons} aulas</span>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
                 <section class="course-content-section">
                     <div class="container">
                         <h2 class="section-title" style="margin-bottom:0.5rem;">Grade Curricular</h2>
-                        <p style="color:var(--text-dim);margin-bottom:2rem;">${course.modules.length} módulos · ${totalLessons} aulas · ${course.duration}</p>
+                        <p style="color:var(--text-dim);margin-bottom:2rem;">${course.modules.length} módulos · ${totalLessons} aulas · ${DB.getCourseTotalDuration(course)}</p>
                         <div class="course-modules">
                             ${course.modules.map((mod, i) => `
                                 <div class="course-module">

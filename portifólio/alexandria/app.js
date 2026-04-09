@@ -161,7 +161,7 @@ function renderCourseCard(course) {
                 <div class="course-meta">
                     <span class="course-meta-item course-rating">★ ${rating.avg || course.rating}</span>
                     <span class="course-meta-item">👤 ${course.students} alunos</span>
-                    <span class="course-meta-item">⏱ ${course.duration}</span>
+                    <span class="course-meta-item">⏱ ${DB ? DB.getCourseTotalDuration(course) : course.duration}</span>
                 </div>
                 <div class="course-footer" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; margin-top: auto;">
                     <div>

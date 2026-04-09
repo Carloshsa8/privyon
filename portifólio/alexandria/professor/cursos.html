@@ -180,7 +180,7 @@
                         <td style="color:var(--gold); white-space: nowrap;">${formatPrice(c.minPrice || c.price)} - ${formatPrice(c.maxPrice || c.price)}</td>
                         <td>${(c.students || 0) + enrolled}</td>
                         <td style="color:var(--gold)">★ ${rating.avg || c.rating || 0}</td>
-                        <td>${c.modules ? c.modules.length : 0} módulos · ${totalLessons} aulas</td>
+                        <td>${c.modules ? c.modules.length : 0} módulos · ${totalLessons} aulas · ${DB.getCourseTotalDuration(c)}</td>
                         <td><span class="badge ${c.published?'badge-success':'badge-warning'}">${c.published?'Publicado':'Rascunho'}</span></td>
                         <td class="actions-cell">
                             <button class="action-btn" onclick="openEditCourse(${c.id})">Editar</button>
