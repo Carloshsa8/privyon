@@ -2,12 +2,18 @@
   "name": "Alexandria - Plataforma de Conhecimento",
   "short_name": "Alexandria",
   "description": "O conhecimento é o único caminho para a evolução.",
-  "start_url": "index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#c9a227",
   "orientation": "portrait",
   "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    },
     {
       "src": "https://img.icons8.com/color/192/library.png",
       "sizes": "192x192",

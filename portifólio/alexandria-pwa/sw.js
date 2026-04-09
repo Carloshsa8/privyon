@@ -8,7 +8,8 @@ const ASSETS_TO_CACHE = [
   'data.js',
   'auth.js',
   'courses.js',
-  'manifest.json'
+  'manifest.json',
+  'icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
