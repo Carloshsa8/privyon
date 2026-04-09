@@ -37,6 +37,7 @@
             <div class="dash-sidebar-header">
                 <div class="dash-sidebar-role">Professor</div>
                 <div class="dash-sidebar-name" id="profName">Professor</div>
+                <button onclick="openProfileModal()" style="background:none; border:none; color:var(--gold); font-size:0.75rem; cursor:pointer; padding:0; margin-top:0.25rem; text-decoration:underline;">Editar Perfil</button>
             </div>
             <nav class="dash-sidebar-nav">
                 <a href="dashboard.html" class="dash-nav-item active">
@@ -115,7 +116,6 @@
                 const enrolled = DB.getEnrollmentsByCourse(c.id).length;
                 const rating = DB.getCourseRating(c.id);
                 return `
-                return `
                     <a href="cursos.html" class="student-course-card" style="text-decoration:none; display:block; transition: transform 0.2s;">
                         <style>.student-course-card:hover { transform: translateY(-5px); border-color: var(--gold); }</style>
                         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
@@ -129,7 +129,6 @@
                             <span style="color:var(--gold);">${formatPrice(c.price)}</span>
                         </div>
                     </a>
-                `;
                 `;
             }).join('') || '<p style="color:var(--text-dim);">Nenhum curso encontrado.</p>';
 
@@ -199,6 +198,58 @@
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', modalHtml);
+        };
+
+        window.openProfileModal = function() {
+            const user = Auth.getCurrentUser();
+            const modalHtml = `
+                <div class="modal-overlay open" id="profileModal" style="display:flex !important; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center; padding:2rem;">
+                    <div class="modal" style="max-width:500px; width:100%; background:var(--dark); border:1px solid var(--border);">
+                        <div class="modal-header" style="border-bottom:1px solid var(--border); padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center;">
+                            <h3 class="modal-title">Meu Perfil</h3>
+                            <button class="modal-close" onclick="document.getElementById('profileModal').remove()" style="background:none; border:none; color:var(--text-dim); font-size:1.5rem; cursor:pointer;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="padding:2rem;">
+                            <form onsubmit="handleUpdateProfile(event)">
+                                <div style="margin-bottom:1rem;">
+                                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Nome</label>
+                                    <input type="text" id="pName" value="${user.name}" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--border); color:var(--text);">
+                                </div>
+                                <div style="margin-bottom:1rem;">
+                                    <label style="display:block; margin-bottom:0.5rem; color:var(--gold); font-size:0.9rem;">Especialidade</label>
+                                    <input type="text" id="pSpecialty" value="${user.specialty || ''}" placeholder="Ex: Produtividade & Automação" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--border); color:var(--gold);">
+                                </div>
+                                <div style="margin-bottom:1rem;">
+                                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Biografia / Descrição</label>
+                                    <textarea id="pBio" rows="4" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--border); color:var(--text); font-family:inherit;">${user.bio || ''}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width:100%;">Salvar Perfil</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        };
+
+        window.handleUpdateProfile = function(e) {
+            e.preventDefault();
+            const user = Auth.getCurrentUser();
+            const updates = {
+                name: document.getElementById('pName').value,
+                specialty: document.getElementById('pSpecialty').value,
+                bio: document.getElementById('pBio').value
+            };
+            
+            DB.updateUser(user.id, updates);
+            
+            // Update local session
+            const session = Auth.getSession();
+            Auth._saveSession({ ...session, ...updates });
+
+            alert('Perfil atualizado com sucesso!');
+            document.getElementById('profileModal').remove();
+            location.reload();
         };
     </script>
 </body>
