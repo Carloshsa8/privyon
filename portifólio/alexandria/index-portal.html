@@ -163,6 +163,18 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        .intro-tagline-top {
+            font-size: clamp(0.6rem, 2vw, 0.9rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            animation-delay: 0.8s;
+            display: block;
+        }
+
         .main-content {
             position: relative;
             min-height: 100vh;
@@ -223,6 +235,16 @@
             text-transform: uppercase;
             color: var(--text-dim);
             margin-top: 2rem;
+        }
+
+        .hero-tagline-top {
+            font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            display: block;
+            text-align: center;
         }
 
         .hero-cta {
@@ -512,6 +534,7 @@
             <div class="intro-bg"></div>
         </div>
         <div class="intro-content">
+            <span class="intro-tagline-top">Portal</span>
             <h1 class="intro-title">Alexandria</h1>
             <p class="intro-subtitle">O conhecimento é o único caminho para a evolução</p>
         </div>
@@ -548,6 +571,7 @@
         </div>
 
         <section class="hero">
+            <span class="hero-tagline-top">Portal</span>
             <h1 class="hero-title" style="text-align:center;padding:0 1rem;">Alexandria</h1>
             <p class="hero-subtitle" style="text-align:center;padding:0 1rem;">O conhecimento é o único caminho para a evolução</p>
             <div class="hero-cta">
