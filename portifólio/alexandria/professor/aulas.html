@@ -175,6 +175,19 @@
 
         let expandedModules = new Set();
 
+        function formatDuration(val) {
+            if (!val) return "00:00";
+            val = val.toString().trim().replace(',', '.');
+            if (!val.includes(':')) {
+                const num = parseInt(val);
+                return isNaN(num) ? "00:00" : num.toString().padStart(2, '0') + ":00";
+            }
+            const parts = val.split(':');
+            const m = (parts[0] || '0').padStart(2, '0');
+            const s = (parts[1] || '0').padStart(2, '0');
+            return `${m}:${s.substring(0, 2)}`;
+        }
+
         function showSelector() {
             document.getElementById('courseSelector').style.display = '';
             document.getElementById('lessonManager').style.display = 'none';
@@ -303,21 +316,32 @@
             const data = {
                 title: document.getElementById('lTitle').value,
                 description: document.getElementById('lDesc').value,
-                duration: document.getElementById('lDuration').value,
+                duration: formatDuration(document.getElementById('lDuration').value),
                 status: document.getElementById('lStatus').value,
                 scheduledDate: document.getElementById('lScheduledDate').value,
                 type: Array.from(document.querySelectorAll('input[name="lType"]:checked')).map(cb => cb.value)
             };
 
+            console.log('Salvando aula:', data);
+
             if (lessonId) {
-                DB.updateLesson(currentCourseId, modId, parseInt(lessonId), data);
+                const updated = DB.updateLesson(currentCourseId, modId, parseInt(lessonId), data);
+                console.log('Aula atualizada:', updated);
             } else {
-                DB.addLessonToModule(currentCourseId, modId, data);
+                const added = DB.addLessonToModule(currentCourseId, modId, data);
+                console.log('Aula adicionada:', added);
             }
             
             document.getElementById('lessonModal').classList.remove('open');
             e.target.reset();
-            selectCourse(currentCourseId);
+            
+            // Refresh the course view
+            const course = getCourseById(currentCourseId);
+            renderModules(course);
+            
+            // Update total counts in header
+            const totalLes = course.modules.reduce((s,m)=>s+m.lessons.length,0);
+            document.getElementById('pageDesc').textContent = `${course.modules.length} módulos · ${totalLes} aulas`;
         };
 
         window.handleDeleteLesson = function(modId, lessonId) {
