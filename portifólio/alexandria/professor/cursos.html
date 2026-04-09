@@ -167,13 +167,13 @@
     <script src="../data.js"></script>
     <script src="../auth.js"></script>
     <script>
-        if (!Auth.requireAuth(['professor'])) {}
+        if (!Auth.requireAuth(['professor', 'admin'])) {}
         else {
             const user = Auth.getCurrentUser();
             document.getElementById('profName').textContent = user.name;
 
             const renderMyCourses = () => {
-                const myCourses = getCoursesByInstructor(user.id);
+                const myCourses = user.role === 'admin' ? getAllCourses() : getCoursesByInstructor(user.id);
                 document.getElementById('profCoursesBody').innerHTML = myCourses.map(c => {
                     const enrolled = DB.getEnrollmentsByCourse(c.id).length;
                     const rating = DB.getCourseRating(c.id);

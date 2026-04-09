@@ -76,12 +76,12 @@
     <script src="../data.js"></script>
     <script src="../auth.js"></script>
     <script>
-        if (!Auth.requireAuth(['professor'])) {}
+        if (!Auth.requireAuth(['professor', 'admin'])) {}
         else {
             const user = Auth.getCurrentUser();
             document.getElementById('profName').textContent = user.name;
 
-            const myCourses = getCoursesByInstructor(user.id);
+            const myCourses = user.role === 'admin' ? getAllCourses() : getCoursesByInstructor(user.id);
             let totalStudents = 0, totalRevenue = 0, totalReviews = 0;
 
             myCourses.forEach(c => {
