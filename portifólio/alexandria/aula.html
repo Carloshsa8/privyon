@@ -91,8 +91,8 @@
                                         const active = l.id === lessonId;
                                         return `
                                         <a href="aula.html?courseId=${courseId}&lessonId=${l.id}" class="lesson-item ${active ? 'active' : ''} ${done ? 'completed' : ''}" style="text-decoration:none;">
-                                            <span class="lesson-item-check">${done ? '✓' : ''}</span>
-                                            ${l.title}
+                                            <span class="lesson-item-check" onclick="event.preventDefault(); event.stopPropagation(); toggleLesson(${courseId}, ${l.id})">${done ? '✓' : ''}</span>
+                                            <span style="flex:1;">${l.title}</span>
                                             <span class="lesson-item-duration">${l.duration}</span>
                                         </a>`;
                                     }).join('')}
@@ -134,6 +134,12 @@
         function markComplete(courseId, lessonId) {
             const session = Auth.getSession();
             DB.completeLesson(session.userId, courseId, lessonId);
+            location.reload();
+        }
+
+        function toggleLesson(courseId, lessonId) {
+            const session = Auth.getSession();
+            DB.toggleLessonCompletion(session.userId, courseId, lessonId);
             location.reload();
         }
     </script>

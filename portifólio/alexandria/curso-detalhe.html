@@ -75,15 +75,21 @@
         if (!course) {
             page.innerHTML = '<div class="container" style="padding:8rem 2rem;text-align:center;"><h1 style="color:var(--text-dim);">Curso não encontrado</h1><p style="margin-top:1rem;color:var(--text-dim);">Tente navegar pelos cursos novamente.</p><a href="cursos.html" class="btn" style="margin-top:2rem;">Ver Cursos</a></div>';
         } else {
-            const instructor = DB.getUserById(course.instructorId);
-            const rating = DB.getCourseRating(course.id);
-            const reviews = DB.getReviewsByCourse(course.id);
-            const enrolled = DB.getEnrollmentsByCourse(course.id).length;
-            const totalLessons = course.modules.reduce((s, m) => s + m.lessons.length, 0);
+            try {
+                const instructor = DB.getUserById(course.instructorId);
+                const rating = DB.getCourseRating(course.id);
+                const reviews = DB.getReviewsByCourse(course.id);
+                const enrolled = DB.getEnrollmentsByCourse(course.id).length;
+                const modules = course.modules || [];
+                const totalLessons = modules.reduce((s, m) => s + (m.lessons ? m.lessons.length : 0), 0);
 
-            document.title = `${course.name} - Alexandria`;
+                const minPrice = course.minPrice || course.price || 0;
+                const maxPrice = course.maxPrice || course.price || 0;
+                const currentPrice = course.price || 0;
 
-            page.innerHTML = `
+                document.title = `${course.name} - Alexandria`;
+
+                page.innerHTML = `
                 <section class="course-detail-hero">
                     <div class="container">
                         <div class="course-detail-grid">
@@ -101,17 +107,17 @@
                             <div class="course-purchase-card">
                                 <div class="purchase-slider" style="margin-bottom: 1.5rem;">
                                     <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;font-size:0.85rem;color:var(--text-dim);">
-                                        <span>${course.freeValue ? 'Valor Livre (R$ 0)' : formatPrice(course.minPrice)}</span>
-                                        <span>${course.freeValue ? 'R$ 10.000,00' : formatPrice(course.maxPrice)}</span>
+                                        <span>${course.freeValue ? 'Valor Livre (R$ 0)' : formatPrice(minPrice)}</span>
+                                        <span>${course.freeValue ? 'R$ 10.000,00' : formatPrice(maxPrice)}</span>
                                     </div>
-                                    <input type="range" class="price-slider" id="priceSlider" min="${course.freeValue ? 0 : course.minPrice}" max="${course.freeValue ? 10000 : course.maxPrice}" step="10" value="${course.price}" oninput="document.getElementById('dynamicPriceLabel').textContent = formatPrice(this.value);" style="width:100%;">
-                                    <div style="text-align:center; margin-top:0.5rem; font-size:1.2rem; color:var(--text);">Você pagará: <strong style="color:var(--gold);" id="dynamicPriceLabel">${formatPrice(course.price)}</strong></div>
+                                    <input type="range" class="price-slider" id="priceSlider" min="${course.freeValue ? 0 : minPrice}" max="${course.freeValue ? 10000 : maxPrice}" step="10" value="${currentPrice}" oninput="document.getElementById('dynamicPriceLabel').textContent = formatPrice(this.value);" style="width:100%;">
+                                    <div style="text-align:center; margin-top:0.5rem; font-size:1.2rem; color:var(--text);">Você pagará: <strong style="color:var(--gold);" id="dynamicPriceLabel">${formatPrice(currentPrice)}</strong></div>
                                 </div>
                                 
                                 <button class="btn btn-primary btn-full" style="margin-top:0.5rem;" onclick="addToCart(${course.id}, parseFloat(document.getElementById('priceSlider').value))">Adicionar ao Carrinho</button>
                                 <ul class="course-purchase-features">
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Acesso vitalício</li>
-                                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${totalLessons} aulas em ${course.modules.length} módulos</li>
+                                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${totalLessons} aulas em ${modules.length} módulos</li>
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Certificado de conclusão</li>
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Suporte com o professor</li>
                                     <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 7 dias de garantia</li>
@@ -124,16 +130,16 @@
                 <section class="course-content-section">
                     <div class="container">
                         <h2 class="section-title" style="margin-bottom:0.5rem;">Grade Curricular</h2>
-                        <p style="color:var(--text-dim);margin-bottom:2rem;">${course.modules.length} módulos · ${totalLessons} aulas · ${DB.getCourseTotalDuration(course)}</p>
+                        <p style="color:var(--text-dim);margin-bottom:2rem;">${modules.length} módulos · ${totalLessons} aulas · ${DB.getCourseTotalDuration(course)}</p>
                         <div class="course-modules">
-                            ${course.modules.map((mod, i) => `
+                            ${modules.map((mod, i) => `
                                 <div class="course-module">
                                     <div class="course-module-header" onclick="this.nextElementSibling.classList.toggle('open')">
                                         <span class="course-module-title">Módulo ${i+1}: ${mod.title}</span>
-                                        <span class="course-module-count">${mod.lessons.length} aulas</span>
+                                        <span class="course-module-count">${mod.lessons ? mod.lessons.length : 0} aulas</span>
                                     </div>
                                     <div class="course-module-lessons${i===0?' open':''}">
-                                        ${mod.lessons.map(l => `
+                                        ${(mod.lessons || []).map(l => `
                                             <div class="course-lesson">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                                                 ${l.title}
@@ -177,6 +183,17 @@
                     </div>
                 </section>
             `;
+            } catch (err) {
+                console.error("Erro na pagina de detalhes:", err);
+                page.innerHTML = `
+                    <div class="container" style="padding:8rem 2rem;text-align:center;">
+                        <h1 style="color:var(--gold);">Ops! Algo deu errado</h1>
+                        <p style="margin-top:1rem;color:var(--text-dim);">Houve um erro ao carregar os detalhes do curso.</p>
+                        <p style="font-size:0.8rem; color:var(--red); margin-top:1rem;">${err.message}</p>
+                        <a href="cursos.html" class="btn" style="margin-top:2rem;">Voltar aos Cursos</a>
+                    </div>
+                `;
+            }
         }
     </script>
 </body>

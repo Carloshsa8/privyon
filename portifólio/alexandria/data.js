@@ -378,6 +378,27 @@ const DB = {
         return enrollment;
     },
 
+    toggleLessonCompletion(userId, courseId, lessonId) {
+        const enrollment = this.getEnrollment(userId, courseId);
+        if (!enrollment) return null;
+        
+        const idx = enrollment.completedLessons.indexOf(lessonId);
+        if (idx === -1) {
+            enrollment.completedLessons.push(lessonId);
+        } else {
+            enrollment.completedLessons.splice(idx, 1);
+        }
+        
+        const course = getCourseById(courseId);
+        if (course) {
+            const totalLessons = course.modules.reduce((sum, m) => sum + (m.lessons ? m.lessons.length : 0), 0);
+            enrollment.progress = totalLessons > 0 ? Math.round((enrollment.completedLessons.length / totalLessons) * 100) : 0;
+        }
+        
+        this.updateEnrollment(userId, courseId, enrollment);
+        return enrollment;
+    },
+
     /* --- Reviews --- */
     getReviews() { return this._get(DB_KEYS.reviews) || []; },
     getReviewsByCourse(courseId) { return this.getReviews().filter(r => r.courseId === courseId); },
