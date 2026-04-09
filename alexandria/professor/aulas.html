@@ -116,14 +116,16 @@
     <script src="../data.js"></script>
     <script src="../auth.js"></script>
     <script>
-        if (!Auth.requireAuth(['professor'])) {}
-        else {
-            const user = Auth.getCurrentUser();
-            document.getElementById('profName').textContent = user.name;
+        Auth.requireAuth(['professor', 'admin']);
+        const user = Auth.getCurrentUser();
+        const userRole = Auth.getRole();
+        
+        document.getElementById('profName').textContent = user.name;
 
-            const params = new URLSearchParams(window.location.search);
-            const courseId = params.get('courseId');
-            const myCourses = getCoursesByInstructor(user.id);
+        const params = new URLSearchParams(window.location.search);
+        const courseId = params.get('courseId');
+        
+        const myCourses = userRole === 'admin' ? getAllCourses() : getCoursesByInstructor(user.id);
 
             // Course selector
             document.getElementById('courseSelectorGrid').innerHTML = myCourses.map(c => `
@@ -137,8 +139,7 @@
                 </div>
             `).join('') || '<p style="color:var(--text-dim);">Nenhum curso encontrado.</p>';
 
-            if (courseId) selectCourse(parseInt(courseId));
-        }
+        if (courseId) selectCourse(parseInt(courseId));
 
         function showSelector() {
             document.getElementById('courseSelector').style.display = '';
