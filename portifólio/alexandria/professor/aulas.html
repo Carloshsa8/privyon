@@ -82,34 +82,65 @@
     </div>
 
     <div class="modal" id="lessonModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
-        <div class="modal-content" style="background:var(--dark); width:90%; max-width:500px; padding:2rem; border-radius:8px; border:1px solid var(--gray);">
+        <div class="modal-content" style="background:var(--dark); width:90%; max-width:600px; padding:2rem; border-radius:8px; border:1px solid var(--gray); max-height: 90vh; overflow-y: auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                <h2 style="color:var(--gold); font-size:1.2rem;">Criar Nova Aula</h2>
+                <h2 style="color:var(--gold); font-size:1.2rem;" id="lessonModalTitle">Criar Nova Aula</h2>
                 <button onclick="document.getElementById('lessonModal').classList.remove('open')" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">&times;</button>
             </div>
             <form id="lessonForm" onsubmit="handleCreateLesson(event)">
+                <input type="hidden" id="lId">
                 <input type="hidden" id="lModuleId">
+                
                 <div style="margin-bottom:1rem;">
                     <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Título da Aula</label>
                     <input type="text" id="lTitle" required style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                 </div>
-                <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
-                    <div style="flex:1;">
-                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Tipo</label>
-                        <select id="lType" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
-                            <option value="video">Vídeo</option>
-                            <option value="exercise">Exercício</option>
-                        </select>
-                    </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Descrição (opcional)</label>
+                    <textarea id="lDesc" rows="3" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px; resize: vertical;"></textarea>
+                </div>
+
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
                     <div style="flex:1;">
                         <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Duração (ex: 15:00)</label>
                         <input type="text" id="lDuration" required value="10:00" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
                     </div>
+                    <div style="flex:1;">
+                        <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Status</label>
+                        <select id="lStatus" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                            <option value="published">Publicada</option>
+                            <option value="draft">Rascunho</option>
+                            <option value="scheduled">Agendada</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">Publicar Aula</button>
+
+                <div id="scheduleContainer" style="margin-bottom:1.5rem; display:none;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Data e Hora da Publicação</label>
+                    <input type="datetime-local" id="lScheduledDate" style="width:100%; padding:0.75rem; background:var(--darker); border:1px solid var(--gray); color:var(--text); border-radius:4px;">
+                </div>
+
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color:var(--text-dim); font-size:0.9rem;">Tipo (selecione um ou mais)</label>
+                    <div id="lTypeContainer" style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; background:var(--darker); padding:0.75rem; border:1px solid var(--gray); border-radius:4px;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;"><input type="checkbox" name="lType" value="video"> Vídeo</label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;"><input type="checkbox" name="lType" value="concept"> Conceito</label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;"><input type="checkbox" name="lType" value="practice"> Prática</label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;"><input type="checkbox" name="lType" value="task"> Tarefa</label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;"><input type="checkbox" name="lType" value="exercise"> Exercício</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;" id="lessonSubmitBtn">Salvar Aula</button>
             </form>
         </div>
     </div>
+    <script>
+        document.getElementById('lStatus').addEventListener('change', function() {
+            document.getElementById('scheduleContainer').style.display = this.value === 'scheduled' ? 'block' : 'none';
+        });
+    </script>
     <style> .modal.open { display: flex !important; } </style>
 
     <script src="../courses.js"></script>
@@ -142,6 +173,8 @@
             if (courseId) selectCourse(parseInt(courseId));
         }
 
+        let expandedModules = new Set();
+
         function showSelector() {
             document.getElementById('courseSelector').style.display = '';
             document.getElementById('lessonManager').style.display = 'none';
@@ -165,45 +198,89 @@
             renderModules(course);
         }
 
+        function toggleModule(id) {
+            if (expandedModules.has(id)) expandedModules.delete(id);
+            else expandedModules.add(id);
+            const course = getCourseById(currentCourseId);
+            renderModules(course);
+        }
+
         function renderModules(course) {
             const container = document.getElementById('modulesContainer');
             if (!course.modules || course.modules.length === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Nenhum módulo criado</div><p class="empty-state-text">Crie módulos e aulas para seu curso.</p></div>';
                 return;
             }
-            container.innerHTML = course.modules.map((mod, i) => `
+            container.innerHTML = course.modules.map((mod, i) => {
+                const isExpanded = expandedModules.has(mod.id);
+                return `
                 <div class="course-module" style="margin-bottom:1.5rem;">
                     <div class="course-module-header">
-                        <div onclick="this.parentElement.nextElementSibling.classList.toggle('open')" style="flex:1; cursor:pointer;">
+                        <div onclick="toggleModule(${mod.id})" style="flex:1; cursor:pointer;">
                             <span class="course-module-title">Módulo ${i+1}: ${mod.title}</span>
                             <span class="course-module-count" style="margin-left: 1rem;">${mod.lessons.length} aulas</span>
                         </div>
                         <button class="action-btn" onclick="openLessonModal(${mod.id})" style="background:none; border:1px solid var(--gold); color:var(--gold); padding:0.25rem 0.75rem; border-radius:4px; cursor:pointer;">+ Aula</button>
                     </div>
-                    <div class="course-module-lessons open">
+                    <div class="course-module-lessons ${isExpanded ? 'open' : ''}">
                         ${mod.lessons.map((l, j) => `
                             <div class="course-lesson" style="justify-content:space-between;">
-                                <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <div style="display:flex;align-items:center;gap:0.75rem; flex:1;">
                                     <span style="color:var(--text-dim);font-size:0.8rem;">${j+1}.</span>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--gold);flex-shrink:0;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                    <div>
+                                    <div style="flex:1;">
                                         <div style="color:var(--text);">${l.title}</div>
-                                        <div style="font-size:0.75rem;color:var(--text-dim);">${l.type === 'exercise' ? 'Exercício' : 'Vídeo'} · ${l.duration}</div>
+                                        <div style="font-size:0.75rem;color:var(--text-dim);">${(Array.isArray(l.type) ? l.type : [l.type]).map(t => {
+                                            const labels = { video: 'Vídeo', concept: 'Conceito', practice: 'Prática', task: 'Tarefa', exercise: 'Exercício' };
+                                            return labels[t] || t;
+                                        }).join(', ')} · ${l.duration}</div>
                                     </div>
                                 </div>
-                                <span class="badge badge-success" style="font-size:0.65rem;">Publicada</span>
+                                <div style="display:flex; align-items:center; gap:1rem;">
+                                    <span class="badge badge-${l.status === 'draft' ? 'warning' : (l.status === 'scheduled' ? 'info' : 'success')}" style="font-size:0.65rem;">
+                                        ${l.status === 'draft' ? 'Rascunho' : (l.status === 'scheduled' ? 'Agendada' : 'Publicada')}
+                                    </span>
+                                    <div style="display:flex; gap:0.5rem;">
+                                        <button class="action-btn" onclick="openLessonModal(${mod.id}, ${l.id})" style="background:none; border:none; color:var(--text-dim); cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                                        <button class="action-btn" onclick="handleDeleteLesson(${mod.id}, ${l.id})" style="background:none; border:none; color:var(--red); cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                                    </div>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
         }
 
-        // --- Create Logic ---
-        let currentCourseId = null;
-
-        function openLessonModal(moduleId) {
+        function openLessonModal(moduleId, lessonId = null) {
             document.getElementById('lModuleId').value = moduleId;
+            document.getElementById('lId').value = lessonId || '';
+            
+            const form = document.getElementById('lessonForm');
+            form.reset();
+            
+            if (lessonId) {
+                const course = getCourseById(currentCourseId);
+                const mod = course.modules.find(m => m.id === moduleId);
+                const lesson = mod.lessons.find(l => l.id === lessonId);
+                
+                document.getElementById('lessonModalTitle').textContent = 'Editar Aula';
+                document.getElementById('lTitle').value = lesson.title;
+                document.getElementById('lDesc').value = lesson.description || '';
+                document.getElementById('lDuration').value = lesson.duration;
+                document.getElementById('lStatus').value = lesson.status || 'published';
+                document.getElementById('lScheduledDate').value = lesson.scheduledDate || '';
+                document.getElementById('scheduleContainer').style.display = lesson.status === 'scheduled' ? 'block' : 'none';
+                
+                const types = Array.isArray(lesson.type) ? lesson.type : [lesson.type];
+                document.querySelectorAll('input[name="lType"]').forEach(cb => {
+                    cb.checked = types.includes(cb.value);
+                });
+            } else {
+                document.getElementById('lessonModalTitle').textContent = 'Criar Nova Aula';
+                document.getElementById('scheduleContainer').style.display = 'none';
+            }
+            
             document.getElementById('lessonModal').classList.add('open');
         }
 
@@ -221,19 +298,33 @@
             e.preventDefault();
             if(!currentCourseId) return;
             const modId = parseInt(document.getElementById('lModuleId').value);
-            const title = document.getElementById('lTitle').value;
-            const type = document.getElementById('lType').value;
-            const duration = document.getElementById('lDuration').value;
+            const lessonId = document.getElementById('lId').value;
+            
+            const data = {
+                title: document.getElementById('lTitle').value,
+                description: document.getElementById('lDesc').value,
+                duration: document.getElementById('lDuration').value,
+                status: document.getElementById('lStatus').value,
+                scheduledDate: document.getElementById('lScheduledDate').value,
+                type: Array.from(document.querySelectorAll('input[name="lType"]:checked')).map(cb => cb.value)
+            };
 
-            DB.addLessonToModule(currentCourseId, modId, {
-                title: title,
-                type: type,
-                duration: duration
-            });
+            if (lessonId) {
+                DB.updateLesson(currentCourseId, modId, parseInt(lessonId), data);
+            } else {
+                DB.addLessonToModule(currentCourseId, modId, data);
+            }
             
             document.getElementById('lessonModal').classList.remove('open');
             e.target.reset();
             selectCourse(currentCourseId);
+        };
+
+        window.handleDeleteLesson = function(modId, lessonId) {
+            if (confirm('Tem certeza que deseja excluir esta aula?')) {
+                DB.deleteLesson(currentCourseId, modId, lessonId);
+                selectCourse(currentCourseId);
+            }
         };
     </script>
 </body>

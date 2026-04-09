@@ -200,6 +200,29 @@ const DB = {
         return lesson;
     },
 
+    updateLesson(courseId, moduleId, lessonId, updates) {
+        const course = this.getCourses().find(c => c.id === courseId);
+        if (!course) return null;
+        const mod = course.modules.find(m => m.id === moduleId);
+        if (!mod) return null;
+        const lessonIdx = mod.lessons.findIndex(l => l.id === lessonId);
+        if (lessonIdx === -1) return null;
+        
+        mod.lessons[lessonIdx] = { ...mod.lessons[lessonIdx], ...updates };
+        this.updateCourse(courseId, course);
+        return mod.lessons[lessonIdx];
+    },
+
+    deleteLesson(courseId, moduleId, lessonId) {
+        const course = this.getCourses().find(c => c.id === courseId);
+        if (!course) return null;
+        const mod = course.modules.find(m => m.id === moduleId);
+        if (!mod) return null;
+        mod.lessons = mod.lessons.filter(l => l.id !== lessonId);
+        this.updateCourse(courseId, course);
+        return true;
+    },
+
     /* --- Users --- */
     getUsers() { return this._get(DB_KEYS.users) || []; },
     getUserById(id) { return this.getUsers().find(u => u.id === id); },
