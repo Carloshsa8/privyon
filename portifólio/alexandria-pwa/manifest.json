@@ -10,31 +10,10 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "https://img.icons8.com/color/192/library.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://img.icons8.com/color/512/library.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Cursos",
-      "url": "cursos.html",
-      "icons": [{ "src": "https://img.icons8.com/color/96/library.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "Meus Cursos",
-      "url": "meus-cursos.html",
-      "icons": [{ "src": "https://img.icons8.com/color/96/bookmark.png", "sizes": "96x96" }]
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

@@ -1,27 +1,21 @@
-const CACHE_NAME = 'alexandria-cache-v4';
+const CACHE_NAME = 'alexandria-cache-v5';
 const ASSETS_TO_CACHE = [
-  './',
-  'index.html',
-  'cursos.html',
-  'contato.html',
-  'login.html',
-  'registro.html',
-  'curso-detalhe.html',
-  'meus-cursos.html',
-  'aula.html',
-  'checkout.html',
-  'styles.css',
-  'styles.css?v=2',
-  'app.js',
-  'app.js?v=2',
-  'data.js',
-  'data.js?v=2',
-  'auth.js',
-  'auth.js?v=2',
-  'courses.js',
-  'courses.js?v=2',
-  'manifest.json',
-  'icon.svg'
+  './index.html',
+  './cursos.html',
+  './contato.html',
+  './login.html',
+  './registro.html',
+  './curso-detalhe.html',
+  './meus-cursos.html',
+  './aula.html',
+  './checkout.html',
+  './styles.css',
+  './app.js',
+  './data.js',
+  './auth.js',
+  './courses.js',
+  './manifest.json',
+  './icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
