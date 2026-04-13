@@ -179,7 +179,7 @@ nav.scrolled {
     overflow: hidden;
     background:
         linear-gradient(to bottom, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.85) 100%),
-        url('https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=1920&q=80') center/cover no-repeat;
+        url('https://images.unsplash.com/photo-1620123449946-30d6efd4b8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJveGV8ZW58MHx8MHx8fDA%3D') center/cover no-repeat;
 }
 
 #hero-canvas {
