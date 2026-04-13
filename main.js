@@ -49,6 +49,10 @@ window.closeManifesto = function () {
   checkBodyOverflow();
 };
 
+window.scrollToTop = function () {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 window.openContactHub = function () {
   const elements = getModalElements();
   if (elements.contactHub) {
