@@ -945,6 +945,22 @@ footer {
     border-top: 1px solid #1a0505;
 }
 
+.footer-logo {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-logo .logo {
+    font-size: 2.2rem;
+    transition: var(--transition);
+}
+
+.footer-logo .logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 15px rgba(204, 0, 0, 0.4);
+}
+
 .footer-socials {
     display: flex;
     justify-content: center;
