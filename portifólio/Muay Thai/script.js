@@ -114,4 +114,79 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- Back to Top Button ---
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // --- Lightbox Gallery ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const galleryItems = document.querySelectorAll('.gallery-item img');
+    let currentIndex = 0;
+
+    if (lightbox && galleryItems.length > 0) {
+        const images = Array.from(galleryItems).map(img => img.src);
+
+        galleryItems.forEach((item, index) => {
+            item.parentElement.style.cursor = 'pointer';
+            item.parentElement.addEventListener('click', () => {
+                currentIndex = index;
+                openLightbox();
+            });
+        });
+
+        function openLightbox() {
+            lightboxImg.src = images[currentIndex];
+            lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            openLightbox();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            openLightbox();
+        }
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxNext').addEventListener('click', nextImage);
+        document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'Escape') closeLightbox();
+        });
+    }
 });
